@@ -3,7 +3,11 @@
 #
 # Authors: Christian Menard
 
-import importlib.resources
+import sys
+if sys.version_info.minor < 7:
+    import importlib.resources as ilr
+else:
+    import importlib_resources as ilr
 
 from hydra.plugins.search_path_plugin import SearchPathPlugin
 
@@ -15,7 +19,7 @@ class FiveGSimSearchPathPlugin(SearchPathPlugin):
         # importlib returns a contextmanager that is intended for use in a with
         # statement. Since we have no control over the lifetime of this plugin,
         # we manually enter the context on __init__ and exit it on __del__
-        self.path_cm = importlib.resources.path('fivegsim', 'conf')
+        self.path_cm = ilr.path('fivegsim', 'conf')
         self.path = str(self.path_cm.__enter__())
 
     def manipulate_search_path(self, search_path):
