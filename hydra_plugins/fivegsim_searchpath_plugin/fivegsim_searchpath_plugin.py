@@ -5,9 +5,9 @@
 
 import sys
 if sys.version_info.minor < 7:
-    import importlib.resources as ilr
-else:
     import importlib_resources as ilr
+else:
+    import importlib.resources as ilr
 
 from hydra.plugins.search_path_plugin import SearchPathPlugin
 
