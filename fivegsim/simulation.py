@@ -14,6 +14,9 @@ class DummyGraph(KpnGraph):
 
     The dummy graph consists of three tasks:
     source -> compute -> sink
+
+    For the final 5G graph it probably makes sense to parameterize this class
+    and build slightly different graphs for different parts in the 5G trace.
     """
 
     def __init__(self):
@@ -39,6 +42,11 @@ class DummyGraph(KpnGraph):
 
 
 class DummyTraceGenerator(TraceGenerator):
+    """Generates traces for the dummy application
+
+    This is a bit clumsy to do by hand at the moment. We might improve this in
+    the near future.
+    """
 
     def __init__(self):
         # build a dictionary of all the traces
@@ -117,6 +125,7 @@ class DummyTraceGenerator(TraceGenerator):
 
 
 class FiveGSimulation(BaseSimulation):
+    """Simulate the processing of 5G data"""
 
     def __init__(self, platform):
         super().__init__(platform)
@@ -126,23 +135,49 @@ class FiveGSimulation(BaseSimulation):
         platform = hydra.utils.instantiate(cfg['platform'])
         return FiveGSimulation(platform)
 
+    def _manager_process(self):
+        app_finished = []
+        # run 10 instances of the dummy app, start one every 5 ms
+        for i in range(0, 10):
+            # create a new graph and trace
+            kpn = DummyGraph()
+            trace = DummyTraceGenerator()
+            # create a new mapper (this should be TETRiS in the future) Note
+            # that we need to create a new mapper here, as the KPN could change
+            # This appears to be a weakness of our mapper interface. The KPN
+            # should probably become a parameter of generate_mapping().
+            cfg = {'random_seed': None}
+            mapper = RandomMapper(kpn, self.platform, cfg)
+            # create a new mapping
+            mapping = mapper.generate_mapping()
+            # instantiate the application
+            app = RuntimeKpnApplication(name=f"dummy{i}",
+                                        kpn_graph=kpn,
+                                        mapping=mapping,
+                                        trace_generator=trace,
+                                        system=self.system)
+            # start the application
+            finished = self.env.process(app.run())
+            app_finished.append(finished)
+            # wait for 5 ms
+            yield self.env.timeout(5000000000)
+
+        # wait until all applications finished
+        yield self.env.all_of(app_finished)
+
     def run(self):
-        # create graph and trace
-        kpn = DummyGraph()
-        trace = DummyTraceGenerator()
-        # create a mapper
-        cfg = {'random_seed': None}
-        mapper = RandomMapper(kpn, self.platform, cfg)
-        # create a mapping
-        mapping = mapper.generate_mapping()
-        # build the application
-        app = RuntimeKpnApplication("dummy", kpn_graph=kpn, mapping=mapping,
-                                    trace_generator=trace, system=self.system)
+        """Run the simulation.
+
+        May only be called once. Updates the :attr:`exec_time` attribute.
+        """
+        if self.exec_time is not None:
+            raise RuntimeError("A FiveGSimulation may only be run once!")
+
         # start all schedulers
         self.system.start_schedulers()
-        # start the application
-        finished = self.env.process(app.run())
-        # run the actual simulation until the application finishes
+        # start the manager process
+        finished = self.env.process(self._manager_process())
+        # run the actual simulation until the manager process finishes
         self.env.run(finished)
         # check if all kpn processes finished execution
         self.system.check_errors()
@@ -151,5 +186,6 @@ class FiveGSimulation(BaseSimulation):
 
 
 class HydraFiveGSimulation(FiveGSimulation):
+    """Required to instatiate a FiveGSimulation from hydra<1.0"""
     def __new__(cls, cfg):
         return FiveGSimulation.from_hydra(cfg)
