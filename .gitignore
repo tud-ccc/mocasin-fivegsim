@@ -1,0 +1,3 @@
+*.pyc
+outputs
+*.egg-info
