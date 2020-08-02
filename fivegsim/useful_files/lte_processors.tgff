@@ -1,0 +1,3220 @@
+# Cortex-A7
+@PROC 0 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+50    1        1.6           0                 0             0.16
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+
+# PHYBench kernel = micf PRBs= 1
+0	0	1	6374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 2
+1	0	1	8833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 3
+2	0	1	14042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 4
+3	0	1	14250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 5
+4	0	1	14500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 6
+5	0	1	25667E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 7
+6	0	1	25833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 8
+7	0	1	26124E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 9
+8	0	1	26292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 10
+9	0	1	26665E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 11
+10	0	1	50874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 12
+11	0	1	51166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 13
+12	0	1	51416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 14
+13	0	1	51665E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 15
+14	0	1	51832E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 16
+15	0	1	52041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 17
+16	0	1	52332E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 18
+17	0	1	52499E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 19
+18	0	1	52791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 20
+19	0	1	52958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 21
+20	0	1	53291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 22
+21	0	1	106458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 23
+22	0	1	106666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 24
+23	0	1	106874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 25
+24	0	1	107122E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 26
+25	0	1	107333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 27
+26	0	1	107624E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 28
+27	0	1	107792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 29
+28	0	1	108083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 30
+29	0	1	108333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 31
+30	0	1	108500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 32
+31	0	1	108749E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 33
+32	0	1	108959E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 34
+33	0	1	109249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 35
+34	0	1	109416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 36
+35	0	1	109666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 37
+36	0	1	109875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 38
+37	0	1	110083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 39
+38	0	1	110292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 40
+39	0	1	110583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 41
+40	0	1	110750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 42
+41	0	1	111041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 43
+42	0	1	121708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 44
+43	0	1	121958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 45
+44	0	1	122249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 46
+45	0	1	122417E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 47
+46	0	1	122707E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 48
+47	0	1	122874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 49
+48	0	1	123207E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 50
+49	0	1	123375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 51
+50	0	1	228665E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 52
+51	0	1	228789E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 53
+52	0	1	229041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 54
+53	0	1	229249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 55
+54	0	1	229458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 56
+55	0	1	229708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 57
+56	0	1	229958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 58
+57	0	1	230166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 59
+58	0	1	230374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 60
+59	0	1	230583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 61
+60	0	1	230833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 62
+61	0	1	231206E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 63
+62	0	1	231415E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 64
+63	0	1	231583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 65
+64	0	1	231750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 66
+65	0	1	122707E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 67
+66	0	1	232249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 68
+67	0	1	232416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 69
+68	0	1	232666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 70
+69	0	1	232875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 71
+70	0	1	233165E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 72
+71	0	1	233334E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 73
+72	0	1	233583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 74
+73	0	1	233791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 75
+74	0	1	234123E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 76
+75	0	1	234290E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 77
+76	0	1	234541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 78
+77	0	1	234831E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 79
+78	0	1	234958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 80
+79	0	1	235289E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 81
+80	0	1	235458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 82
+81	0	1	235707E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 83
+82	0	1	235916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 84
+83	0	1	236166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 85
+84	0	1	236331E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 86
+85	0	1	260998E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 87
+86	0	1	261207E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 88
+87	0	1	261499E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 89
+88	0	1	261748E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 90
+89	0	1	261916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 91
+90	0	1	262124E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 92
+91	0	1	262414E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 93
+92	0	1	262623E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 94
+93	0	1	262914E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 95
+94	0	1	263040E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 96
+95	0	1	263291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 97
+96	0	1	263541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 98
+97	0	1	263832E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 99
+98	0	1	264163E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 100
+99	0	1	264164E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 1
+100	0	1	8666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 2
+101	0	1	14125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 3
+102	0	1	19458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 4
+103	0	1	24812E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 5
+104	0	1	30354E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 6
+105	0	1	35687E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 7
+106	0	1	41042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 8
+107	0	1	46958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 9
+108	0	1	52395E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 10
+109	0	1	57520E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 11
+110	0	1	63000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 12
+111	0	1	68583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 13
+112	0	1	74228E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 14
+113	0	1	79062E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 15
+114	0	1	84749E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 16
+115	0	1	90916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 17
+116	0	1	95291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 18
+117	0	1	101582E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 19
+118	0	1	106583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 20
+119	0	1	111936E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 21
+120	0	1	117958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 22
+121	0	1	123915E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 23
+122	0	1	129061E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 24
+123	0	1	134915E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 25
+124	0	1	140020E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 26
+125	0	1	144311E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 27
+126	0	1	150790E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 28
+127	0	1	156145E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 29
+128	0	1	161478E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 30
+129	0	1	166499E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 31
+130	0	1	171602E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 32
+131	0	1	177582E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 33
+132	0	1	183728E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 34
+133	0	1	188374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 35
+134	0	1	194186E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 36
+135	0	1	199706E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 37
+136	0	1	205061E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 38
+137	0	1	209311E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 39
+138	0	1	215977E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 40
+139	0	1	221373E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 41
+140	0	1	227373E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 42
+141	0	1	232227E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 43
+142	0	1	237414E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 44
+143	0	1	243331E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 45
+144	0	1	248061E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 46
+145	0	1	253789E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 47
+146	0	1	259164E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 48
+147	0	1	265290E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 49
+148	0	1	271081E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 50
+149	0	1	277164E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 51
+150	0	1	281561E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 52
+151	0	1	287747E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 53
+152	0	1	291706E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 54
+153	0	1	298206E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 55
+154	0	1	304581E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 56
+155	0	1	308393E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 57
+156	0	1	314018E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 58
+157	0	1	319831E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 59
+158	0	1	325039E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 60
+159	0	1	331456E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 61
+160	0	1	334893E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 62
+161	0	1	342664E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 63
+162	0	1	346768E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 64
+163	0	1	354414E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 65
+164	0	1	357831E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 66
+165	0	1	201227E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 67
+166	0	1	369892E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 68
+167	0	1	374726E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 69
+168	0	1	380601E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 70
+169	0	1	383539E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 71
+170	0	1	390601E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 72
+171	0	1	397330E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 73
+172	0	1	401434E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 74
+173	0	1	407372E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 75
+174	0	1	412788E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 76
+175	0	1	419143E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 77
+176	0	1	423789E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 78
+177	0	1	429017E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 79
+178	0	1	433976E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 80
+179	0	1	440725E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 81
+180	0	1	444371E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 82
+181	0	1	450517E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 83
+182	0	1	456330E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 84
+183	0	1	461955E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 85
+184	0	1	467954E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 86
+185	0	1	473121E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 87
+186	0	1	478413E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 88
+187	0	1	484933E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 89
+188	0	1	489080E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 90
+189	0	1	495496E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 91
+190	0	1	499309E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 92
+191	0	1	507141E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 93
+192	0	1	510329E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 94
+193	0	1	517038E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 95
+194	0	1	521871E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 96
+195	0	1	528100E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 97
+196	0	1	533225E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 98
+197	0	1	539891E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 99
+198	0	1	544725E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 100
+199	0	1	549495E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 1
+200	0	1	3167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 2
+201	0	1	4334E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 3
+202	0	1	5542E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 4
+203	0	1	6708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 5
+204	0	1	7875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 6
+205	0	1	9042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 7
+206	0	1	10208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 8
+207	0	1	11375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 9
+208	0	1	12541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 10
+209	0	1	13709E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 11
+210	0	1	14875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 12
+211	0	1	16042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 13
+212	0	1	17208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 14
+213	0	1	18375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 15
+214	0	1	19541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 16
+215	0	1	20708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 17
+216	0	1	21875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 18
+217	0	1	23083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 19
+218	0	1	24250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 20
+219	0	1	25417E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 21
+220	0	1	26583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 22
+221	0	1	27750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 23
+222	0	1	28917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 24
+223	0	1	30083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 25
+224	0	1	31250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 26
+225	0	1	32417E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 27
+226	0	1	33583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 28
+227	0	1	34750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 29
+228	0	1	35958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 30
+229	0	1	37083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 31
+230	0	1	38292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 32
+231	0	1	39417E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 33
+232	0	1	40584E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 34
+233	0	1	41750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 35
+234	0	1	42875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 36
+235	0	1	44083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 37
+236	0	1	45375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 38
+237	0	1	46417E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 39
+238	0	1	47625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 40
+239	0	1	48792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 41
+240	0	1	50000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 42
+241	0	1	51166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 43
+242	0	1	52333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 44
+243	0	1	53458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 45
+244	0	1	54667E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 46
+245	0	1	55958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 47
+246	0	1	57000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 48
+247	0	1	58209E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 49
+248	0	1	59333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 50
+249	0	1	60791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 51
+250	0	1	61667E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 52
+251	0	1	63042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 53
+252	0	1	64125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 54
+253	0	1	65125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 55
+254	0	1	66375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 56
+255	0	1	67459E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 57
+256	0	1	68875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 58
+257	0	1	69958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 59
+258	0	1	71000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 60
+259	0	1	72292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 61
+260	0	1	73375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 62
+261	0	1	74709E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 63
+262	0	1	76042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 64
+263	0	1	76916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 65
+264	0	1	78083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 66
+265	0	1	38125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 67
+266	0	1	80458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 68
+267	0	1	81792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 69
+268	0	1	82959E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 70
+269	0	1	83958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 71
+270	0	1	85125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 72
+271	0	1	86333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 73
+272	0	1	87500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 74
+273	0	1	88834E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 75
+274	0	1	90125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 76
+275	0	1	90959E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 77
+276	0	1	93000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 78
+277	0	1	93500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 79
+278	0	1	94792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 80
+279	0	1	95792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 81
+280	0	1	96917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 82
+281	0	1	98166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 83
+282	0	1	99583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 84
+283	0	1	100708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 85
+284	0	1	101542E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 86
+285	0	1	104041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 87
+286	0	1	104167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 88
+287	0	1	105333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 89
+288	0	1	106958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 90
+289	0	1	107625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 91
+290	0	1	108750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 92
+291	0	1	110083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 93
+292	0	1	111333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 94
+293	0	1	112375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 95
+294	0	1	113875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 96
+295	0	1	114792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 97
+296	0	1	115958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 98
+297	0	1	117125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 99
+298	0	1	118709E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 100
+299	0	1	119375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 1 Mod_scheme=PSK
+300	0	1	1167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 2 Mod_scheme=PSK
+301	0	1	1250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 3 Mod_scheme=PSK
+302	0	1	1333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 4 Mod_scheme=PSK
+303	0	1	1416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 5 Mod_scheme=PSK
+304	0	1	1500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 6 Mod_scheme=PSK
+305	0	1	1583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 7 Mod_scheme=PSK
+306	0	1	1667E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 8 Mod_scheme=PSK
+307	0	1	1709E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 9 Mod_scheme=PSK
+308	0	1	1833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 10 Mod_scheme=PSK
+309	0	1	1916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 11 Mod_scheme=PSK
+310	0	1	1958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 12 Mod_scheme=PSK
+311	0	1	2042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 13 Mod_scheme=PSK
+312	0	1	2167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 14 Mod_scheme=PSK
+313	0	1	2250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 15 Mod_scheme=PSK
+314	0	1	2292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 16 Mod_scheme=PSK
+315	0	1	2375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 17 Mod_scheme=PSK
+316	0	1	2459E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 18 Mod_scheme=PSK
+317	0	1	2541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 19 Mod_scheme=PSK
+318	0	1	2625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 20 Mod_scheme=PSK
+319	0	1	2708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 21 Mod_scheme=PSK
+320	0	1	2791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 22 Mod_scheme=PSK
+321	0	1	2875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 23 Mod_scheme=PSK
+322	0	1	2958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 24 Mod_scheme=PSK
+323	0	1	3041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 25 Mod_scheme=PSK
+324	0	1	3083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 26 Mod_scheme=PSK
+325	0	1	3208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 27 Mod_scheme=PSK
+326	0	1	3291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 28 Mod_scheme=PSK
+327	0	1	3334E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 29 Mod_scheme=PSK
+328	0	1	3417E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 30 Mod_scheme=PSK
+329	0	1	3500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 31 Mod_scheme=PSK
+330	0	1	3542E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 32 Mod_scheme=PSK
+331	0	1	3667E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 33 Mod_scheme=PSK
+332	0	1	3709E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 34 Mod_scheme=PSK
+333	0	1	3792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 35 Mod_scheme=PSK
+334	0	1	3916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 36 Mod_scheme=PSK
+335	0	1	4000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 37 Mod_scheme=PSK
+336	0	1	4083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 38 Mod_scheme=PSK
+337	0	1	4125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 39 Mod_scheme=PSK
+338	0	1	4208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 40 Mod_scheme=PSK
+339	0	1	4292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 41 Mod_scheme=PSK
+340	0	1	4375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 42 Mod_scheme=PSK
+341	0	1	4458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 43 Mod_scheme=PSK
+342	0	1	4541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 44 Mod_scheme=PSK
+343	0	1	4625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 45 Mod_scheme=PSK
+344	0	1	4708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 46 Mod_scheme=PSK
+345	0	1	4750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 47 Mod_scheme=PSK
+346	0	1	4834E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 48 Mod_scheme=PSK
+347	0	1	4917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 49 Mod_scheme=PSK
+348	0	1	5000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 50 Mod_scheme=PSK
+349	0	1	5124E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 51 Mod_scheme=PSK
+350	0	1	5167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 52 Mod_scheme=PSK
+351	0	1	5250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 53 Mod_scheme=PSK
+352	0	1	5334E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 54 Mod_scheme=PSK
+353	0	1	5417E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 55 Mod_scheme=PSK
+354	0	1	5500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 56 Mod_scheme=PSK
+355	0	1	5583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 57 Mod_scheme=PSK
+356	0	1	5667E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 58 Mod_scheme=PSK
+357	0	1	5709E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 59 Mod_scheme=PSK
+358	0	1	5792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 60 Mod_scheme=PSK
+359	0	1	5875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 61 Mod_scheme=PSK
+360	0	1	5958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 62 Mod_scheme=PSK
+361	0	1	6083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 63 Mod_scheme=PSK
+362	0	1	6166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 64 Mod_scheme=PSK
+363	0	1	6250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 65 Mod_scheme=PSK
+364	0	1	6292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 66 Mod_scheme=PSK
+365	0	1	3791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 67 Mod_scheme=PSK
+366	0	1	6500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 68 Mod_scheme=PSK
+367	0	1	6541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 69 Mod_scheme=PSK
+368	0	1	6625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 70 Mod_scheme=PSK
+369	0	1	6708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 71 Mod_scheme=PSK
+370	0	1	6792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 72 Mod_scheme=PSK
+371	0	1	6875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 73 Mod_scheme=PSK
+372	0	1	6958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 74 Mod_scheme=PSK
+373	0	1	7041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 75 Mod_scheme=PSK
+374	0	1	7084E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 76 Mod_scheme=PSK
+375	0	1	7167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 77 Mod_scheme=PSK
+376	0	1	7250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 78 Mod_scheme=PSK
+377	0	1	7333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 79 Mod_scheme=PSK
+378	0	1	7417E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 80 Mod_scheme=PSK
+379	0	1	7542E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 81 Mod_scheme=PSK
+380	0	1	7583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 82 Mod_scheme=PSK
+381	0	1	7667E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 83 Mod_scheme=PSK
+382	0	1	7750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 84 Mod_scheme=PSK
+383	0	1	7833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 85 Mod_scheme=PSK
+384	0	1	7916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 86 Mod_scheme=PSK
+385	0	1	8000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 87 Mod_scheme=PSK
+386	0	1	8042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 88 Mod_scheme=PSK
+387	0	1	8166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 89 Mod_scheme=PSK
+388	0	1	8208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 90 Mod_scheme=PSK
+389	0	1	8333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 91 Mod_scheme=PSK
+390	0	1	8375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 92 Mod_scheme=PSK
+391	0	1	8459E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 93 Mod_scheme=PSK
+392	0	1	8541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 94 Mod_scheme=PSK
+393	0	1	8625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 95 Mod_scheme=PSK
+394	0	1	8708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 96 Mod_scheme=PSK
+395	0	1	8791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 97 Mod_scheme=PSK
+396	0	1	8875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 98 Mod_scheme=PSK
+397	0	1	8958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 99 Mod_scheme=PSK
+398	0	1	9042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 100 Mod_scheme=PSK
+399	0	1	9125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 1 Mod_scheme=QPSK
+400	0	1	1792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 2 Mod_scheme=QPSK
+401	0	1	2458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 3 Mod_scheme=QPSK
+402	0	1	3167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 4 Mod_scheme=QPSK
+403	0	1	3834E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 5 Mod_scheme=QPSK
+404	0	1	4542E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 6 Mod_scheme=QPSK
+405	0	1	5250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 7 Mod_scheme=QPSK
+406	0	1	5916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 8 Mod_scheme=QPSK
+407	0	1	6625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 9 Mod_scheme=QPSK
+408	0	1	7291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 10 Mod_scheme=QPSK
+409	0	1	8000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 11 Mod_scheme=QPSK
+410	0	1	8666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 12 Mod_scheme=QPSK
+411	0	1	9333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 13 Mod_scheme=QPSK
+412	0	1	10042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 14 Mod_scheme=QPSK
+413	0	1	10750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 15 Mod_scheme=QPSK
+414	0	1	11417E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 16 Mod_scheme=QPSK
+415	0	1	12084E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 17 Mod_scheme=QPSK
+416	0	1	12834E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 18 Mod_scheme=QPSK
+417	0	1	13459E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 19 Mod_scheme=QPSK
+418	0	1	14208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 20 Mod_scheme=QPSK
+419	0	1	14875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 21 Mod_scheme=QPSK
+420	0	1	15542E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 22 Mod_scheme=QPSK
+421	0	1	16250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 23 Mod_scheme=QPSK
+422	0	1	16917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 24 Mod_scheme=QPSK
+423	0	1	17625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 25 Mod_scheme=QPSK
+424	0	1	18333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 26 Mod_scheme=QPSK
+425	0	1	19041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 27 Mod_scheme=QPSK
+426	0	1	19667E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 28 Mod_scheme=QPSK
+427	0	1	20375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 29 Mod_scheme=QPSK
+428	0	1	21083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 30 Mod_scheme=QPSK
+429	0	1	21750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 31 Mod_scheme=QPSK
+430	0	1	22458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 32 Mod_scheme=QPSK
+431	0	1	23125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 33 Mod_scheme=QPSK
+432	0	1	23792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 34 Mod_scheme=QPSK
+433	0	1	24541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 35 Mod_scheme=QPSK
+434	0	1	25208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 36 Mod_scheme=QPSK
+435	0	1	25875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 37 Mod_scheme=QPSK
+436	0	1	26542E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 38 Mod_scheme=QPSK
+437	0	1	27250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 39 Mod_scheme=QPSK
+438	0	1	27958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 40 Mod_scheme=QPSK
+439	0	1	28625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 41 Mod_scheme=QPSK
+440	0	1	29292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 42 Mod_scheme=QPSK
+441	0	1	30000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 43 Mod_scheme=QPSK
+442	0	1	30708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 44 Mod_scheme=QPSK
+443	0	1	31416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 45 Mod_scheme=QPSK
+444	0	1	32083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 46 Mod_scheme=QPSK
+445	0	1	32750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 47 Mod_scheme=QPSK
+446	0	1	33458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 48 Mod_scheme=QPSK
+447	0	1	34125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 49 Mod_scheme=QPSK
+448	0	1	34792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 50 Mod_scheme=QPSK
+449	0	1	35500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 51 Mod_scheme=QPSK
+450	0	1	36208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 52 Mod_scheme=QPSK
+451	0	1	36875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 53 Mod_scheme=QPSK
+452	0	1	37583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 54 Mod_scheme=QPSK
+453	0	1	38291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 55 Mod_scheme=QPSK
+454	0	1	38958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 56 Mod_scheme=QPSK
+455	0	1	39625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 57 Mod_scheme=QPSK
+456	0	1	40333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 58 Mod_scheme=QPSK
+457	0	1	41000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 59 Mod_scheme=QPSK
+458	0	1	41708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 60 Mod_scheme=QPSK
+459	0	1	42375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 61 Mod_scheme=QPSK
+460	0	1	43083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 62 Mod_scheme=QPSK
+461	0	1	43791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 63 Mod_scheme=QPSK
+462	0	1	44458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 64 Mod_scheme=QPSK
+463	0	1	45125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 65 Mod_scheme=QPSK
+464	0	1	45833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 66 Mod_scheme=QPSK
+465	0	1	46541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 67 Mod_scheme=QPSK
+466	0	1	47249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 68 Mod_scheme=QPSK
+467	0	1	47875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 69 Mod_scheme=QPSK
+468	0	1	48583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 70 Mod_scheme=QPSK
+469	0	1	49250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 71 Mod_scheme=QPSK
+470	0	1	49958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 72 Mod_scheme=QPSK
+471	0	1	50708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 73 Mod_scheme=QPSK
+472	0	1	51333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 74 Mod_scheme=QPSK
+473	0	1	52000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 75 Mod_scheme=QPSK
+474	0	1	52708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 76 Mod_scheme=QPSK
+475	0	1	53457E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 77 Mod_scheme=QPSK
+476	0	1	54083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 78 Mod_scheme=QPSK
+477	0	1	54791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 79 Mod_scheme=QPSK
+478	0	1	55499E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 80 Mod_scheme=QPSK
+479	0	1	56208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 81 Mod_scheme=QPSK
+480	0	1	56833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 82 Mod_scheme=QPSK
+481	0	1	57583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 83 Mod_scheme=QPSK
+482	0	1	58250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 84 Mod_scheme=QPSK
+483	0	1	58916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 85 Mod_scheme=QPSK
+484	0	1	59583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 86 Mod_scheme=QPSK
+485	0	1	60291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 87 Mod_scheme=QPSK
+486	0	1	61000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 88 Mod_scheme=QPSK
+487	0	1	61666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 89 Mod_scheme=QPSK
+488	0	1	62374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 90 Mod_scheme=QPSK
+489	0	1	63000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 91 Mod_scheme=QPSK
+490	0	1	63791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 92 Mod_scheme=QPSK
+491	0	1	64458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 93 Mod_scheme=QPSK
+492	0	1	65083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 94 Mod_scheme=QPSK
+493	0	1	65791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 95 Mod_scheme=QPSK
+494	0	1	66458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 96 Mod_scheme=QPSK
+495	0	1	67208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 97 Mod_scheme=QPSK
+496	0	1	67874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 98 Mod_scheme=QPSK
+497	0	1	68541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 99 Mod_scheme=QPSK
+498	0	1	69208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 100 Mod_scheme=QPSK
+499	0	1	70000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 1 Mod_scheme=16QAM
+500	0	1	3708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 2 Mod_scheme=16QAM
+501	0	1	6333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 3 Mod_scheme=16QAM
+502	0	1	8958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 4 Mod_scheme=16QAM
+503	0	1	11541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 5 Mod_scheme=16QAM
+504	0	1	14125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 6 Mod_scheme=16QAM
+505	0	1	16750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 7 Mod_scheme=16QAM
+506	0	1	19375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 8 Mod_scheme=16QAM
+507	0	1	21958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 9 Mod_scheme=16QAM
+508	0	1	24583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 10 Mod_scheme=16QAM
+509	0	1	27208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 11 Mod_scheme=16QAM
+510	0	1	29874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 12 Mod_scheme=16QAM
+511	0	1	32416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 13 Mod_scheme=16QAM
+512	0	1	35041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 14 Mod_scheme=16QAM
+513	0	1	37666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 15 Mod_scheme=16QAM
+514	0	1	40249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 16 Mod_scheme=16QAM
+515	0	1	42833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 17 Mod_scheme=16QAM
+516	0	1	45416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 18 Mod_scheme=16QAM
+517	0	1	48083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 19 Mod_scheme=16QAM
+518	0	1	50625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 20 Mod_scheme=16QAM
+519	0	1	53250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 21 Mod_scheme=16QAM
+520	0	1	55874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 22 Mod_scheme=16QAM
+521	0	1	58499E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 23 Mod_scheme=16QAM
+522	0	1	61083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 24 Mod_scheme=16QAM
+523	0	1	63708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 25 Mod_scheme=16QAM
+524	0	1	66332E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 26 Mod_scheme=16QAM
+525	0	1	68916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 27 Mod_scheme=16QAM
+526	0	1	71541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 28 Mod_scheme=16QAM
+527	0	1	74166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 29 Mod_scheme=16QAM
+528	0	1	76791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 30 Mod_scheme=16QAM
+529	0	1	79333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 31 Mod_scheme=16QAM
+530	0	1	81999E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 32 Mod_scheme=16QAM
+531	0	1	84583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 33 Mod_scheme=16QAM
+532	0	1	87207E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 34 Mod_scheme=16QAM
+533	0	1	89791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 35 Mod_scheme=16QAM
+534	0	1	92375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 36 Mod_scheme=16QAM
+535	0	1	94999E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 37 Mod_scheme=16QAM
+536	0	1	97624E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 38 Mod_scheme=16QAM
+537	0	1	100249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 39 Mod_scheme=16QAM
+538	0	1	102832E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 40 Mod_scheme=16QAM
+539	0	1	105457E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 41 Mod_scheme=16QAM
+540	0	1	108082E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 42 Mod_scheme=16QAM
+541	0	1	110666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 43 Mod_scheme=16QAM
+542	0	1	113249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 44 Mod_scheme=16QAM
+543	0	1	115874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 45 Mod_scheme=16QAM
+544	0	1	118499E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 46 Mod_scheme=16QAM
+545	0	1	121124E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 47 Mod_scheme=16QAM
+546	0	1	123666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 48 Mod_scheme=16QAM
+547	0	1	126291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 49 Mod_scheme=16QAM
+548	0	1	128916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 50 Mod_scheme=16QAM
+549	0	1	131499E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 51 Mod_scheme=16QAM
+550	0	1	134124E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 52 Mod_scheme=16QAM
+551	0	1	136708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 53 Mod_scheme=16QAM
+552	0	1	139374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 54 Mod_scheme=16QAM
+553	0	1	141957E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 55 Mod_scheme=16QAM
+554	0	1	144624E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 56 Mod_scheme=16QAM
+555	0	1	147166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 57 Mod_scheme=16QAM
+556	0	1	149832E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 58 Mod_scheme=16QAM
+557	0	1	152374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 59 Mod_scheme=16QAM
+558	0	1	155123E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 60 Mod_scheme=16QAM
+559	0	1	157666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 61 Mod_scheme=16QAM
+560	0	1	160249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 62 Mod_scheme=16QAM
+561	0	1	162832E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 63 Mod_scheme=16QAM
+562	0	1	165457E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 64 Mod_scheme=16QAM
+563	0	1	168041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 65 Mod_scheme=16QAM
+564	0	1	170832E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 66 Mod_scheme=16QAM
+565	0	1	173290E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 67 Mod_scheme=16QAM
+566	0	1	175957E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 68 Mod_scheme=16QAM
+567	0	1	178540E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 69 Mod_scheme=16QAM
+568	0	1	181165E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 70 Mod_scheme=16QAM
+569	0	1	183749E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 71 Mod_scheme=16QAM
+570	0	1	186373E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 72 Mod_scheme=16QAM
+571	0	1	189165E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 73 Mod_scheme=16QAM
+572	0	1	191541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 74 Mod_scheme=16QAM
+573	0	1	194290E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 75 Mod_scheme=16QAM
+574	0	1	196749E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 76 Mod_scheme=16QAM
+575	0	1	199415E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 77 Mod_scheme=16QAM
+576	0	1	202040E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 78 Mod_scheme=16QAM
+577	0	1	204582E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 79 Mod_scheme=16QAM
+578	0	1	207415E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 80 Mod_scheme=16QAM
+579	0	1	209832E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 81 Mod_scheme=16QAM
+580	0	1	212540E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 82 Mod_scheme=16QAM
+581	0	1	215082E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 83 Mod_scheme=16QAM
+582	0	1	217665E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 84 Mod_scheme=16QAM
+583	0	1	220373E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 85 Mod_scheme=16QAM
+584	0	1	223248E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 86 Mod_scheme=16QAM
+585	0	1	225915E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 87 Mod_scheme=16QAM
+586	0	1	228415E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 88 Mod_scheme=16QAM
+587	0	1	230831E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 89 Mod_scheme=16QAM
+588	0	1	233873E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 90 Mod_scheme=16QAM
+589	0	1	236040E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 91 Mod_scheme=16QAM
+590	0	1	239123E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 92 Mod_scheme=16QAM
+591	0	1	241332E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 93 Mod_scheme=16QAM
+592	0	1	243873E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 94 Mod_scheme=16QAM
+593	0	1	246498E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 95 Mod_scheme=16QAM
+594	0	1	248998E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 96 Mod_scheme=16QAM
+595	0	1	251914E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 97 Mod_scheme=16QAM
+596	0	1	254248E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 98 Mod_scheme=16QAM
+597	0	1	256956E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 99 Mod_scheme=16QAM
+598	0	1	259456E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 100 Mod_scheme=16QAM
+599	0	1	262082E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 1 Mod_scheme=64QAM
+600	0	1	4917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 2 Mod_scheme=64QAM
+601	0	1	8750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 3 Mod_scheme=64QAM
+602	0	1	12625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 4 Mod_scheme=64QAM
+603	0	1	16458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 5 Mod_scheme=64QAM
+604	0	1	20208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 6 Mod_scheme=64QAM
+605	0	1	24083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 7 Mod_scheme=64QAM
+606	0	1	27875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 8 Mod_scheme=64QAM
+607	0	1	31750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 9 Mod_scheme=64QAM
+608	0	1	35500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 10 Mod_scheme=64QAM
+609	0	1	39374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 11 Mod_scheme=64QAM
+610	0	1	43166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 12 Mod_scheme=64QAM
+611	0	1	47000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 13 Mod_scheme=64QAM
+612	0	1	50833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 14 Mod_scheme=64QAM
+613	0	1	54625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 15 Mod_scheme=64QAM
+614	0	1	58458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 16 Mod_scheme=64QAM
+615	0	1	62333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 17 Mod_scheme=64QAM
+616	0	1	66124E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 18 Mod_scheme=64QAM
+617	0	1	69957E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 19 Mod_scheme=64QAM
+618	0	1	73750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 20 Mod_scheme=64QAM
+619	0	1	77666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 21 Mod_scheme=64QAM
+620	0	1	81457E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 22 Mod_scheme=64QAM
+621	0	1	85291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 23 Mod_scheme=64QAM
+622	0	1	89083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 24 Mod_scheme=64QAM
+623	0	1	92916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 25 Mod_scheme=64QAM
+624	0	1	96708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 26 Mod_scheme=64QAM
+625	0	1	100582E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 27 Mod_scheme=64QAM
+626	0	1	104374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 28 Mod_scheme=64QAM
+627	0	1	108166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 29 Mod_scheme=64QAM
+628	0	1	112041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 30 Mod_scheme=64QAM
+629	0	1	115874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 31 Mod_scheme=64QAM
+630	0	1	119666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 32 Mod_scheme=64QAM
+631	0	1	123499E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 33 Mod_scheme=64QAM
+632	0	1	127291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 34 Mod_scheme=64QAM
+633	0	1	131124E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 35 Mod_scheme=64QAM
+634	0	1	134999E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 36 Mod_scheme=64QAM
+635	0	1	138832E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 37 Mod_scheme=64QAM
+636	0	1	142624E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 38 Mod_scheme=64QAM
+637	0	1	146416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 39 Mod_scheme=64QAM
+638	0	1	150249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 40 Mod_scheme=64QAM
+639	0	1	154124E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 41 Mod_scheme=64QAM
+640	0	1	157916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 42 Mod_scheme=64QAM
+641	0	1	161748E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 43 Mod_scheme=64QAM
+642	0	1	165582E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 44 Mod_scheme=64QAM
+643	0	1	169374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 45 Mod_scheme=64QAM
+644	0	1	173248E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 46 Mod_scheme=64QAM
+645	0	1	176999E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 47 Mod_scheme=64QAM
+646	0	1	180915E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 48 Mod_scheme=64QAM
+647	0	1	184707E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 49 Mod_scheme=64QAM
+648	0	1	188499E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 50 Mod_scheme=64QAM
+649	0	1	192374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 51 Mod_scheme=64QAM
+650	0	1	196207E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 52 Mod_scheme=64QAM
+651	0	1	200040E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 53 Mod_scheme=64QAM
+652	0	1	203831E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 54 Mod_scheme=64QAM
+653	0	1	207665E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 55 Mod_scheme=64QAM
+654	0	1	211498E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 56 Mod_scheme=64QAM
+655	0	1	215332E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 57 Mod_scheme=64QAM
+656	0	1	219165E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 58 Mod_scheme=64QAM
+657	0	1	222998E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 59 Mod_scheme=64QAM
+658	0	1	226790E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 60 Mod_scheme=64QAM
+659	0	1	230664E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 61 Mod_scheme=64QAM
+660	0	1	234498E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 62 Mod_scheme=64QAM
+661	0	1	238290E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 63 Mod_scheme=64QAM
+662	0	1	242289E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 64 Mod_scheme=64QAM
+663	0	1	245915E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 65 Mod_scheme=64QAM
+664	0	1	249748E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 66 Mod_scheme=64QAM
+665	0	1	253623E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 67 Mod_scheme=64QAM
+666	0	1	257456E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 68 Mod_scheme=64QAM
+667	0	1	261248E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 69 Mod_scheme=64QAM
+668	0	1	265040E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 70 Mod_scheme=64QAM
+669	0	1	268873E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 71 Mod_scheme=64QAM
+670	0	1	272873E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 72 Mod_scheme=64QAM
+671	0	1	276623E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 73 Mod_scheme=64QAM
+672	0	1	280539E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 74 Mod_scheme=64QAM
+673	0	1	284372E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 75 Mod_scheme=64QAM
+674	0	1	288082E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 76 Mod_scheme=64QAM
+675	0	1	291916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 77 Mod_scheme=64QAM
+676	0	1	295707E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 78 Mod_scheme=64QAM
+677	0	1	299582E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 79 Mod_scheme=64QAM
+678	0	1	303374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 80 Mod_scheme=64QAM
+679	0	1	307207E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 81 Mod_scheme=64QAM
+680	0	1	311082E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 82 Mod_scheme=64QAM
+681	0	1	314998E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 83 Mod_scheme=64QAM
+682	0	1	318831E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 84 Mod_scheme=64QAM
+683	0	1	322582E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 85 Mod_scheme=64QAM
+684	0	1	326415E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 86 Mod_scheme=64QAM
+685	0	1	330290E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 87 Mod_scheme=64QAM
+686	0	1	334082E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 88 Mod_scheme=64QAM
+687	0	1	337956E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 89 Mod_scheme=64QAM
+688	0	1	341790E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 90 Mod_scheme=64QAM
+689	0	1	345623E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 91 Mod_scheme=64QAM
+690	0	1	349498E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 92 Mod_scheme=64QAM
+691	0	1	353290E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 93 Mod_scheme=64QAM
+692	0	1	357123E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 94 Mod_scheme=64QAM
+693	0	1	360998E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 95 Mod_scheme=64QAM
+694	0	1	364831E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 96 Mod_scheme=64QAM
+695	0	1	368664E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 97 Mod_scheme=64QAM
+696	0	1	372498E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 98 Mod_scheme=64QAM
+697	0	1	376372E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 99 Mod_scheme=64QAM
+698	0	1	380247E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 100 Mod_scheme=64QAM
+699	0	1	384039E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 1 Mod_scheme=256QAM
+700	0	1	6250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 2 Mod_scheme=256QAM
+701	0	1	11458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 3 Mod_scheme=256QAM
+702	0	1	16583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 4 Mod_scheme=256QAM
+703	0	1	21708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 5 Mod_scheme=256QAM
+704	0	1	26874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 6 Mod_scheme=256QAM
+705	0	1	32000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 7 Mod_scheme=256QAM
+706	0	1	37208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 8 Mod_scheme=256QAM
+707	0	1	42333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 9 Mod_scheme=256QAM
+708	0	1	47541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 10 Mod_scheme=256QAM
+709	0	1	52625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 11 Mod_scheme=256QAM
+710	0	1	57833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 12 Mod_scheme=256QAM
+711	0	1	62958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 13 Mod_scheme=256QAM
+712	0	1	68083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 14 Mod_scheme=256QAM
+713	0	1	73249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 15 Mod_scheme=256QAM
+714	0	1	78375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 16 Mod_scheme=256QAM
+715	0	1	83541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 17 Mod_scheme=256QAM
+716	0	1	88708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 18 Mod_scheme=256QAM
+717	0	1	93875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 19 Mod_scheme=256QAM
+718	0	1	98999E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 20 Mod_scheme=256QAM
+719	0	1	104207E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 21 Mod_scheme=256QAM
+720	0	1	109332E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 22 Mod_scheme=256QAM
+721	0	1	114457E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 23 Mod_scheme=256QAM
+722	0	1	119624E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 24 Mod_scheme=256QAM
+723	0	1	124791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 25 Mod_scheme=256QAM
+724	0	1	129957E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 26 Mod_scheme=256QAM
+725	0	1	135124E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 27 Mod_scheme=256QAM
+726	0	1	140249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 28 Mod_scheme=256QAM
+727	0	1	145416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 29 Mod_scheme=256QAM
+728	0	1	150582E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 30 Mod_scheme=256QAM
+729	0	1	155707E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 31 Mod_scheme=256QAM
+730	0	1	160915E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 32 Mod_scheme=256QAM
+731	0	1	165998E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 33 Mod_scheme=256QAM
+732	0	1	171166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 34 Mod_scheme=256QAM
+733	0	1	176290E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 35 Mod_scheme=256QAM
+734	0	1	181456E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 36 Mod_scheme=256QAM
+735	0	1	186582E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 37 Mod_scheme=256QAM
+736	0	1	191748E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 38 Mod_scheme=256QAM
+737	0	1	196956E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 39 Mod_scheme=256QAM
+738	0	1	202040E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 40 Mod_scheme=256QAM
+739	0	1	207290E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 41 Mod_scheme=256QAM
+740	0	1	212373E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 42 Mod_scheme=256QAM
+741	0	1	217582E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 43 Mod_scheme=256QAM
+742	0	1	222748E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 44 Mod_scheme=256QAM
+743	0	1	227831E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 45 Mod_scheme=256QAM
+744	0	1	233040E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 46 Mod_scheme=256QAM
+745	0	1	238164E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 47 Mod_scheme=256QAM
+746	0	1	243290E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 48 Mod_scheme=256QAM
+747	0	1	248498E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 49 Mod_scheme=256QAM
+748	0	1	253581E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 50 Mod_scheme=256QAM
+749	0	1	258748E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 51 Mod_scheme=256QAM
+750	0	1	263873E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 52 Mod_scheme=256QAM
+751	0	1	269081E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 53 Mod_scheme=256QAM
+752	0	1	274248E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 54 Mod_scheme=256QAM
+753	0	1	279373E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 55 Mod_scheme=256QAM
+754	0	1	284540E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 56 Mod_scheme=256QAM
+755	0	1	289665E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 57 Mod_scheme=256QAM
+756	0	1	294831E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 58 Mod_scheme=256QAM
+757	0	1	300039E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 59 Mod_scheme=256QAM
+758	0	1	305205E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 60 Mod_scheme=256QAM
+759	0	1	310331E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 61 Mod_scheme=256QAM
+760	0	1	315456E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 62 Mod_scheme=256QAM
+761	0	1	320665E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 63 Mod_scheme=256QAM
+762	0	1	326039E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 64 Mod_scheme=256QAM
+763	0	1	330915E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 65 Mod_scheme=256QAM
+764	0	1	336081E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 66 Mod_scheme=256QAM
+765	0	1	341289E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 67 Mod_scheme=256QAM
+766	0	1	346414E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 68 Mod_scheme=256QAM
+767	0	1	351622E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 69 Mod_scheme=256QAM
+768	0	1	356747E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 70 Mod_scheme=256QAM
+769	0	1	361914E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 71 Mod_scheme=256QAM
+770	0	1	367164E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 72 Mod_scheme=256QAM
+771	0	1	372247E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 73 Mod_scheme=256QAM
+772	0	1	377414E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 74 Mod_scheme=256QAM
+773	0	1	382581E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 75 Mod_scheme=256QAM
+774	0	1	387706E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 76 Mod_scheme=256QAM
+775	0	1	392830E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 77 Mod_scheme=256QAM
+776	0	1	398122E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 78 Mod_scheme=256QAM
+777	0	1	403164E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 79 Mod_scheme=256QAM
+778	0	1	408580E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 80 Mod_scheme=256QAM
+779	0	1	413497E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 81 Mod_scheme=256QAM
+780	0	1	418663E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 82 Mod_scheme=256QAM
+781	0	1	423789E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 83 Mod_scheme=256QAM
+782	0	1	429080E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 84 Mod_scheme=256QAM
+783	0	1	434163E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 85 Mod_scheme=256QAM
+784	0	1	439580E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 86 Mod_scheme=256QAM
+785	0	1	444621E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 87 Mod_scheme=256QAM
+786	0	1	449663E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 88 Mod_scheme=256QAM
+787	0	1	454829E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 89 Mod_scheme=256QAM
+788	0	1	460038E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 90 Mod_scheme=256QAM
+789	0	1	465163E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 91 Mod_scheme=256QAM
+790	0	1	470455E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 92 Mod_scheme=256QAM
+791	0	1	475538E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 93 Mod_scheme=256QAM
+792	0	1	480663E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 94 Mod_scheme=256QAM
+793	0	1	486121E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 95 Mod_scheme=256QAM
+794	0	1	491038E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 96 Mod_scheme=256QAM
+795	0	1	496205E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 97 Mod_scheme=256QAM
+796	0	1	501412E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 98 Mod_scheme=256QAM
+797	0	1	506455E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 99 Mod_scheme=256QAM
+798	0	1	511705E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 100 Mod_scheme=256QAM
+799	0	1	516871E-09	150E-6       6.9e+04   1.6
+}
+
+
+# Cortex-A15
+@PROC 1 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+50    1        1.6           0                 0             0.16
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+
+# PHYBench kernel = micf PRBs= 1
+0	0	1	5792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 2
+1	0	1	6626E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 3
+2	0	1	9292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 4
+3	0	1	9374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 5
+4	0	1	9498E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 6
+5	0	1	15126E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 7
+6	0	1	15249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 8
+7	0	1	15376E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 9
+8	0	1	15501E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 10
+9	0	1	15625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 11
+10	0	1	27957E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 12
+11	0	1	28207E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 13
+12	0	1	28167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 14
+13	0	1	28458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 15
+14	0	1	28376E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 16
+15	0	1	28623E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 17
+16	0	1	28748E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 18
+17	0	1	29039E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 19
+18	0	1	28957E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 20
+19	0	1	29208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 21
+20	0	1	29249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 22
+21	0	1	57041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 23
+22	0	1	57167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 24
+23	0	1	57251E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 25
+24	0	1	57373E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 26
+25	0	1	57500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 27
+26	0	1	57707E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 28
+27	0	1	57708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 29
+28	0	1	57916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 30
+29	0	1	57916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 31
+30	0	1	58041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 32
+31	0	1	58165E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 33
+32	0	1	58249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 34
+33	0	1	58293E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 35
+34	0	1	58541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 36
+35	0	1	58627E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 37
+36	0	1	58668E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 38
+37	0	1	58999E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 39
+38	0	1	58956E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 40
+39	0	1	59166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 41
+40	0	1	59250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 42
+41	0	1	59416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 43
+42	0	1	63915E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 44
+43	0	1	63958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 45
+44	0	1	64249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 46
+45	0	1	64499E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 47
+46	0	1	64460E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 48
+47	0	1	64542E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 49
+48	0	1	64625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 50
+49	0	1	64916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 51
+50	0	1	120874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 52
+51	0	1	121039E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 53
+52	0	1	121208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 54
+53	0	1	121374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 55
+54	0	1	121625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 56
+55	0	1	121542E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 57
+56	0	1	121623E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 58
+57	0	1	121873E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 59
+58	0	1	121876E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 60
+59	0	1	122042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 61
+60	0	1	122000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 62
+61	0	1	122083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 63
+62	0	1	122539E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 64
+63	0	1	122665E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 65
+64	0	1	122666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 66
+65	0	1	122749E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 67
+66	0	1	122917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 68
+67	0	1	123041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 69
+68	0	1	123165E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 70
+69	0	1	123332E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 71
+70	0	1	123374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 72
+71	0	1	123706E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 73
+72	0	1	123749E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 74
+73	0	1	123706E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 75
+74	0	1	123916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 76
+75	0	1	124166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 77
+76	0	1	124333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 78
+77	0	1	124539E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 79
+78	0	1	124333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 80
+79	0	1	124500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 81
+80	0	1	124791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 82
+81	0	1	125082E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 83
+82	0	1	125042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 84
+83	0	1	125165E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 85
+84	0	1	125207E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 86
+85	0	1	136251E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 87
+86	0	1	136207E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 88
+87	0	1	136542E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 89
+88	0	1	136998E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 90
+89	0	1	136625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 91
+90	0	1	136915E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 92
+91	0	1	136874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 93
+92	0	1	136917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 94
+93	0	1	137042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 95
+94	0	1	137164E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 96
+95	0	1	137250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 97
+96	0	1	137874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 98
+97	0	1	137624E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 99
+98	0	1	137708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = micf PRBs= 100
+99	0	1	138249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 1
+100	0	1	6917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 2
+101	0	1	10042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 3
+102	0	1	13396E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 4
+103	0	1	16000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 5
+104	0	1	19124E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 6
+105	0	1	21999E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 7
+106	0	1	25166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 8
+107	0	1	28729E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 9
+108	0	1	31416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 10
+109	0	1	34312E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 11
+110	0	1	37333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 12
+111	0	1	40166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 13
+112	0	1	43437E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 14
+113	0	1	46187E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 15
+114	0	1	48999E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 16
+115	0	1	52666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 17
+116	0	1	54874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 18
+117	0	1	58458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 19
+118	0	1	61020E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 20
+119	0	1	64041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 21
+120	0	1	66895E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 22
+121	0	1	70083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 23
+122	0	1	73312E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 24
+123	0	1	75853E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 25
+124	0	1	79311E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 26
+125	0	1	81811E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 27
+126	0	1	85374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 28
+127	0	1	87707E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 29
+128	0	1	90916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 30
+129	0	1	93728E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 31
+130	0	1	96520E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 32
+131	0	1	99582E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 33
+132	0	1	103228E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 34
+133	0	1	106145E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 35
+134	0	1	108937E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 36
+135	0	1	111707E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 37
+136	0	1	114707E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 38
+137	0	1	117228E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 39
+138	0	1	120353E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 40
+139	0	1	124228E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 41
+140	0	1	126853E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 42
+141	0	1	129812E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 43
+142	0	1	132623E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 44
+143	0	1	134999E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 45
+144	0	1	138416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 46
+145	0	1	141082E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 47
+146	0	1	144415E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 48
+147	0	1	147332E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 49
+148	0	1	150790E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 50
+149	0	1	153873E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 51
+150	0	1	156477E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 52
+151	0	1	160061E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 53
+152	0	1	162373E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 54
+153	0	1	164936E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 55
+154	0	1	168811E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 56
+155	0	1	171040E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 57
+156	0	1	173790E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 58
+157	0	1	177478E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 59
+158	0	1	180394E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 60
+159	0	1	183707E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 61
+160	0	1	185707E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 62
+161	0	1	189936E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 63
+162	0	1	191644E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 64
+163	0	1	196540E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 65
+164	0	1	197957E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 66
+165	0	1	201686E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 67
+166	0	1	204603E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 68
+167	0	1	207019E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 69
+168	0	1	210706E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 70
+169	0	1	212290E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 71
+170	0	1	216602E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 72
+171	0	1	219394E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 73
+172	0	1	221644E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 74
+173	0	1	225727E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 75
+174	0	1	227352E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 76
+175	0	1	231018E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 77
+176	0	1	233227E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 78
+177	0	1	236560E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 79
+178	0	1	239519E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 80
+179	0	1	243415E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 81
+180	0	1	244664E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 82
+181	0	1	249039E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 83
+182	0	1	251456E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 84
+183	0	1	254852E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 85
+184	0	1	257498E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 86
+185	0	1	261519E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 87
+186	0	1	263081E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 88
+187	0	1	267164E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 89
+188	0	1	269206E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 90
+189	0	1	271956E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 91
+190	0	1	274769E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 92
+191	0	1	279039E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 93
+192	0	1	280498E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 94
+193	0	1	284060E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 95
+194	0	1	286810E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 96
+195	0	1	289997E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 97
+196	0	1	293268E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 98
+197	0	1	296769E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 99
+198	0	1	299268E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = combwc PRBs= 100
+199	0	1	302497E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 1
+200	0	1	2750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 2
+201	0	1	3292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 3
+202	0	1	3875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 4
+203	0	1	4375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 5
+204	0	1	4875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 6
+205	0	1	5500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 7
+206	0	1	6000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 8
+207	0	1	6542E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 9
+208	0	1	7083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 10
+209	0	1	7625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 11
+210	0	1	8167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 12
+211	0	1	8708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 13
+212	0	1	9208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 14
+213	0	1	9750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 15
+214	0	1	10333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 16
+215	0	1	10792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 17
+216	0	1	11375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 18
+217	0	1	11875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 19
+218	0	1	12458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 20
+219	0	1	13042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 21
+220	0	1	13500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 22
+221	0	1	14250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 23
+222	0	1	14625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 24
+223	0	1	15250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 25
+224	0	1	15708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 26
+225	0	1	16167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 27
+226	0	1	16750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 28
+227	0	1	17250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 29
+228	0	1	17834E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 30
+229	0	1	18417E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 31
+230	0	1	18958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 32
+231	0	1	19459E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 33
+232	0	1	20083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 34
+233	0	1	20625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 35
+234	0	1	21209E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 36
+235	0	1	21708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 37
+236	0	1	22167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 38
+237	0	1	22750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 39
+238	0	1	23333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 40
+239	0	1	23875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 41
+240	0	1	24458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 42
+241	0	1	24917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 43
+242	0	1	25625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 44
+243	0	1	26083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 45
+244	0	1	26708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 46
+245	0	1	27208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 47
+246	0	1	27541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 48
+247	0	1	28166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 49
+248	0	1	28750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 50
+249	0	1	29625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 51
+250	0	1	29875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 52
+251	0	1	30250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 53
+252	0	1	30833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 54
+253	0	1	32042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 55
+254	0	1	32125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 56
+255	0	1	32583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 57
+256	0	1	33375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 58
+257	0	1	33625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 59
+258	0	1	34125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 60
+259	0	1	34667E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 61
+260	0	1	35167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 62
+261	0	1	35750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 63
+262	0	1	36416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 64
+263	0	1	37208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 65
+264	0	1	38334E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 66
+265	0	1	38500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 67
+266	0	1	38833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 68
+267	0	1	39833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 69
+268	0	1	40417E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 70
+269	0	1	40250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 71
+270	0	1	40667E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 72
+271	0	1	41500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 73
+272	0	1	41833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 74
+273	0	1	42541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 75
+274	0	1	43167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 76
+275	0	1	43833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 77
+276	0	1	44291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 78
+277	0	1	44791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 79
+278	0	1	45416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 80
+279	0	1	46333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 81
+280	0	1	46833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 82
+281	0	1	47250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 83
+282	0	1	47666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 84
+283	0	1	47667E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 85
+284	0	1	49500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 86
+285	0	1	49583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 87
+286	0	1	50167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 88
+287	0	1	50250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 89
+288	0	1	50833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 90
+289	0	1	51375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 91
+290	0	1	52292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 92
+291	0	1	52625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 93
+292	0	1	52875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 94
+293	0	1	53833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 95
+294	0	1	54333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 96
+295	0	1	54542E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 97
+296	0	1	55667E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 98
+297	0	1	55916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 99
+298	0	1	56416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = antcomb PRBs= 100
+299	0	1	56833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 1 Mod_scheme=PSK
+300	0	1	1208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 2 Mod_scheme=PSK
+301	0	1	1250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 3 Mod_scheme=PSK
+302	0	1	1250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 4 Mod_scheme=PSK
+303	0	1	1292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 5 Mod_scheme=PSK
+304	0	1	1334E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 6 Mod_scheme=PSK
+305	0	1	1375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 7 Mod_scheme=PSK
+306	0	1	1417E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 8 Mod_scheme=PSK
+307	0	1	1458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 9 Mod_scheme=PSK
+308	0	1	1500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 10 Mod_scheme=PSK
+309	0	1	1542E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 11 Mod_scheme=PSK
+310	0	1	1583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 12 Mod_scheme=PSK
+311	0	1	1666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 13 Mod_scheme=PSK
+312	0	1	1667E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 14 Mod_scheme=PSK
+313	0	1	1709E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 15 Mod_scheme=PSK
+314	0	1	1750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 16 Mod_scheme=PSK
+315	0	1	1792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 17 Mod_scheme=PSK
+316	0	1	1833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 18 Mod_scheme=PSK
+317	0	1	1875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 19 Mod_scheme=PSK
+318	0	1	1917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 20 Mod_scheme=PSK
+319	0	1	1958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 21 Mod_scheme=PSK
+320	0	1	2000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 22 Mod_scheme=PSK
+321	0	1	2042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 23 Mod_scheme=PSK
+322	0	1	2083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 24 Mod_scheme=PSK
+323	0	1	2125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 25 Mod_scheme=PSK
+324	0	1	2167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 26 Mod_scheme=PSK
+325	0	1	2208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 27 Mod_scheme=PSK
+326	0	1	2250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 28 Mod_scheme=PSK
+327	0	1	2250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 29 Mod_scheme=PSK
+328	0	1	2333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 30 Mod_scheme=PSK
+329	0	1	2375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 31 Mod_scheme=PSK
+330	0	1	2375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 32 Mod_scheme=PSK
+331	0	1	2375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 33 Mod_scheme=PSK
+332	0	1	2458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 34 Mod_scheme=PSK
+333	0	1	2500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 35 Mod_scheme=PSK
+334	0	1	2542E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 36 Mod_scheme=PSK
+335	0	1	2583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 37 Mod_scheme=PSK
+336	0	1	2625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 38 Mod_scheme=PSK
+337	0	1	2583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 39 Mod_scheme=PSK
+338	0	1	2625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 40 Mod_scheme=PSK
+339	0	1	2750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 41 Mod_scheme=PSK
+340	0	1	2791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 42 Mod_scheme=PSK
+341	0	1	2833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 43 Mod_scheme=PSK
+342	0	1	2792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 44 Mod_scheme=PSK
+343	0	1	2875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 45 Mod_scheme=PSK
+344	0	1	2917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 46 Mod_scheme=PSK
+345	0	1	2959E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 47 Mod_scheme=PSK
+346	0	1	2875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 48 Mod_scheme=PSK
+347	0	1	3000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 49 Mod_scheme=PSK
+348	0	1	3084E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 50 Mod_scheme=PSK
+349	0	1	3125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 51 Mod_scheme=PSK
+350	0	1	3042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 52 Mod_scheme=PSK
+351	0	1	3083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 53 Mod_scheme=PSK
+352	0	1	3291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 54 Mod_scheme=PSK
+353	0	1	3292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 55 Mod_scheme=PSK
+354	0	1	3250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 56 Mod_scheme=PSK
+355	0	1	3208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 57 Mod_scheme=PSK
+356	0	1	3375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 58 Mod_scheme=PSK
+357	0	1	3375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 59 Mod_scheme=PSK
+358	0	1	3499E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 60 Mod_scheme=PSK
+359	0	1	3375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 61 Mod_scheme=PSK
+360	0	1	3541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 62 Mod_scheme=PSK
+361	0	1	3625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 63 Mod_scheme=PSK
+362	0	1	3666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 64 Mod_scheme=PSK
+363	0	1	3708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 65 Mod_scheme=PSK
+364	0	1	3625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 66 Mod_scheme=PSK
+365	0	1	3750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 67 Mod_scheme=PSK
+366	0	1	3833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 68 Mod_scheme=PSK
+367	0	1	3917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 69 Mod_scheme=PSK
+368	0	1	3792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 70 Mod_scheme=PSK
+369	0	1	3750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 71 Mod_scheme=PSK
+370	0	1	3917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 72 Mod_scheme=PSK
+371	0	1	4000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 73 Mod_scheme=PSK
+372	0	1	3875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 74 Mod_scheme=PSK
+373	0	1	4125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 75 Mod_scheme=PSK
+374	0	1	3958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 76 Mod_scheme=PSK
+375	0	1	4125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 77 Mod_scheme=PSK
+376	0	1	4208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 78 Mod_scheme=PSK
+377	0	1	4167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 79 Mod_scheme=PSK
+378	0	1	4292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 80 Mod_scheme=PSK
+379	0	1	4042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 81 Mod_scheme=PSK
+380	0	1	4333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 82 Mod_scheme=PSK
+381	0	1	4458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 83 Mod_scheme=PSK
+382	0	1	4458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 84 Mod_scheme=PSK
+383	0	1	4500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 85 Mod_scheme=PSK
+384	0	1	4500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 86 Mod_scheme=PSK
+385	0	1	4625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 87 Mod_scheme=PSK
+386	0	1	4500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 88 Mod_scheme=PSK
+387	0	1	4584E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 89 Mod_scheme=PSK
+388	0	1	4500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 90 Mod_scheme=PSK
+389	0	1	4583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 91 Mod_scheme=PSK
+390	0	1	4666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 92 Mod_scheme=PSK
+391	0	1	4917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 93 Mod_scheme=PSK
+392	0	1	4584E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 94 Mod_scheme=PSK
+393	0	1	4875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 95 Mod_scheme=PSK
+394	0	1	4917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 96 Mod_scheme=PSK
+395	0	1	5000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 97 Mod_scheme=PSK
+396	0	1	5000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 98 Mod_scheme=PSK
+397	0	1	5041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 99 Mod_scheme=PSK
+398	0	1	5125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 100 Mod_scheme=PSK
+399	0	1	4917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 1 Mod_scheme=QPSK
+400	0	1	1500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 2 Mod_scheme=QPSK
+401	0	1	1834E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 3 Mod_scheme=QPSK
+402	0	1	2208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 4 Mod_scheme=QPSK
+403	0	1	2542E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 5 Mod_scheme=QPSK
+404	0	1	2875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 6 Mod_scheme=QPSK
+405	0	1	3250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 7 Mod_scheme=QPSK
+406	0	1	3583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 8 Mod_scheme=QPSK
+407	0	1	3917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 9 Mod_scheme=QPSK
+408	0	1	4291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 10 Mod_scheme=QPSK
+409	0	1	4625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 11 Mod_scheme=QPSK
+410	0	1	4959E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 12 Mod_scheme=QPSK
+411	0	1	5333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 13 Mod_scheme=QPSK
+412	0	1	5667E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 14 Mod_scheme=QPSK
+413	0	1	6000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 15 Mod_scheme=QPSK
+414	0	1	6375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 16 Mod_scheme=QPSK
+415	0	1	6708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 17 Mod_scheme=QPSK
+416	0	1	7083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 18 Mod_scheme=QPSK
+417	0	1	7375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 19 Mod_scheme=QPSK
+418	0	1	7750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 20 Mod_scheme=QPSK
+419	0	1	8042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 21 Mod_scheme=QPSK
+420	0	1	8458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 22 Mod_scheme=QPSK
+421	0	1	8792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 23 Mod_scheme=QPSK
+422	0	1	9125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 24 Mod_scheme=QPSK
+423	0	1	9500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 25 Mod_scheme=QPSK
+424	0	1	9833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 26 Mod_scheme=QPSK
+425	0	1	10167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 27 Mod_scheme=QPSK
+426	0	1	10500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 28 Mod_scheme=QPSK
+427	0	1	10875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 29 Mod_scheme=QPSK
+428	0	1	11208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 30 Mod_scheme=QPSK
+429	0	1	11583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 31 Mod_scheme=QPSK
+430	0	1	11875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 32 Mod_scheme=QPSK
+431	0	1	12125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 33 Mod_scheme=QPSK
+432	0	1	12375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 34 Mod_scheme=QPSK
+433	0	1	13000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 35 Mod_scheme=QPSK
+434	0	1	13292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 36 Mod_scheme=QPSK
+435	0	1	13542E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 37 Mod_scheme=QPSK
+436	0	1	13958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 38 Mod_scheme=QPSK
+437	0	1	14333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 39 Mod_scheme=QPSK
+438	0	1	14542E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 40 Mod_scheme=QPSK
+439	0	1	15041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 41 Mod_scheme=QPSK
+440	0	1	15416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 42 Mod_scheme=QPSK
+441	0	1	15749E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 43 Mod_scheme=QPSK
+442	0	1	16083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 44 Mod_scheme=QPSK
+443	0	1	16250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 45 Mod_scheme=QPSK
+444	0	1	16791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 46 Mod_scheme=QPSK
+445	0	1	16792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 47 Mod_scheme=QPSK
+446	0	1	17209E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 48 Mod_scheme=QPSK
+447	0	1	17708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 49 Mod_scheme=QPSK
+448	0	1	18167E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 50 Mod_scheme=QPSK
+449	0	1	18584E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 51 Mod_scheme=QPSK
+450	0	1	18875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 52 Mod_scheme=QPSK
+451	0	1	19208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 53 Mod_scheme=QPSK
+452	0	1	19625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 54 Mod_scheme=QPSK
+453	0	1	19916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 55 Mod_scheme=QPSK
+454	0	1	20292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 56 Mod_scheme=QPSK
+455	0	1	20500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 57 Mod_scheme=QPSK
+456	0	1	20958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 58 Mod_scheme=QPSK
+457	0	1	21291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 59 Mod_scheme=QPSK
+458	0	1	21667E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 60 Mod_scheme=QPSK
+459	0	1	21958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 61 Mod_scheme=QPSK
+460	0	1	22208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 62 Mod_scheme=QPSK
+461	0	1	22250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 63 Mod_scheme=QPSK
+462	0	1	22958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 64 Mod_scheme=QPSK
+463	0	1	23333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 65 Mod_scheme=QPSK
+464	0	1	23583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 66 Mod_scheme=QPSK
+465	0	1	24083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 67 Mod_scheme=QPSK
+466	0	1	24291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 68 Mod_scheme=QPSK
+467	0	1	24750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 69 Mod_scheme=QPSK
+468	0	1	25083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 70 Mod_scheme=QPSK
+469	0	1	25458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 71 Mod_scheme=QPSK
+470	0	1	25875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 72 Mod_scheme=QPSK
+471	0	1	26208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 73 Mod_scheme=QPSK
+472	0	1	26208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 74 Mod_scheme=QPSK
+473	0	1	26208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 75 Mod_scheme=QPSK
+474	0	1	26667E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 76 Mod_scheme=QPSK
+475	0	1	27041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 77 Mod_scheme=QPSK
+476	0	1	27624E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 78 Mod_scheme=QPSK
+477	0	1	28208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 79 Mod_scheme=QPSK
+478	0	1	27792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 80 Mod_scheme=QPSK
+479	0	1	28624E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 81 Mod_scheme=QPSK
+480	0	1	29333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 82 Mod_scheme=QPSK
+481	0	1	29625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 83 Mod_scheme=QPSK
+482	0	1	30084E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 84 Mod_scheme=QPSK
+483	0	1	30249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 85 Mod_scheme=QPSK
+484	0	1	30292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 86 Mod_scheme=QPSK
+485	0	1	30666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 87 Mod_scheme=QPSK
+486	0	1	30917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 88 Mod_scheme=QPSK
+487	0	1	31416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 89 Mod_scheme=QPSK
+488	0	1	32125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 90 Mod_scheme=QPSK
+489	0	1	32458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 91 Mod_scheme=QPSK
+490	0	1	32750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 92 Mod_scheme=QPSK
+491	0	1	32958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 93 Mod_scheme=QPSK
+492	0	1	33375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 94 Mod_scheme=QPSK
+493	0	1	33875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 95 Mod_scheme=QPSK
+494	0	1	34041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 96 Mod_scheme=QPSK
+495	0	1	34583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 97 Mod_scheme=QPSK
+496	0	1	34708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 98 Mod_scheme=QPSK
+497	0	1	35041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 99 Mod_scheme=QPSK
+498	0	1	35458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 100 Mod_scheme=QPSK
+499	0	1	35874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 1 Mod_scheme=16QAM
+500	0	1	2375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 2 Mod_scheme=16QAM
+501	0	1	3584E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 3 Mod_scheme=16QAM
+502	0	1	4833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 4 Mod_scheme=16QAM
+503	0	1	6042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 5 Mod_scheme=16QAM
+504	0	1	7291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 6 Mod_scheme=16QAM
+505	0	1	8500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 7 Mod_scheme=16QAM
+506	0	1	9750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 8 Mod_scheme=16QAM
+507	0	1	10958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 9 Mod_scheme=16QAM
+508	0	1	12208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 10 Mod_scheme=16QAM
+509	0	1	13417E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 11 Mod_scheme=16QAM
+510	0	1	14666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 12 Mod_scheme=16QAM
+511	0	1	15875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 13 Mod_scheme=16QAM
+512	0	1	17125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 14 Mod_scheme=16QAM
+513	0	1	18333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 15 Mod_scheme=16QAM
+514	0	1	19583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 16 Mod_scheme=16QAM
+515	0	1	20791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 17 Mod_scheme=16QAM
+516	0	1	22041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 18 Mod_scheme=16QAM
+517	0	1	23250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 19 Mod_scheme=16QAM
+518	0	1	24458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 20 Mod_scheme=16QAM
+519	0	1	25667E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 21 Mod_scheme=16QAM
+520	0	1	27000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 22 Mod_scheme=16QAM
+521	0	1	28166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 23 Mod_scheme=16QAM
+522	0	1	29375E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 24 Mod_scheme=16QAM
+523	0	1	30625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 25 Mod_scheme=16QAM
+524	0	1	31833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 26 Mod_scheme=16QAM
+525	0	1	33083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 27 Mod_scheme=16QAM
+526	0	1	34291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 28 Mod_scheme=16QAM
+527	0	1	35625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 29 Mod_scheme=16QAM
+528	0	1	36750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 30 Mod_scheme=16QAM
+529	0	1	38041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 31 Mod_scheme=16QAM
+530	0	1	39208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 32 Mod_scheme=16QAM
+531	0	1	40458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 33 Mod_scheme=16QAM
+532	0	1	41750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 34 Mod_scheme=16QAM
+533	0	1	42917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 35 Mod_scheme=16QAM
+534	0	1	44125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 36 Mod_scheme=16QAM
+535	0	1	45333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 37 Mod_scheme=16QAM
+536	0	1	46791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 38 Mod_scheme=16QAM
+537	0	1	47833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 39 Mod_scheme=16QAM
+538	0	1	49041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 40 Mod_scheme=16QAM
+539	0	1	50250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 41 Mod_scheme=16QAM
+540	0	1	51791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 42 Mod_scheme=16QAM
+541	0	1	52958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 43 Mod_scheme=16QAM
+542	0	1	53958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 44 Mod_scheme=16QAM
+543	0	1	55166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 45 Mod_scheme=16QAM
+544	0	1	56458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 46 Mod_scheme=16QAM
+545	0	1	57791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 47 Mod_scheme=16QAM
+546	0	1	58958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 48 Mod_scheme=16QAM
+547	0	1	60292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 49 Mod_scheme=16QAM
+548	0	1	61458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 50 Mod_scheme=16QAM
+549	0	1	62666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 51 Mod_scheme=16QAM
+550	0	1	63833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 52 Mod_scheme=16QAM
+551	0	1	65541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 53 Mod_scheme=16QAM
+552	0	1	66291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 54 Mod_scheme=16QAM
+553	0	1	67500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 55 Mod_scheme=16QAM
+554	0	1	69208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 56 Mod_scheme=16QAM
+555	0	1	70166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 57 Mod_scheme=16QAM
+556	0	1	71416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 58 Mod_scheme=16QAM
+557	0	1	72333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 59 Mod_scheme=16QAM
+558	0	1	73874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 60 Mod_scheme=16QAM
+559	0	1	74791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 61 Mod_scheme=16QAM
+560	0	1	76249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 62 Mod_scheme=16QAM
+561	0	1	77874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 63 Mod_scheme=16QAM
+562	0	1	79124E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 64 Mod_scheme=16QAM
+563	0	1	79791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 65 Mod_scheme=16QAM
+564	0	1	81124E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 66 Mod_scheme=16QAM
+565	0	1	82791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 67 Mod_scheme=16QAM
+566	0	1	83583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 68 Mod_scheme=16QAM
+567	0	1	85249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 69 Mod_scheme=16QAM
+568	0	1	86041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 70 Mod_scheme=16QAM
+569	0	1	87208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 71 Mod_scheme=16QAM
+570	0	1	88916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 72 Mod_scheme=16QAM
+571	0	1	89874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 73 Mod_scheme=16QAM
+572	0	1	90958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 74 Mod_scheme=16QAM
+573	0	1	92249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 75 Mod_scheme=16QAM
+574	0	1	93374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 76 Mod_scheme=16QAM
+575	0	1	94874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 77 Mod_scheme=16QAM
+576	0	1	96374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 78 Mod_scheme=16QAM
+577	0	1	97416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 79 Mod_scheme=16QAM
+578	0	1	98250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 80 Mod_scheme=16QAM
+579	0	1	99708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 81 Mod_scheme=16QAM
+580	0	1	101541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 82 Mod_scheme=16QAM
+581	0	1	101999E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 83 Mod_scheme=16QAM
+582	0	1	103666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 84 Mod_scheme=16QAM
+583	0	1	104791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 85 Mod_scheme=16QAM
+584	0	1	106915E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 86 Mod_scheme=16QAM
+585	0	1	106957E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 87 Mod_scheme=16QAM
+586	0	1	109082E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 88 Mod_scheme=16QAM
+587	0	1	109916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 89 Mod_scheme=16QAM
+588	0	1	111207E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 90 Mod_scheme=16QAM
+589	0	1	112124E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 91 Mod_scheme=16QAM
+590	0	1	113916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 92 Mod_scheme=16QAM
+591	0	1	114208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 93 Mod_scheme=16QAM
+592	0	1	116374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 94 Mod_scheme=16QAM
+593	0	1	116874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 95 Mod_scheme=16QAM
+594	0	1	118624E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 96 Mod_scheme=16QAM
+595	0	1	120541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 97 Mod_scheme=16QAM
+596	0	1	120957E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 98 Mod_scheme=16QAM
+597	0	1	121999E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 99 Mod_scheme=16QAM
+598	0	1	123374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 100 Mod_scheme=16QAM
+599	0	1	125499E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 1 Mod_scheme=64QAM
+600	0	1	2709E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 2 Mod_scheme=64QAM
+601	0	1	4292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 3 Mod_scheme=64QAM
+602	0	1	5834E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 4 Mod_scheme=64QAM
+603	0	1	7416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 5 Mod_scheme=64QAM
+604	0	1	8958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 6 Mod_scheme=64QAM
+605	0	1	10541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 7 Mod_scheme=64QAM
+606	0	1	12083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 8 Mod_scheme=64QAM
+607	0	1	13666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 9 Mod_scheme=64QAM
+608	0	1	15208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 10 Mod_scheme=64QAM
+609	0	1	16750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 11 Mod_scheme=64QAM
+610	0	1	18333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 12 Mod_scheme=64QAM
+611	0	1	19875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 13 Mod_scheme=64QAM
+612	0	1	21541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 14 Mod_scheme=64QAM
+613	0	1	23041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 15 Mod_scheme=64QAM
+614	0	1	24583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 16 Mod_scheme=64QAM
+615	0	1	26125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 17 Mod_scheme=64QAM
+616	0	1	27708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 18 Mod_scheme=64QAM
+617	0	1	29250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 19 Mod_scheme=64QAM
+618	0	1	30916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 20 Mod_scheme=64QAM
+619	0	1	32458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 21 Mod_scheme=64QAM
+620	0	1	34000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 22 Mod_scheme=64QAM
+621	0	1	35583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 23 Mod_scheme=64QAM
+622	0	1	37166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 24 Mod_scheme=64QAM
+623	0	1	38666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 25 Mod_scheme=64QAM
+624	0	1	40292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 26 Mod_scheme=64QAM
+625	0	1	41958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 27 Mod_scheme=64QAM
+626	0	1	43416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 28 Mod_scheme=64QAM
+627	0	1	44875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 29 Mod_scheme=64QAM
+628	0	1	46417E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 30 Mod_scheme=64QAM
+629	0	1	48000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 31 Mod_scheme=64QAM
+630	0	1	49624E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 32 Mod_scheme=64QAM
+631	0	1	51125E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 33 Mod_scheme=64QAM
+632	0	1	52874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 34 Mod_scheme=64QAM
+633	0	1	54250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 35 Mod_scheme=64QAM
+634	0	1	56000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 36 Mod_scheme=64QAM
+635	0	1	57458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 37 Mod_scheme=64QAM
+636	0	1	59333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 38 Mod_scheme=64QAM
+637	0	1	60541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 39 Mod_scheme=64QAM
+638	0	1	62041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 40 Mod_scheme=64QAM
+639	0	1	63625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 41 Mod_scheme=64QAM
+640	0	1	65666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 42 Mod_scheme=64QAM
+641	0	1	66708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 43 Mod_scheme=64QAM
+642	0	1	68624E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 44 Mod_scheme=64QAM
+643	0	1	69916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 45 Mod_scheme=64QAM
+644	0	1	71875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 46 Mod_scheme=64QAM
+645	0	1	73333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 47 Mod_scheme=64QAM
+646	0	1	75208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 48 Mod_scheme=64QAM
+647	0	1	76124E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 49 Mod_scheme=64QAM
+648	0	1	78041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 50 Mod_scheme=64QAM
+649	0	1	79249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 51 Mod_scheme=64QAM
+650	0	1	80958E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 52 Mod_scheme=64QAM
+651	0	1	82624E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 53 Mod_scheme=64QAM
+652	0	1	84083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 54 Mod_scheme=64QAM
+653	0	1	85666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 55 Mod_scheme=64QAM
+654	0	1	87707E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 56 Mod_scheme=64QAM
+655	0	1	88874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 57 Mod_scheme=64QAM
+656	0	1	90249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 58 Mod_scheme=64QAM
+657	0	1	92541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 59 Mod_scheme=64QAM
+658	0	1	93458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 60 Mod_scheme=64QAM
+659	0	1	95874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 61 Mod_scheme=64QAM
+660	0	1	96665E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 62 Mod_scheme=64QAM
+661	0	1	98624E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 63 Mod_scheme=64QAM
+662	0	1	100333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 64 Mod_scheme=64QAM
+663	0	1	101832E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 65 Mod_scheme=64QAM
+664	0	1	102916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 66 Mod_scheme=64QAM
+665	0	1	104499E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 67 Mod_scheme=64QAM
+666	0	1	105999E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 68 Mod_scheme=64QAM
+667	0	1	107583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 69 Mod_scheme=64QAM
+668	0	1	109624E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 70 Mod_scheme=64QAM
+669	0	1	110832E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 71 Mod_scheme=64QAM
+670	0	1	111999E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 72 Mod_scheme=64QAM
+671	0	1	114291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 73 Mod_scheme=64QAM
+672	0	1	115707E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 74 Mod_scheme=64QAM
+673	0	1	117166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 75 Mod_scheme=64QAM
+674	0	1	119249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 76 Mod_scheme=64QAM
+675	0	1	120791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 77 Mod_scheme=64QAM
+676	0	1	121624E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 78 Mod_scheme=64QAM
+677	0	1	123916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 79 Mod_scheme=64QAM
+678	0	1	125249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 80 Mod_scheme=64QAM
+679	0	1	126249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 81 Mod_scheme=64QAM
+680	0	1	128457E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 82 Mod_scheme=64QAM
+681	0	1	130165E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 83 Mod_scheme=64QAM
+682	0	1	131124E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 84 Mod_scheme=64QAM
+683	0	1	133248E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 85 Mod_scheme=64QAM
+684	0	1	134999E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 86 Mod_scheme=64QAM
+685	0	1	136666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 87 Mod_scheme=64QAM
+686	0	1	137249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 88 Mod_scheme=64QAM
+687	0	1	139832E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 89 Mod_scheme=64QAM
+688	0	1	140749E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 90 Mod_scheme=64QAM
+689	0	1	141957E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 91 Mod_scheme=64QAM
+690	0	1	144332E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 92 Mod_scheme=64QAM
+691	0	1	146248E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 93 Mod_scheme=64QAM
+692	0	1	147457E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 94 Mod_scheme=64QAM
+693	0	1	149040E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 95 Mod_scheme=64QAM
+694	0	1	150166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 96 Mod_scheme=64QAM
+695	0	1	152249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 97 Mod_scheme=64QAM
+696	0	1	154040E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 98 Mod_scheme=64QAM
+697	0	1	155082E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 99 Mod_scheme=64QAM
+698	0	1	156498E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 100 Mod_scheme=64QAM
+699	0	1	158624E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 1 Mod_scheme=256QAM
+700	0	1	3000E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 2 Mod_scheme=256QAM
+701	0	1	4833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 3 Mod_scheme=256QAM
+702	0	1	6667E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 4 Mod_scheme=256QAM
+703	0	1	8500E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 5 Mod_scheme=256QAM
+704	0	1	10334E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 6 Mod_scheme=256QAM
+705	0	1	12209E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 7 Mod_scheme=256QAM
+706	0	1	14042E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 8 Mod_scheme=256QAM
+707	0	1	15875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 9 Mod_scheme=256QAM
+708	0	1	17750E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 10 Mod_scheme=256QAM
+709	0	1	19542E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 11 Mod_scheme=256QAM
+710	0	1	21416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 12 Mod_scheme=256QAM
+711	0	1	23250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 13 Mod_scheme=256QAM
+712	0	1	25083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 14 Mod_scheme=256QAM
+713	0	1	26917E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 15 Mod_scheme=256QAM
+714	0	1	28791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 16 Mod_scheme=256QAM
+715	0	1	30583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 17 Mod_scheme=256QAM
+716	0	1	32541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 18 Mod_scheme=256QAM
+717	0	1	34292E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 19 Mod_scheme=256QAM
+718	0	1	36166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 20 Mod_scheme=256QAM
+719	0	1	37999E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 21 Mod_scheme=256QAM
+720	0	1	39792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 22 Mod_scheme=256QAM
+721	0	1	41792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 23 Mod_scheme=256QAM
+722	0	1	43583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 24 Mod_scheme=256QAM
+723	0	1	45374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 25 Mod_scheme=256QAM
+724	0	1	47166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 26 Mod_scheme=256QAM
+725	0	1	49083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 27 Mod_scheme=256QAM
+726	0	1	50875E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 28 Mod_scheme=256QAM
+727	0	1	52833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 29 Mod_scheme=256QAM
+728	0	1	54583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 30 Mod_scheme=256QAM
+729	0	1	56458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 31 Mod_scheme=256QAM
+730	0	1	58250E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 32 Mod_scheme=256QAM
+731	0	1	60374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 33 Mod_scheme=256QAM
+732	0	1	62208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 34 Mod_scheme=256QAM
+733	0	1	63792E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 35 Mod_scheme=256QAM
+734	0	1	65625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 36 Mod_scheme=256QAM
+735	0	1	67458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 37 Mod_scheme=256QAM
+736	0	1	69333E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 38 Mod_scheme=256QAM
+737	0	1	71083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 39 Mod_scheme=256QAM
+738	0	1	73041E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 40 Mod_scheme=256QAM
+739	0	1	74833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 41 Mod_scheme=256QAM
+740	0	1	76791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 42 Mod_scheme=256QAM
+741	0	1	79166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 43 Mod_scheme=256QAM
+742	0	1	80582E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 44 Mod_scheme=256QAM
+743	0	1	82833E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 45 Mod_scheme=256QAM
+744	0	1	84957E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 46 Mod_scheme=256QAM
+745	0	1	85999E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 47 Mod_scheme=256QAM
+746	0	1	87708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 48 Mod_scheme=256QAM
+747	0	1	89583E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 49 Mod_scheme=256QAM
+748	0	1	91374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 50 Mod_scheme=256QAM
+749	0	1	93749E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 51 Mod_scheme=256QAM
+750	0	1	95666E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 52 Mod_scheme=256QAM
+751	0	1	97625E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 53 Mod_scheme=256QAM
+752	0	1	99874E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 54 Mod_scheme=256QAM
+753	0	1	101416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 55 Mod_scheme=256QAM
+754	0	1	102708E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 56 Mod_scheme=256QAM
+755	0	1	105416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 57 Mod_scheme=256QAM
+756	0	1	107083E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 58 Mod_scheme=256QAM
+757	0	1	108415E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 59 Mod_scheme=256QAM
+758	0	1	110124E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 60 Mod_scheme=256QAM
+759	0	1	112416E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 61 Mod_scheme=256QAM
+760	0	1	113832E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 62 Mod_scheme=256QAM
+761	0	1	115541E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 63 Mod_scheme=256QAM
+762	0	1	118208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 64 Mod_scheme=256QAM
+763	0	1	119916E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 65 Mod_scheme=256QAM
+764	0	1	121166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 66 Mod_scheme=256QAM
+765	0	1	123915E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 67 Mod_scheme=256QAM
+766	0	1	125249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 68 Mod_scheme=256QAM
+767	0	1	127457E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 69 Mod_scheme=256QAM
+768	0	1	129499E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 70 Mod_scheme=256QAM
+769	0	1	130499E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 71 Mod_scheme=256QAM
+770	0	1	132291E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 72 Mod_scheme=256QAM
+771	0	1	134374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 73 Mod_scheme=256QAM
+772	0	1	135707E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 74 Mod_scheme=256QAM
+773	0	1	138374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 75 Mod_scheme=256QAM
+774	0	1	140624E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 76 Mod_scheme=256QAM
+775	0	1	142374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 77 Mod_scheme=256QAM
+776	0	1	144166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 78 Mod_scheme=256QAM
+777	0	1	145791E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 79 Mod_scheme=256QAM
+778	0	1	147999E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 80 Mod_scheme=256QAM
+779	0	1	150124E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 81 Mod_scheme=256QAM
+780	0	1	151040E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 82 Mod_scheme=256QAM
+781	0	1	152498E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 83 Mod_scheme=256QAM
+782	0	1	154373E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 84 Mod_scheme=256QAM
+783	0	1	157040E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 85 Mod_scheme=256QAM
+784	0	1	159332E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 86 Mod_scheme=256QAM
+785	0	1	160332E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 87 Mod_scheme=256QAM
+786	0	1	163207E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 88 Mod_scheme=256QAM
+787	0	1	164374E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 89 Mod_scheme=256QAM
+788	0	1	166082E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 90 Mod_scheme=256QAM
+789	0	1	168082E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 91 Mod_scheme=256QAM
+790	0	1	170166E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 92 Mod_scheme=256QAM
+791	0	1	172458E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 93 Mod_scheme=256QAM
+792	0	1	174082E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 94 Mod_scheme=256QAM
+793	0	1	175999E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 95 Mod_scheme=256QAM
+794	0	1	177208E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 96 Mod_scheme=256QAM
+795	0	1	179707E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 97 Mod_scheme=256QAM
+796	0	1	181332E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 98 Mod_scheme=256QAM
+797	0	1	183249E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 99 Mod_scheme=256QAM
+798	0	1	185457E-09	150E-6       6.9e+04   1.6
+# PHYBench kernel = demap PRBs= 100 Mod_scheme=256QAM
+799	0	1	186582E-09	150E-6       6.9e+04   1.6
+}
+
+
