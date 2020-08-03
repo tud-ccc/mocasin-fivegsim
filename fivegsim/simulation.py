@@ -27,7 +27,7 @@ class params(object):
     trace_file_path = "/Users/julian.robledo/Documents/pykpn/fivegsim/fivegsim/useful_files/"
     trace_file_name = "slicedtrace30BS.txt"
     TFM = TraceFileManager(trace_file_name, trace_file_path)
-    nsubframe = TraceFileManager.Subframe(0)
+    nsubframe = TraceFileManager.Subframe()
 
     # Get task execution time info
     tgff_proc_path = "/Users/julian.robledo/Documents/pykpn/fivegsim/fivegsim/useful_files/"
@@ -613,46 +613,51 @@ class FiveGSimulation(BaseSimulation):
         return FiveGSimulation(platform)
 
     def _manager_process(self):
-        # get subframe
-        params.nsubframe = params.TFM.get_next_subframe()
-
         app_finished = []
-        # run 10 instances of the dummy app, start one every 5 ms
-        for i in range(len(params.nsubframe.trace)):
-            # create a new graph and trace
-            #kpn = DummyGraph()
-            #trace = DummyTraceGenerator()
+        
+        i = 0
+        # while end of file not reached:
+        while params.TFM.TF_EOF is not True:
             
-            ntrace = params.nsubframe.trace[i]
+            params.nsubframe = params.TFM.get_next_subframe()
             
-            params.micf = PHY.get_num_micf( ntrace.layers)
-            params.combwc = PHY.get_num_combwc()
-            params.antcomb = PHY.get_num_antcomb(ntrace.layers)
-            params.demap = PHY.get_num_demap()
-
-            kpn = FivegGraph()
-            trace = FivegTraceGenerator()
-
-            # create a new mapper (this should be TETRiS in the future) Note
-            # that we need to create a new mapper here, as the KPN could change
-            # This appears to be a weakness of our mapper interface. The KPN
-            # should probably become a parameter of generate_mapping().
-            cfg = {'random_seed': None}
-            mapper = RandomMapper(kpn, self.platform, cfg)
-            # create a new mapping
-            mapping = mapper.generate_mapping()
-            # instantiate the application
-            app = RuntimeKpnApplication(name=f"dummy{i}",
-                                        kpn_graph=kpn,
-                                        mapping=mapping,
-                                        trace_generator=trace,
-                                        system=self.system)
-            # start the application
-            finished = self.env.process(app.run())
-            app_finished.append(finished)
-            # wait for 5 ms
-            yield self.env.timeout(5000000000)
-
+            # run 100 instances of the 5G app, start one every 1 ms
+            for ntrace in params.nsubframe.trace:
+                # create a new graph and trace
+                #kpn = DummyGraph()
+                #trace = DummyTraceGenerator()
+                
+                params.micf = PHY.get_num_micf( ntrace.layers)
+                params.combwc = PHY.get_num_combwc()
+                params.antcomb = PHY.get_num_antcomb(ntrace.layers)
+                params.demap = PHY.get_num_demap()
+    
+                kpn = FivegGraph()
+                trace = FivegTraceGenerator()
+    
+                # create a new mapper (this should be TETRiS in the future) Note
+                # that we need to create a new mapper here, as the KPN could change
+                # This appears to be a weakness of our mapper interface. The KPN
+                # should probably become a parameter of generate_mapping().
+                cfg = {'random_seed': None}
+                mapper = RandomMapper(kpn, self.platform, cfg)
+                # create a new mapping
+                mapping = mapper.generate_mapping()
+                # instantiate the application
+                app = RuntimeKpnApplication(name=f"dummy{i}",
+                                            kpn_graph=kpn,
+                                            mapping=mapping,
+                                            trace_generator=trace,
+                                            system=self.system)
+                # start the application
+                finished = self.env.process(app.run())
+                app_finished.append(finished)
+                
+                i += 1
+                
+            # wait for 1 ms
+            yield self.env.timeout(1000000000)
+    
         # wait until all applications finished
         yield self.env.all_of(app_finished)
 
