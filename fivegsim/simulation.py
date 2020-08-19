@@ -545,7 +545,7 @@ class FiveGSimulation(BaseSimulation):
         # wait until all applications finished
         yield self.env.all_of(app_finished)
 
-    def run(self):
+    def _run(self):
         """Run the simulation.
 
         May only be called once. Updates the :attr:`exec_time` attribute.
