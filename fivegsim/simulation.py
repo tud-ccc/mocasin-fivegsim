@@ -497,8 +497,10 @@ class FiveGSimulation(BaseSimulation):
         return FiveGSimulation(platform)
 
     def _manager_process(self):
+        trace_writer = self.system.trace_writer
+
         app_finished = []
-        
+
         i = 0
         # while end of file not reached:
         while params.TFM.TF_EOF is not True:
@@ -528,13 +530,21 @@ class FiveGSimulation(BaseSimulation):
                 # create a new mapping
                 mapping = mapper.generate_mapping()
                 # instantiate the application
-                app = RuntimeKpnApplication(name=f"fiveg{i}",
+                app = RuntimeKpnApplication(name=f"fiveg{i:06}",
                                             kpn_graph=kpn,
                                             mapping=mapping,
                                             trace_generator=trace,
                                             system=self.system)
+                # record application start in the simulation trace
+                trace_writer.begin_duration("instances", app.name, app.name)
                 # start the application
                 finished = self.env.process(app.run())
+                # register a callback to record the application terminatation
+                # in the simulation trace
+                finished.callbacks.append(
+                    lambda _, name=app.name: trace_writer.end_duration(
+                        "instances", name, name))
+                # keep the finished event for later
                 app_finished.append(finished)
                 
                 i += 1
