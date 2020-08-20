@@ -25,7 +25,14 @@ class TraceFileManager():
     class Trace():
         """ Represents a single LTE trace.
         """
-        def __init__(self, base_station_id, CRNTI, PRBs, layers, modulation_scheme, UE_criticality,  is_CRNTI_new):
+        def __init__(self,
+                     base_station_id = None,
+                     CRNTI = None,
+                     PRBs = None,
+                     layers = None,
+                     modulation_scheme = None,
+                     UE_criticality = None,
+                     is_CRNTI_new = None):
             self.base_station_id = base_station_id          # Base Station Identifier which serves the UE
             self.CRNTI = CRNTI                              # A kind of UE Identifier
             self.PRBs = PRBs                                # The number of physical resource blocks allocated to the UE
