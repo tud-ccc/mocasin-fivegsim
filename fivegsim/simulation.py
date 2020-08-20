@@ -27,7 +27,7 @@ class params(object):
     trace_file_path = "/Users/julian.robledo/Documents/pykpn/fivegsim/fivegsim/useful_files/"
     trace_file_name = "slicedtrace30BS.txt"
     TFM = TraceFileManager(trace_file_name, trace_file_path)
-    nsubframe = TraceFileManager.Subframe()
+    ntrace = TraceFileManager.Trace()
 
     # Get task execution time info
     tgff_proc_path = "/Users/julian.robledo/Documents/pykpn/fivegsim/fivegsim/useful_files/"
@@ -181,10 +181,10 @@ class FivegTraceGenerator(TraceGenerator):
         trace = {}
         
         # number of PRBs
-        prbs = params.nsubframe.trace[0].PRBs
+        prbs = params.ntrace.PRBs
         # modulation scheme
-        mod = params.nsubframe.trace[0].modulation_scheme
-        
+        mod = params.ntrace.modulation_scheme
+
         # process cycles for each task type on ARM_CORTEX_A7
         pc_micf_A7 = params.proc_time[0][prbs - 1] * \
                     params.freq_arm_cortex_a7
@@ -510,8 +510,7 @@ class FiveGSimulation(BaseSimulation):
             # run 100 instances of the 5G app, start one every 1 ms
             for ntrace in params.nsubframe.trace:
                 # create a new graph and trace
-                #kpn = DummyGraph()
-                #trace = DummyTraceGenerator()
+                params.ntrace = ntrace
                 
                 params.micf = PHY.get_num_micf( ntrace.layers)
                 params.combwc = PHY.get_num_combwc()
