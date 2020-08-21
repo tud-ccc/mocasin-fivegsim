@@ -1,6 +1,6 @@
 import hydra
 
-from pykpn.mapper.random import RandomMapper
+from pykpn.mapper.fair import StaticCFSMapperMultiApp
 from pykpn.common.kpn import KpnGraph, KpnProcess, KpnChannel
 from pykpn.common.trace import TraceGenerator, TraceSegment
 from pykpn.simulate import BaseSimulation
@@ -24,13 +24,13 @@ class params(object):
     demap = 0
 
     # Get LTE traces
-    trace_file_path = "/Users/julian.robledo/Documents/pykpn/fivegsim/fivegsim/useful_files/"
+    trace_file_path = "../../../../fivegsim/fivegsim/useful_files/"
     trace_file_name = "slicedtrace30BS.txt"
     TFM = TraceFileManager(trace_file_name, trace_file_path)
     ntrace = TraceFileManager.Trace()
 
     # Get task execution time info
-    tgff_proc_path = "/Users/julian.robledo/Documents/pykpn/fivegsim/fivegsim/useful_files/"
+    tgff_proc_path = "../../../../fivegsim/fivegsim/useful_files/"
     tgff_name = "lte_processors.tgff"
     proc_time = get_task_time(tgff_name, tgff_proc_path)
 
@@ -42,8 +42,8 @@ class FivegGraph(KpnGraph):
     micf, combwc, antcomb, demap.
     """
 
-    def __init__(self):
-        super().__init__("fiveg")
+    def __init__(self,i):
+        super().__init__(f"fiveg{i}")
 
         # dictionary for processes
         pmicf = {}
@@ -488,13 +488,14 @@ class FivegTraceGenerator(TraceGenerator):
 class FiveGSimulation(BaseSimulation):
     """Simulate the processing of 5G data"""
 
-    def __init__(self, platform):
+    def __init__(self, platform,cfg):
         super().__init__(platform)
+        self.cfg = cfg
 
     @staticmethod
     def from_hydra(cfg):
         platform = hydra.utils.instantiate(cfg['platform'])
-        return FiveGSimulation(platform)
+        return FiveGSimulation(platform,cfg)
 
     def _manager_process(self):
         trace_writer = self.system.trace_writer
@@ -506,8 +507,15 @@ class FiveGSimulation(BaseSimulation):
         while params.TFM.TF_EOF is not True:
             
             params.nsubframe = params.TFM.get_next_subframe()
-            
+
+            # create a new mapper (this should be TETRiS in the future) Note
+            # that we need to create a new mapper here, as the KPN could change
+            # This appears to be a weakness of our mapper interface. The KPN
+            # should probably become a parameter of generate_mapping().
+            mapper = StaticCFSMapperMultiApp(self.platform,self.cfg)
             # run 100 instances of the 5G app, start one every 1 ms
+            kpns = []
+            traces = []
             for ntrace in params.nsubframe.trace:
                 # create a new graph and trace
                 params.ntrace = ntrace
@@ -516,21 +524,17 @@ class FiveGSimulation(BaseSimulation):
                 params.combwc = PHY.get_num_combwc()
                 params.antcomb = PHY.get_num_antcomb(ntrace.layers)
                 params.demap = PHY.get_num_demap()
-    
-                kpn = FivegGraph()
-                trace = FivegTraceGenerator()
-    
-                # create a new mapper (this should be TETRiS in the future) Note
-                # that we need to create a new mapper here, as the KPN could change
-                # This appears to be a weakness of our mapper interface. The KPN
-                # should probably become a parameter of generate_mapping().
-                cfg = {'random_seed': None}
-                mapper = RandomMapper(kpn, self.platform, cfg)
-                # create a new mapping
-                mapping = mapper.generate_mapping()
+
+
+                kpns.append(FivegGraph(i))
+                traces.append(FivegTraceGenerator())
+                i += 1
+            mappings = mapper.generate_mappings(kpns,traces) #TODO: collect and add load here
+
+            for mapping,trace in zip(mappings,traces):
                 # instantiate the application
-                app = RuntimeKpnApplication(name=f"fiveg{i:06}",
-                                            kpn_graph=kpn,
+                app = RuntimeKpnApplication(name=mapping.kpn.name,
+                                            kpn_graph=mapping.kpn,
                                             mapping=mapping,
                                             trace_generator=trace,
                                             system=self.system)
@@ -546,8 +550,7 @@ class FiveGSimulation(BaseSimulation):
                 # keep the finished event for later
                 app_finished.append(finished)
                 
-                i += 1
-                
+
             # wait for 1 ms
             yield self.env.timeout(1000000000)
     
