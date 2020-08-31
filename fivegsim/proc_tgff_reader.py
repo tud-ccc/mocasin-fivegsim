@@ -3,11 +3,11 @@
 #
 # Authors: Julian Robledo
 
-def get_task_time(tgff_name, tgff_proc_path = "./"):
+def get_task_time(tgff_name):
     """ Read task execution time information on TGFF format
     and return a list of task times
     """
-    proc_file = open(tgff_proc_path + tgff_name, "r")
+    proc_file = open(tgff_name, "r")
     lines = proc_file.readlines()
     lines = [x for x in lines if x.find('#') == -1]
     lines = [x.strip() for x in lines]

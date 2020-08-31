@@ -11,10 +11,9 @@ class TraceFileManager():
     [<base station ID> <CRNTI> <number of PRBs> <number of layers> <modulation scheme> <UE Criticality Type> <is New>]
     ---------- <Subframe Number>
     """
-    def __init__(self, TF_name, TF_directory = "."):
+    def __init__(self, TF_name):
         self.TF_name = TF_name
-        self.TF_directory = TF_directory
-        self.TF_file = open(self.TF_directory + '/' + self.TF_name, "r")
+        self.TF_file = open(self.TF_name, "r")
 
         self.TF_current_subframe = 0            # Current subframe Id
         self.TF_current_subf_size = 0           # Size of current subframe
