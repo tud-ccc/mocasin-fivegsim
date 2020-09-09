@@ -9,7 +9,7 @@ setup(
     name="fivegsim",
     version="0.0.1",
     packages=find_packages(),
-    install_requires=[],
-    setup_requires=requires,
+    install_requires=requires,
+    setup_requires=[],
     include_package_data=True,
 )
