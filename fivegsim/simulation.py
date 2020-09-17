@@ -473,7 +473,7 @@ class FivegTraceGenerator(TraceGenerator):
 class FiveGSimulation(BaseSimulation):
     """Simulate the processing of 5G data"""
 
-    def __init__(self, platform,cfg):
+    def __init__(self, platform, cfg):
         super().__init__(platform)
         self.cfg = cfg
         
@@ -485,9 +485,8 @@ class FiveGSimulation(BaseSimulation):
         # Get task execution time info
         self.proc_time = get_task_time(files['tasks'])
 
-
     @staticmethod
-    def from_hydra(cfg):
+    def from_hydra(cfg, **kwargs):
         platform = hydra.utils.instantiate(cfg['platform'])
         return FiveGSimulation(platform,cfg)
 
@@ -563,9 +562,3 @@ class FiveGSimulation(BaseSimulation):
         self.system.check_errors()
         # save the execution time
         self.exec_time = self.env.now
-
-
-class HydraFiveGSimulation(FiveGSimulation):
-    """Required to instatiate a FiveGSimulation from hydra<1.0"""
-    def __new__(cls, cfg):
-        return FiveGSimulation.from_hydra(cfg)
