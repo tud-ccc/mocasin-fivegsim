@@ -1,5 +1,11 @@
+# @package _global_
+trace_file: "../../../../../fivegsim/fivegsim/slicedtrace30BS.txt"
+task_file: "../../../../../fivegsim/fivegsim/lte_processors.tgff"
+
 simulation_type:
-  class: fivegsim.simulation.HydraFiveGSimulation
+  _target_: fivegsim.simulation.FiveGSimulation.from_hydra
+  trace_file: ${trace_file}
+  task_file: ${task_file}
 
 simtrace:
   file: "trace.json"
@@ -9,6 +15,3 @@ simtrace:
     granularity: 100000000  # every 1ms
     time_frame: 10000000000  # consider the load of the last 10ms
 
-fiveg:
-    traces: "../../../../fivegsim/fivegsim/slicedtrace30BS.txt"
-    tasks: "../../../../fivegsim/fivegsim/lte_processors.tgff"

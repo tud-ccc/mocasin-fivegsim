@@ -473,23 +473,21 @@ class FivegTraceGenerator(TraceGenerator):
 class FiveGSimulation(BaseSimulation):
     """Simulate the processing of 5G data"""
 
-    def __init__(self, platform,cfg):
+    def __init__(self, platform, cfg, trace_file, task_file, **kwargs):
         super().__init__(platform)
         self.cfg = cfg
-        
-        # Get lte traces
-        files = cfg['fiveg']
-        self.TFM = TraceFileManager(files['traces'])
-        self.ntrace = TraceFileManager.Trace()
-        
-        # Get task execution time info
-        self.proc_time = get_task_time(files['tasks'])
 
+        # Get lte traces
+        self.TFM = TraceFileManager(trace_file)
+        self.ntrace = TraceFileManager.Trace()
+
+        # Get task execution time info
+        self.proc_time = get_task_time(task_file)
 
     @staticmethod
-    def from_hydra(cfg):
+    def from_hydra(cfg, **kwargs):
         platform = hydra.utils.instantiate(cfg['platform'])
-        return FiveGSimulation(platform,cfg)
+        return FiveGSimulation(platform, cfg, **kwargs)
 
     def _manager_process(self):
         trace_writer = self.system.trace_writer
@@ -563,9 +561,3 @@ class FiveGSimulation(BaseSimulation):
         self.system.check_errors()
         # save the execution time
         self.exec_time = self.env.now
-
-
-class HydraFiveGSimulation(FiveGSimulation):
-    """Required to instatiate a FiveGSimulation from hydra<1.0"""
-    def __new__(cls, cfg):
-        return FiveGSimulation.from_hydra(cfg)
