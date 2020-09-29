@@ -8,6 +8,7 @@ from pykpn.simulate.application import RuntimeKpnApplication
 
 from fivegsim.trace_file_manager import TraceFileManager
 from fivegsim.phybench import PHY
+from fivegsim.phybench import LTE
 from fivegsim.proc_tgff_reader import get_task_time
 
 
@@ -26,6 +27,44 @@ class FivegGraph(KpnGraph):
         self.combwc = PHY.get_num_combwc()
         self.antcomb = PHY.get_num_antcomb(ntrace.layers)
         self.demap = PHY.get_num_demap()
+
+        prbs = ntrace.PRBs
+        mod = ntrace.modulation_scheme
+        lay = ntrace.layers
+        ant = LTE.num_antenna
+        sc = LTE.SC
+        data_size = 4 #bytes
+        nmbSc = prbs*sc
+
+        if mod == 0:
+            mod = 1
+        elif mod == 1:
+            mod = 2
+        elif mod == 2:
+            mod = 8
+        elif mod == 3:
+            mod = 12
+        elif mod == 4:
+            mod = 16
+
+        if nmbSc <-16:
+            fft_size = 8
+        elif nmbSc <= 32:
+            fft_size = 16
+        elif nmbSc <= 64:
+            fft_size = 32
+        elif nmbSc <= 128:
+            fft_size = 64
+        elif nmbSc <= 256:
+            fft_size = 128
+        elif nmbSc <= 512:
+            fft_size = 256
+        elif nmbSc <= 600:
+            fft_size = 300
+        elif nmbSc <= 1024:
+            fft_size = 512
+        elif nmbSc <= 1200:
+            fft_size = 600
     
         # dictionary for processes
         pmicf = {}
@@ -34,6 +73,8 @@ class FivegGraph(KpnGraph):
         pdemap = {}
 
         # dictionary for channels
+        iConn = {} # input
+        oConn = {} # output
         aConn = {}
         bConn = {}
         cConn = {}
@@ -42,6 +83,8 @@ class FivegGraph(KpnGraph):
         fConn = {}
 
         # add process to dictionary
+        src = KpnProcess("src")
+        sink = KpnProcess("sink")
         for nmicf in range(self.micf*2):
             process = "micf_" + str(nmicf)
             pmicf[process] = KpnProcess(process)
@@ -53,16 +96,27 @@ class FivegGraph(KpnGraph):
             pantcomb[process] = KpnProcess(process)
         for ndemap in range(self.demap):
             process = "demap_" + str(ndemap)
-            pdemap[process] = KpnProcess(process)            
+            pdemap[process] = KpnProcess(process)
 
-        # add channels ((with a token size of 16 bytes each)) to dictionary 
-        # and connect the processes
+        # add channels to dictionary and connect processes
+        for nmicf in range(self.micf*2):
+            dest = "micf_" + str(nmicf)
+            channel = "i_m_" + str(nmicf)
+            iConn[channel] = KpnChannel(channel, data_size*(sc*prbs*2+fft_size))
+            src.connect_to_outgoing_channel(iConn[channel])
+            pmicf[dest].connect_to_incomming_channel(iConn[channel])
+        for nantcomb in range(self.antcomb*2):
+            dest = "antcomb_" + str(nantcomb)
+            channel = "i_a_" + str(nantcomb)
+            iConn[channel] = KpnChannel(channel, data_size*(nmbSc*lay+fft_size))
+            src.connect_to_outgoing_channel(iConn[channel])
+            pantcomb[dest].connect_to_incomming_channel(iConn[channel])
         for nmicf in range(self.micf):
             for ncombwc in range(self.combwc):
                 origin = "micf_" + str(nmicf)
                 dest = "combwc_" + str(ncombwc)
                 channel = "a_" + str(nmicf) + "_" + str(ncombwc)
-                aConn[channel] = KpnChannel(channel, 16)
+                aConn[channel] = KpnChannel(channel, data_size*prbs)
                 pmicf[origin].connect_to_outgoing_channel(aConn[channel])
                 pcombwc[dest].connect_to_incomming_channel(aConn[channel])
         for ncombwc in range(self.combwc):
@@ -70,7 +124,7 @@ class FivegGraph(KpnGraph):
                 origin = "combwc_" + str(ncombwc)
                 dest = "antcomb_" + str(nantcomb)
                 channel = "b_" + str(ncombwc) + "_" + str(nantcomb)
-                bConn[channel] = KpnChannel(channel, 16)
+                bConn[channel] = KpnChannel(channel, data_size*prbs*ant)
                 pcombwc[origin].connect_to_outgoing_channel(bConn[channel])
                 pantcomb[dest].connect_to_incomming_channel(bConn[channel])
         for nantcomb in range(self.antcomb):
@@ -78,7 +132,7 @@ class FivegGraph(KpnGraph):
                 origin = "antcomb_" + str(nantcomb)
                 dest = "micf_" + str(nmicf + self.micf)
                 channel = "c_" + str(nantcomb) + "_" + str(nmicf + self.micf)
-                cConn[channel] = KpnChannel(channel, 16)
+                cConn[channel] = KpnChannel(channel, 1)
                 pantcomb[origin].connect_to_outgoing_channel(cConn[channel])
                 pmicf[dest].connect_to_incomming_channel(cConn[channel])
         for nmicf in range(self.micf):
@@ -87,7 +141,7 @@ class FivegGraph(KpnGraph):
                 dest = "combwc_" + str(ncombwc + self.combwc)
                 channel = "d_" + str(nmicf + self.micf) + \
                         "_" + str(ncombwc + self.combwc)
-                dConn[channel] = KpnChannel(channel, 16)
+                dConn[channel] = KpnChannel(channel, data_size*prbs)
                 pmicf[origin].connect_to_outgoing_channel(dConn[channel])
                 pcombwc[dest].connect_to_incomming_channel(dConn[channel])
         for ncombwc in range(self.combwc):
@@ -96,7 +150,7 @@ class FivegGraph(KpnGraph):
                 dest = "antcomb_" + str(nantcomb + self.antcomb)
                 channel = "e_" + str(ncombwc + self.combwc) + \
                         "_" + str(nantcomb + self.antcomb)
-                eConn[channel] = KpnChannel(channel, 16)
+                eConn[channel] = KpnChannel(channel, data_size*prbs*ant)
                 pcombwc[origin].connect_to_outgoing_channel(eConn[channel])
                 pantcomb[dest].connect_to_incomming_channel(eConn[channel])
         for nantcomb in range(self.antcomb):
@@ -105,11 +159,19 @@ class FivegGraph(KpnGraph):
                 dest = "demap_" + str(ndemap)
                 channel = "f_" + str(nantcomb + self.antcomb) + \
                         "_" + str(ndemap)
-                fConn[channel] = KpnChannel(channel, 16)
+                fConn[channel] = KpnChannel(channel, data_size*prbs)
                 pantcomb[origin].connect_to_outgoing_channel(fConn[channel])
                 pdemap[dest].connect_to_incomming_channel(fConn[channel])
+        for ndemap in range(self.demap):
+            origin = "demap_" + str(ndemap)
+            channel = "o_d_" + str(ndemap)
+            oConn[channel] = KpnChannel(channel, data_size*prbs*mod)
+            pdemap[origin].connect_to_outgoing_channel(oConn[channel])
+            sink.connect_to_incomming_channel(oConn[channel])
 
         # register all processes
+        self.add_process(src)
+        self.add_process(sink)
         for nmicf in range(self.micf*2):
             process = "micf_" + str(nmicf)
             self.add_process(pmicf[process])
@@ -124,6 +186,12 @@ class FivegGraph(KpnGraph):
             self.add_process(pdemap[process])          
 
         # register all channels
+        for nmicf in range(self.micf*2):
+            channel = "i_m_" + str(nmicf)
+            self.add_channel(iConn[channel])
+        for nantcomb in range(self.antcomb*2):
+            channel = "i_a_" + str(nantcomb)
+            self.add_channel(iConn[channel])
         for nmicf in range(self.micf):
             for ncombwc in range(self.combwc):
                 channel = "a_" + str(nmicf) + "_" + str(ncombwc)
@@ -151,6 +219,9 @@ class FivegGraph(KpnGraph):
                 channel = "f_" + str(nantcomb + self.antcomb) + \
                         "_" + str(ndemap)
                 self.add_channel(fConn[channel])
+        for ndemap in range(self.demap):
+            channel = "o_d_" + str(ndemap)
+            self.add_channel(oConn[channel])
 
 
 class FivegTraceGenerator(TraceGenerator):
@@ -171,7 +242,7 @@ class FivegTraceGenerator(TraceGenerator):
         prbs = ntrace.PRBs
         # modulation scheme
         mod = ntrace.modulation_scheme
-        
+
         # clock frequency for core types Cortex A7 and Cortex15
         freq_arm_cortex_a7 = 1300000000
         freq_arm_cortex_a15 = 2000000000
@@ -189,12 +260,56 @@ class FivegTraceGenerator(TraceGenerator):
         pc_antcomb_A15 = proc_time[0][prbs + 200 - 1] * freq_arm_cortex_a15
         pc_demap_A15 = proc_time[0][prbs + (300 + 100 * mod) - 1] * \
                     freq_arm_cortex_a15
-        
+
+        trace["src"] = {}
+        trace["src"]["ARM_CORTEX_A7"] = list()
+        trace["src"]["ARM_CORTEX_A15"] = list()
+        trace["sink"] = {}
+        trace["sink"]["ARM_CORTEX_A7"] = list()
+        trace["sink"]["ARM_CORTEX_A15"] = list()
+
+        for nmicf in range(self.micf*2):
+            # write 1 token from channel
+            trace["src"]["ARM_CORTEX_A7"].\
+            append(TraceSegment(process_cycles=0,
+            write_to_channel="i_m_" + str(nmicf),
+            n_tokens=1))
+            trace["src"]["ARM_CORTEX_A15"].\
+            append(TraceSegment(process_cycles=0,
+            write_to_channel="i_m_" + str(nmicf),
+            n_tokens=1))
+
+        for nantcomb in range(self.antcomb*2):
+            # write 1 token from channel
+            trace["src"]["ARM_CORTEX_A7"].\
+            append(TraceSegment(process_cycles=0,
+            write_to_channel="i_a_" + str(nantcomb),
+            n_tokens=1))
+            trace["src"]["ARM_CORTEX_A15"].\
+            append(TraceSegment(process_cycles=0,
+            write_to_channel="i_a_" + str(nantcomb),
+            n_tokens=1))
+
+        # terminate
+        trace["src"]["ARM_CORTEX_A7"].\
+        append(TraceSegment(process_cycles=0, terminate=True))
+        trace["src"]["ARM_CORTEX_A15"].\
+        append(TraceSegment(process_cycles=0, terminate=True))
 
         for nmicf in range(self.micf):
             trace["micf_" + str(nmicf)] = {}
             trace["micf_" + str(nmicf)]["ARM_CORTEX_A7"] = list()
             trace["micf_" + str(nmicf)]["ARM_CORTEX_A15"] = list()
+
+            # read 1 token from channel
+            trace["micf_" + str(nmicf)]["ARM_CORTEX_A7"].\
+            append(TraceSegment(process_cycles=0,
+            read_from_channel="i_m_" + str(nmicf),
+            n_tokens=1))
+            trace["micf_" + str(nmicf)]["ARM_CORTEX_A15"].\
+            append(TraceSegment(process_cycles=0,
+            read_from_channel="i_m_" + str(nmicf),
+            n_tokens=1))
 
             # Process tasks
             trace["micf_" + str(nmicf)]["ARM_CORTEX_A7"].\
@@ -266,6 +381,16 @@ class FivegTraceGenerator(TraceGenerator):
             trace["antcomb_" + str(nantcomb)]["ARM_CORTEX_A15"] = list()
 
             # read 1 token from channel
+            trace["antcomb_" + str(nantcomb)]["ARM_CORTEX_A7"].\
+            append(TraceSegment(process_cycles=0,
+            read_from_channel="i_a_" + str(nantcomb),
+            n_tokens=1))
+            trace["antcomb_" + str(nantcomb)]["ARM_CORTEX_A15"].\
+            append(TraceSegment(process_cycles=0,
+            read_from_channel="i_a_" + str(nantcomb),
+            n_tokens=1))
+
+            # read 1 token from channel
             for ncombwc in range(self.combwc):
                 trace["antcomb_" + str(nantcomb)]["ARM_CORTEX_A7"].\
                 append(TraceSegment(process_cycles=0, 
@@ -282,14 +407,14 @@ class FivegTraceGenerator(TraceGenerator):
             trace["antcomb_" + str(nantcomb)]["ARM_CORTEX_A15"].\
             append(TraceSegment(process_cycles = pc_antcomb_A15))
 
-            # write 1 token to channel
+            #write 1 token to channel
             for nmicf in range(self.micf):
                 trace["antcomb_" + str(nantcomb)]["ARM_CORTEX_A7"].\
-                append(TraceSegment(process_cycles=0, 
+                append(TraceSegment(process_cycles=0,
                 write_to_channel="c_" + str(nantcomb) + "_" + str(nmicf + self.micf),
                 n_tokens=1))
                 trace["antcomb_" + str(nantcomb)]["ARM_CORTEX_A15"].\
-                append(TraceSegment(process_cycles=0, 
+                append(TraceSegment(process_cycles=0,
                 write_to_channel="c_" + str(nantcomb) + "_" + str(nmicf + self.micf),
                 n_tokens=1))
 
@@ -305,13 +430,23 @@ class FivegTraceGenerator(TraceGenerator):
             trace["micf_" + str(nmicf + self.micf)]["ARM_CORTEX_A15"] = list()
 
             # read 1 token from channel
+            trace["micf_" + str(nmicf + self.micf)]["ARM_CORTEX_A7"].\
+            append(TraceSegment(process_cycles=0,
+            read_from_channel="i_m_" + str(nmicf + self.micf),
+            n_tokens=1))
+            trace["micf_" + str(nmicf + self.micf)]["ARM_CORTEX_A15"].\
+            append(TraceSegment(process_cycles=0,
+            read_from_channel="i_m_" + str(nmicf + self.micf),
+            n_tokens=1))
+
+            # read 1 token from channel
             for nantcomb in range(self.antcomb):
                 trace["micf_" + str(nmicf + self.micf)]["ARM_CORTEX_A7"].\
-                append(TraceSegment(process_cycles=0, 
+                append(TraceSegment(process_cycles=0,
                 read_from_channel="c_" + str(nantcomb) + "_" + str(nmicf + self.micf),
                 n_tokens=1))
                 trace["micf_" + str(nmicf + self.micf)]["ARM_CORTEX_A15"].\
-                append(TraceSegment(process_cycles=0, 
+                append(TraceSegment(process_cycles=0,
                 read_from_channel="c_" + str(nantcomb) + "_" + str(nmicf + self.micf),
                 n_tokens=1))
 
@@ -384,6 +519,16 @@ class FivegTraceGenerator(TraceGenerator):
             trace["antcomb_" + str(nantcomb + self.antcomb)]["ARM_CORTEX_A15"] = list()
 
             # read 1 token from channel
+            trace["antcomb_" + str(nantcomb  + self.antcomb)]["ARM_CORTEX_A7"].\
+            append(TraceSegment(process_cycles=0,
+            read_from_channel="i_a_" + str(nantcomb + self.antcomb),
+            n_tokens=1))
+            trace["antcomb_" + str(nantcomb  + self.antcomb)]["ARM_CORTEX_A15"].\
+            append(TraceSegment(process_cycles=0,
+            read_from_channel="i_a_" + str(nantcomb + self.antcomb),
+            n_tokens=1))
+
+            # read 1 token from channel
             for ncombwc in range(self.combwc):
                 trace["antcomb_" + str(nantcomb + self.antcomb)]["ARM_CORTEX_A7"].\
                 append(TraceSegment(process_cycles=0, 
@@ -425,7 +570,7 @@ class FivegTraceGenerator(TraceGenerator):
             # read 1 token from channel
             for nantcomb in range(self.antcomb):
                 trace["demap_" + str(ndemap)]["ARM_CORTEX_A7"].\
-                append(TraceSegment(process_cycles=0, 
+                append(TraceSegment(process_cycles=0,
                 read_from_channel="f_" + str(nantcomb + self.antcomb) + "_" + str(ndemap),
                 n_tokens=1))
                 trace["demap_" + str(ndemap)]["ARM_CORTEX_A15"].\
@@ -433,17 +578,52 @@ class FivegTraceGenerator(TraceGenerator):
                 read_from_channel="f_" + str(nantcomb + self.antcomb) + "_" + str(ndemap),
                 n_tokens=1))
 
-            # Process tasks and terminate
+            # Process tasks
             trace["demap_" + str(ndemap)]["ARM_CORTEX_A7"].\
-            append(TraceSegment(process_cycles = pc_demap_A7, terminate=True))
+            append(TraceSegment(process_cycles = pc_demap_A7))
             trace["demap_" + str(ndemap)]["ARM_CORTEX_A15"].\
-            append(TraceSegment(process_cycles = pc_demap_A15, terminate=True))
+            append(TraceSegment(process_cycles = pc_demap_A15))
+
+            # write 1 token to channel
+            trace["demap_" + str(ndemap)]["ARM_CORTEX_A7"].\
+            append(TraceSegment(process_cycles=0,
+            write_to_channel="o_d_" + str(ndemap),
+            n_tokens=1))
+            trace["demap_" + str(ndemap)]["ARM_CORTEX_A15"].\
+            append(TraceSegment(process_cycles=0,
+            write_to_channel="o_d_" + str(ndemap),
+            n_tokens=1))
+
+            # terminate
+            trace["demap_" + str(ndemap)]["ARM_CORTEX_A7"].\
+            append(TraceSegment(process_cycles=0, terminate=True))
+            trace["demap_" + str(ndemap)]["ARM_CORTEX_A15"].\
+            append(TraceSegment(process_cycles=0, terminate=True))
+
+        # read 1 token from channel
+        for ndemap in range(self.demap):
+            trace["sink"]["ARM_CORTEX_A7"].\
+            append(TraceSegment(process_cycles=0,
+            read_from_channel="o_d_" + str(ndemap),
+            n_tokens=1))
+            trace["sink"]["ARM_CORTEX_A15"].\
+            append(TraceSegment(process_cycles=0,
+            read_from_channel="o_d_" + str(ndemap),
+            n_tokens=1))
+
+        # terminate
+        trace["sink"]["ARM_CORTEX_A7"].\
+        append(TraceSegment(process_cycles=0, terminate=True))
+        trace["sink"]["ARM_CORTEX_A15"].\
+        append(TraceSegment(process_cycles=0, terminate=True))
 
         self.trace = trace
 
         # we also need to keep track of the current position in the trace
         self.trace_pos = {}
 
+        self.trace_pos["src"] = 0
+        self.trace_pos["sink"] = 0
         for nmicf in range(self.micf*2):
             self.trace_pos["micf_" + str(nmicf)] = 0
         for ncombwc in range(self.combwc*2):
@@ -455,6 +635,8 @@ class FivegTraceGenerator(TraceGenerator):
 
     def reset(self):
         self.trace_pos = {}
+        self.trace_pos["src"] = 0
+        self.trace_pos["sink"] = 0
         for nmicf in range(self.micf*2):
             self.trace_pos["micf_" + str(nmicf)] = 0
         for ncombwc in range(self.combwc*2):
