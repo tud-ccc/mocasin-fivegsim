@@ -46,26 +46,6 @@ class FivegGraph(KpnGraph):
             mod = 12
         elif mod == 4:
             mod = 16
-
-        # Compute FFT point size
-        if nmbSc <-16:
-            fft_size = 8
-        elif nmbSc <= 32:
-            fft_size = 16
-        elif nmbSc <= 64:
-            fft_size = 32
-        elif nmbSc <= 128:
-            fft_size = 64
-        elif nmbSc <= 256:
-            fft_size = 128
-        elif nmbSc <= 512:
-            fft_size = 256
-        elif nmbSc <= 600:
-            fft_size = 300
-        elif nmbSc <= 1024:
-            fft_size = 512
-        elif nmbSc <= 1200:
-            fft_size = 600
     
         # dictionary for processes
         pin = {}    # input
@@ -122,7 +102,7 @@ class FivegGraph(KpnGraph):
         for mf in range(self.num_ph1):
             orig = "input"
             dest = "mf" + str(mf)
-            token_size = data_size*(sc*prbs*2+fft_size)
+            token_size = data_size*(nmbSc)
             channel = KpnChannel(orig + "_" + dest, token_size)
             in_2_mf[orig + "_" + dest] = channel
             pin[orig].connect_to_outgoing_channel(channel)
@@ -131,7 +111,7 @@ class FivegGraph(KpnGraph):
         for ant in range(self.num_ph3):
             orig = "input"
             dest = "ant" + str(ant)
-            token_size = data_size*(nmbSc*lay+fft_size)
+            token_size = data_size*(nmbSc*lay)
             channel = KpnChannel(orig + "_" + dest, token_size)
             in_2_ac[orig + "_" + dest] = channel
             pin[orig].connect_to_outgoing_channel(channel)
@@ -141,7 +121,7 @@ class FivegGraph(KpnGraph):
             for ifft1 in range(self.num_ph1):
                 orig = "mf" + str(mf)
                 dest = "ifft1" + str(ifft1)
-                token_size = data_size*prbs
+                token_size = data_size*nmbSc
                 channel = KpnChannel(orig + "_" + dest, token_size)
                 mf_2_if[orig + "_" + dest] = channel
                 pmf[orig].connect_to_outgoing_channel(channel)
@@ -151,7 +131,7 @@ class FivegGraph(KpnGraph):
             for wind in range(self.num_ph1):
                 orig = "ifft1" + str(ifft1)
                 dest = "wind" + str(wind)
-                token_size = data_size*prbs
+                token_size = data_size*nmbSc
                 channel = KpnChannel(orig + "_" + dest, token_size)
                 if_2_wd[orig + "_" + dest] = channel
                 pifft1[orig].connect_to_outgoing_channel(channel)
@@ -161,7 +141,7 @@ class FivegGraph(KpnGraph):
             for fft in range(self.num_ph1):
                 orig = "wind" + str(wind)
                 dest = "fft" + str(fft)
-                token_size = data_size*prbs
+                token_size = data_size*nmbSc
                 channel = KpnChannel(orig + "_" + dest, token_size)
                 wd_2_ff[orig + "_" + dest] = channel
                 pwind[orig].connect_to_outgoing_channel(channel)
@@ -171,7 +151,7 @@ class FivegGraph(KpnGraph):
             for comb in range(self.num_ph2):
                 orig = "fft" + str(fft)
                 dest = "comb" + str(comb)
-                token_size = data_size*prbs
+                token_size = data_size*nmbSc
                 channel = KpnChannel(orig + "_" + dest, token_size)
                 ff_2_cw[orig + "_" + dest] = channel
                 pfft[orig].connect_to_outgoing_channel(channel)
@@ -191,7 +171,7 @@ class FivegGraph(KpnGraph):
             for ifft2 in range(self.num_ph3):
                 orig = "ant" + str(ant)
                 dest = "ifft2" + str(ifft2)
-                token_size = data_size*prbs
+                token_size = data_size*prbs*ant
                 channel = KpnChannel(orig + "_" + dest, token_size)
                 ac_2_if[orig + "_" + dest] = channel
                 pant[orig].connect_to_outgoing_channel(channel)
@@ -201,7 +181,7 @@ class FivegGraph(KpnGraph):
             for demap in range(self.num_ph4):
                 orig = "ifft2" + str(ifft2)
                 dest = "demap" + str(demap)
-                token_size = data_size*prbs*mod
+                token_size = data_size*prbs
                 channel = KpnChannel(orig + "_" + dest, token_size)
                 if_2_dm[orig + "_" + dest] = channel
                 pifft2[orig].connect_to_outgoing_channel(channel)
