@@ -749,8 +749,12 @@ class FiveGSimulation(BaseSimulation):
         trace_writer = self.system.trace_writer
 
         app_finished = []
+        criticalities = []
+        prbs = []
+        mod = []
 
         i = 0
+        cnt = 0
         # while end of file not reached:
         while self.TFM.TF_EOF is not True:
             
@@ -760,7 +764,7 @@ class FiveGSimulation(BaseSimulation):
             # that we need to create a new mapper here, as the KPN could change
             # This appears to be a weakness of our mapper interface. The KPN
             # should probably become a parameter of generate_mapping().
-            mapper = StaticCFSMapperMultiApp(self.platform,self.cfg)
+            mapper = StaticCFSMapperMultiApp(self.platform)
             # run 100 instances of the 5G app, start one every 1 ms
             kpns = []
             traces = []
@@ -771,30 +775,34 @@ class FiveGSimulation(BaseSimulation):
                 kpns.append(FivegGraph(i,self.ntrace))
                 traces.append(FivegTraceGenerator(self.ntrace, self.proc_time))
                 i += 1
+                criticalities.append(ntrace.UE_criticality)
+                prbs.append(ntrace.PRBs)
+                mod.append(ntrace.modulation_scheme)
+
             mappings = mapper.generate_mappings(kpns,traces) #TODO: collect and add load here
 
             for mapping,trace in zip(mappings,traces):
                 # instantiate the application
-                app = RuntimeKpnApplication(name=mapping.kpn.name,
-                                            kpn_graph=mapping.kpn,
-                                            mapping=mapping,
-                                            trace_generator=trace,
-                                            system=self.system)
+                app = FiveGRuntimeKpnApplication(name=mapping.kpn.name,
+                                                        kpn_graph=mapping.kpn,
+                                                        mapping=mapping,
+                                                        trace_generator=trace,
+                                                        system=self.system)
                 # record application start in the simulation trace
                 trace_writer.begin_duration("instances", app.name, app.name)
                 # start the application
-                finished = self.env.process(app.run())
-                # register a callback to record the application terminatation
+                finished = self.env.process(app.run_app(criticalities[cnt],prbs[cnt],mod[cnt]))
+                cnt += 1
+                # register a callback to record the application termination
                 # in the simulation trace
                 finished.callbacks.append(
                     lambda _, name=app.name: trace_writer.end_duration(
                         "instances", name, name))
                 # keep the finished event for later
                 app_finished.append(finished)
-                
 
             # wait for 1 ms
-            yield self.env.timeout(1000000000)
+            yield self.env.timeout(1000000000)           
     
         # wait until all applications finished
         yield self.env.all_of(app_finished)
@@ -817,3 +825,73 @@ class FiveGSimulation(BaseSimulation):
         self.system.check_errors()
         # save the execution time
         self.exec_time = self.env.now
+
+
+class FiveGRuntimeKpnApplication(RuntimeKpnApplication):
+
+    def run_app(self, criticality, prbs, mod):
+        """Start execution of this application
+
+        Yields:
+            ~simpy.events.Event: an event that is triggered when the
+                application finishes execution.
+        """
+
+        IOT = 0
+        AVT = 0
+        EMBB = 0
+        missIOT = 0
+        missAVT = 0
+        missEMBB = 0
+        drop = False
+
+        if criticality == 0:
+            IOT = 1
+            timeout = 2500000000
+        elif criticality == 1:
+            AVT = 1
+            timeout = 500000000
+        elif criticality == 2:
+            EMBB = 1
+            timeout = 2500000000
+
+        self._log.info(f"Application {self.name} starts")
+        start = self.env.now
+
+        for process, mapping_info in self._mapping_infos.items():
+            self.system.start_process(process, mapping_info)
+        finished = self.env.all_of([p.finished for p in self.processes()])
+        finished.callbacks.append(lambda _: self._log.info(
+            f"Application {self.name} terminates"))
+        yield finished | self.env.timeout(timeout)
+
+        #if finished.ok and 
+        if not finished.processed:
+            drop = True
+
+        end = self.env.now
+
+        if drop:
+            if criticality == 0:
+                missIOT = 1
+            elif criticality == 1:
+                missAVT = 1
+            elif criticality == 2:
+                missEMBB = 1
+
+        print(str(IOT) +
+              "," + str(AVT) +
+              "," + str(EMBB) +
+              "," + str(missIOT) +
+              "," + str(missAVT) +
+              "," + str(missEMBB) +
+              "," + str(start) +
+              "," + str(end) +
+              "," + str(criticality) +
+              "," + str(prbs) + 
+              "," + str(mod)
+        )
+
+        if drop:
+            self.kill()
+
