@@ -791,7 +791,7 @@ class FiveGSimulation(BaseSimulation):
                 # record application start in the simulation trace
                 trace_writer.begin_duration("instances", app.name, app.name)
                 # start the application
-                finished = self.env.process(app.run_app(criticalities[cnt],prbs[cnt],mod[cnt]))
+                finished = self.env.process(app.run(criticalities[cnt],prbs[cnt],mod[cnt]))
                 cnt += 1
                 # register a callback to record the application termination
                 # in the simulation trace
@@ -829,7 +829,7 @@ class FiveGSimulation(BaseSimulation):
 
 class FiveGRuntimeKpnApplication(RuntimeKpnApplication):
 
-    def run_app(self, criticality, prbs, mod):
+    def run(self, criticality, prbs, mod):
         """Start execution of this application
 
         Yields:
