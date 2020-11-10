@@ -837,13 +837,9 @@ class FiveGRuntimeKpnApplication(RuntimeKpnApplication):
                 application finishes execution.
         """
 
-        IOT = 0
-        AVT = 0
-        EMBB = 0
-        missIOT = 0
-        missAVT = 0
-        missEMBB = 0
-        drop = False
+        IOT, AVT, EMBB = 0, 0, 0
+        missIOT, missAVT, missEMBB = 0, 0, 0
+        timeout = 0
 
         if criticality == 0:
             IOT = 1
@@ -857,21 +853,16 @@ class FiveGRuntimeKpnApplication(RuntimeKpnApplication):
 
         self._log.info(f"Application {self.name} starts")
         start = self.env.now
-
         for process, mapping_info in self._mapping_infos.items():
             self.system.start_process(process, mapping_info)
         finished = self.env.all_of([p.finished for p in self.processes()])
         finished.callbacks.append(lambda _: self._log.info(
             f"Application {self.name} terminates"))
         yield finished | self.env.timeout(timeout)
-
-        #if finished.ok and 
-        if not finished.processed:
-            drop = True
-
         end = self.env.now
 
-        if drop:
+        if not finished.processed:
+            self.kill()
             if criticality == 0:
                 missIOT = 1
             elif criticality == 1:
@@ -892,6 +883,5 @@ class FiveGRuntimeKpnApplication(RuntimeKpnApplication):
               "," + str(mod)
         )
 
-        if drop:
-            self.kill()
+        
 
