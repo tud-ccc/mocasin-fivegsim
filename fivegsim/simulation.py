@@ -750,9 +750,6 @@ class FiveGSimulation(BaseSimulation):
 
         app_finished = []
         criticalities = []
-        prbs = []
-        mod = []
-
         i = 0
         cnt = 0
         # while end of file not reached:
@@ -776,9 +773,6 @@ class FiveGSimulation(BaseSimulation):
                 traces.append(FivegTraceGenerator(self.ntrace, self.proc_time))
                 i += 1
                 criticalities.append(ntrace.UE_criticality)
-                prbs.append(ntrace.PRBs)
-                mod.append(ntrace.modulation_scheme)
-
             mappings = mapper.generate_mappings(kpns,traces) #TODO: collect and add load here
 
             for mapping,trace in zip(mappings,traces):
@@ -791,7 +785,7 @@ class FiveGSimulation(BaseSimulation):
                 # record application start in the simulation trace
                 trace_writer.begin_duration("instances", app.name, app.name)
                 # start the application
-                finished = self.env.process(app.run(criticalities[cnt],prbs[cnt],mod[cnt]))
+                finished = self.env.process(app.run(criticalities[cnt]))
                 cnt += 1
                 # register a callback to record the application termination
                 # in the simulation trace
@@ -829,7 +823,7 @@ class FiveGSimulation(BaseSimulation):
 
 class FiveGRuntimeKpnApplication(RuntimeKpnApplication):
 
-    def run(self, criticality, prbs, mod):
+    def run(self, criticality):
         """Start execution of this application
 
         Yields:
@@ -837,51 +831,25 @@ class FiveGRuntimeKpnApplication(RuntimeKpnApplication):
                 application finishes execution.
         """
 
-        IOT, AVT, EMBB = 0, 0, 0
-        missIOT, missAVT, missEMBB = 0, 0, 0
         timeout = 0
 
         if criticality == 0:
-            IOT = 1
             timeout = 2500000000
         elif criticality == 1:
-            AVT = 1
             timeout = 500000000
         elif criticality == 2:
-            EMBB = 1
             timeout = 2500000000
 
         self._log.info(f"Application {self.name} starts")
-        start = self.env.now
         for process, mapping_info in self._mapping_infos.items():
             self.system.start_process(process, mapping_info)
         finished = self.env.all_of([p.finished for p in self.processes()])
         finished.callbacks.append(lambda _: self._log.info(
             f"Application {self.name} terminates"))
         yield finished | self.env.timeout(timeout)
-        end = self.env.now
 
         if not finished.processed:
             self.kill()
-            if criticality == 0:
-                missIOT = 1
-            elif criticality == 1:
-                missAVT = 1
-            elif criticality == 2:
-                missEMBB = 1
-
-        print(str(IOT) +
-              "," + str(AVT) +
-              "," + str(EMBB) +
-              "," + str(missIOT) +
-              "," + str(missAVT) +
-              "," + str(missEMBB) +
-              "," + str(start) +
-              "," + str(end) +
-              "," + str(criticality) +
-              "," + str(prbs) + 
-              "," + str(mod)
-        )
 
         
 
