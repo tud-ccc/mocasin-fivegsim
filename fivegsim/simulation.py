@@ -750,6 +750,12 @@ class FiveGSimulation(BaseSimulation):
 
         app_finished = []
         criticalities = []
+        prbs = []
+        mod = []
+        pStatFile = open("stats.csv", "w")
+        pStatFile.write("startTime,endTime,criticality,miss,prbs,mod" + "\n")
+        pStatFile.close()
+
         i = 0
         cnt = 0
         # while end of file not reached:
@@ -773,6 +779,9 @@ class FiveGSimulation(BaseSimulation):
                 traces.append(FivegTraceGenerator(self.ntrace, self.proc_time))
                 i += 1
                 criticalities.append(ntrace.UE_criticality)
+                prbs.append(ntrace.PRBs)
+                mod.append(ntrace.modulation_scheme)
+
             mappings = mapper.generate_mappings(kpns,traces) #TODO: collect and add load here
 
             for mapping,trace in zip(mappings,traces):
@@ -785,7 +794,7 @@ class FiveGSimulation(BaseSimulation):
                 # record application start in the simulation trace
                 trace_writer.begin_duration("instances", app.name, app.name)
                 # start the application
-                finished = self.env.process(app.run(criticalities[cnt]))
+                finished = self.env.process(app.run(criticalities[cnt],prbs[cnt],mod[cnt]))
                 cnt += 1
                 # register a callback to record the application termination
                 # in the simulation trace
@@ -800,6 +809,8 @@ class FiveGSimulation(BaseSimulation):
     
         # wait until all applications finished
         yield self.env.all_of(app_finished)
+
+        print("missrate = " + str(self.get_missrate()))
 
     def _run(self):
         """Run the simulation.
@@ -820,18 +831,29 @@ class FiveGSimulation(BaseSimulation):
         # save the execution time
         self.exec_time = self.env.now
 
+    def get_missrate(self):
+        pStatFile = open("stats.csv", "r")
+        lines = pStatFile.readlines()   # Load all lines
+        lines.pop(0)                    # Remove first line
+        lines = [x.strip() for x in lines]
+        lines = [x.split(',') for x in lines]
+        num_miss = 0
+        for line in lines:
+            num_miss += int(line[3])
+        pStatFile.close()
+        return num_miss/len(lines)
+
 
 class FiveGRuntimeKpnApplication(RuntimeKpnApplication):
 
-    def run(self, criticality):
+    def run(self, criticality, prbs, mod):
         """Start execution of this application
 
         Yields:
             ~simpy.events.Event: an event that is triggered when the
                 application finishes execution.
         """
-
-        timeout = 0
+        miss = 0
 
         if criticality == 0:
             timeout = 2500000000
@@ -841,15 +863,30 @@ class FiveGRuntimeKpnApplication(RuntimeKpnApplication):
             timeout = 2500000000
 
         self._log.info(f"Application {self.name} starts")
+        start = self.env.now
         for process, mapping_info in self._mapping_infos.items():
             self.system.start_process(process, mapping_info)
         finished = self.env.all_of([p.finished for p in self.processes()])
         finished.callbacks.append(lambda _: self._log.info(
             f"Application {self.name} terminates"))
         yield finished | self.env.timeout(timeout)
+        end = self.env.now
 
         if not finished.processed:
             self.kill()
+            miss = 1
+
+        # save stats
+        pStatFile = open("stats.csv", "a")
+        pStatFile.write(str(start) +
+              "," + str(end) +
+              "," + str(criticality) +
+              "," + str(miss) +
+              "," + str(prbs) +
+              "," + str(mod) +
+              "\n"
+        )
+        pStatFile.close()
 
         
 
