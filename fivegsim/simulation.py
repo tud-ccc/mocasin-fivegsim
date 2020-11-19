@@ -838,7 +838,7 @@ class FiveGSimulation(BaseSimulation):
                         mapping._channel_info[c] = sf_mapping._channel_info[sf_c]
                 mappings.append(mapping)
 
-            log.info(f"start application {sf_kp.name}")
+            log.info(f"start application {sf_kpn.name}")
             # simulate the actual applications
             for mapping,trace in zip(mappings,traces):
                 # instantiate the application
