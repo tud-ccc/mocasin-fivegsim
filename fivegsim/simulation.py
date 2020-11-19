@@ -694,37 +694,12 @@ class FivegTraceGenerator(TraceGenerator):
 
         # we also need to keep track of the current position in the trace
         self.trace_pos = {}
-
-        self.trace_pos["input"] = 0
-        self.trace_pos["output"] = 0
-        for ph1 in range(self.num_ph1):
-            self.trace_pos["mf" + str(ph1)] = 0
-            self.trace_pos["ifft1" + str(ph1)] = 0
-            self.trace_pos["wind" + str(ph1)] = 0
-            self.trace_pos["fft" + str(ph1)] = 0
-        for ph2 in range(self.num_ph2):
-            self.trace_pos["comb" + str(ph2)] = 0
-        for ph3 in range(self.num_ph3):
-            self.trace_pos["ant" + str(ph3)] = 0
-            self.trace_pos["ifft2" + str(ph3)] = 0
-        for ph4 in range(self.num_ph4):
-            self.trace_pos["demap" + str(ph4)] = 0
+        for key in self.trace.keys():
+            self.trace_pos[key] = 0
 
     def reset(self):
-        self.trace_pos["input"] = 0
-        self.trace_pos["output"] = 0
-        for ph1 in range(self.num_ph1):
-            self.trace_pos["mf" + str(ph1)] = 0
-            self.trace_pos["ifft1" + str(ph1)] = 0
-            self.trace_pos["wind" + str(ph1)] = 0
-            self.trace_pos["fft" + str(ph1)] = 0
-        for ph2 in range(self.num_ph2):
-            self.trace_pos["comb" + str(ph2)] = 0
-        for ph3 in range(self.num_ph3):
-            self.trace_pos["ant" + str(ph3)] = 0
-            self.trace_pos["ifft2" + str(ph3)] = 0
-        for ph4 in range(self.num_ph4):
-            self.trace_pos["demap" + str(ph4)] = 0
+        for key in self.trace.keys():
+            self.trace_pos[key] = 0
 
     def next_segment(self, process_name, processor_type):
         pos = self.trace_pos[process_name]
