@@ -1,4 +1,5 @@
 import copy
+import logging
 import hydra
 import sys
 
@@ -16,6 +17,7 @@ from fivegsim.proc_tgff_reader import get_task_time
 
 sys.setrecursionlimit(10000)
 
+log = logging.getLogger(__name__)
 
 class FivegGraph(KpnGraph):
     """The KPN graph of a 5G application
@@ -809,6 +811,7 @@ class FiveGSimulation(BaseSimulation):
             # that we need to create a new mapper here, as the KPN could change
             # This appears to be a weakness of our mapper interface. The KPN
             # should probably become a parameter of generate_mapping().
+            log.info(f"generate mapping for {sf_kpn.name}")
             rep = hydra.utils.instantiate(self.cfg['representation'],
                                           sf_kpn,
                                           self.platform)
@@ -819,6 +822,7 @@ class FiveGSimulation(BaseSimulation):
                                              rep)
             # create a mapping for the entire subframe
             sf_mapping = mapper.generate_mapping() #TODO: collect and add load here
+            log.info(f"mapping generation done")
 
             # split the mapping up again
             mappings = []
@@ -834,6 +838,7 @@ class FiveGSimulation(BaseSimulation):
                         mapping._channel_info[c] = sf_mapping._channel_info[sf_c]
                 mappings.append(mapping)
 
+            log.info(f"start application {sf_kp.name}")
             # simulate the actual applications
             for mapping,trace in zip(mappings,traces):
                 # instantiate the application
