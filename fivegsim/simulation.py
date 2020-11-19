@@ -1,7 +1,9 @@
+import copy
 import hydra
+import sys
 
-from pykpn.mapper.fair import StaticCFSMapperMultiApp
 from pykpn.common.kpn import KpnGraph, KpnProcess, KpnChannel
+from pykpn.common.mapping import Mapping
 from pykpn.common.trace import TraceGenerator, TraceSegment
 from pykpn.simulate import BaseSimulation
 from pykpn.simulate.application import RuntimeKpnApplication
@@ -10,6 +12,9 @@ from fivegsim.trace_file_manager import TraceFileManager
 from fivegsim.phybench import PHY
 from fivegsim.phybench import LTE
 from fivegsim.proc_tgff_reader import get_task_time
+
+
+sys.setrecursionlimit(10000)
 
 
 class FivegGraph(KpnGraph):
@@ -758,16 +763,13 @@ class FiveGSimulation(BaseSimulation):
 
         i = 0
         cnt = 0
+        sf_count = 0
         # while end of file not reached:
         while self.TFM.TF_EOF is not True:
             
             nsubframe = self.TFM.get_next_subframe()
+            sf_count += 1
 
-            # create a new mapper (this should be TETRiS in the future) Note
-            # that we need to create a new mapper here, as the KPN could change
-            # This appears to be a weakness of our mapper interface. The KPN
-            # should probably become a parameter of generate_mapping().
-            mapper = StaticCFSMapperMultiApp(self.platform)
             # run 100 instances of the 5G app, start one every 1 ms
             kpns = []
             traces = []
@@ -782,8 +784,82 @@ class FiveGSimulation(BaseSimulation):
                 prbs.append(ntrace.PRBs)
                 mod.append(ntrace.modulation_scheme)
 
-            mappings = mapper.generate_mappings(kpns,traces) #TODO: collect and add load here
+            # just wait and try again if there is nothing to process
+            if len(kpns) == 0:
+                # wait for 1 ms
+                yield self.env.timeout(1000000000)
+                continue
 
+            # XXX Merge the applications and traces generated above into one
+            # large kpn and trace for the entire subframe. This is just a
+            # workaround for our mapper API that only accepts a single mapping
+            sf_kpn = KpnGraph(name=f"sf_{sf_count}")
+            # work with a deepcopy of kpns and traces so we don't need to be
+            # afraid of breaking anything in the existing data structures and
+            # can still use them later
+            copy_kpns = copy.deepcopy(kpns)
+            copy_traces = copy.deepcopy(traces)
+            for kpn, trace in zip(copy_kpns, copy_traces):
+                # add all processes and channels to one large kpn
+                for p in kpn.processes():
+                    p.name = f"{kpn.name}_{p.name}"
+                    sf_kpn.add_process(p)
+                for c in kpn.channels():
+                    c.name = f"{kpn.name}_{c.name}"
+                    sf_kpn.add_channel(c)
+
+                # update keys in the traces
+                for key in list(trace.trace.keys()):
+                    trace.trace[f"{kpn.name}_{key}"] = trace.trace.pop(key)
+                for key in list(trace.trace_pos.keys()):
+                    trace.trace_pos[f"{kpn.name}_{key}"] = trace.trace_pos.pop(key)
+                # also update the channel references in the trace segments
+                for process_trace in trace.trace.values():
+                    for core_type_trace in process_trace.values():
+                        for segment in core_type_trace:
+                            c = segment.read_from_channel
+                            if c is not None:
+                                segment.read_from_channel = f"{kpn.name}_{c}"
+                            c = segment.write_to_channel
+                            if c is not None:
+                                segment.write_to_channel = f"{kpn.name}_{c}"
+
+            # merge all the traces into one large trace
+            sf_trace = copy_traces[0]
+            for t in copy_traces[1:]:
+                sf_trace.trace.update(t.trace)
+                sf_trace.trace_pos.update(t.trace_pos)
+
+            # create a new mapper (this should be TETRiS in the future) Note
+            # that we need to create a new mapper here, as the KPN could change
+            # This appears to be a weakness of our mapper interface. The KPN
+            # should probably become a parameter of generate_mapping().
+            rep = hydra.utils.instantiate(self.cfg['representation'],
+                                          sf_kpn,
+                                          self.platform)
+            mapper = hydra.utils.instantiate(self.cfg['mapper'],
+                                             sf_kpn,
+                                             self.platform,
+                                             sf_trace,
+                                             rep)
+            # create a mapping for the entire subframe
+            sf_mapping = mapper.generate_mapping() #TODO: collect and add load here
+
+            # split the mapping up again
+            mappings = []
+            for kpn in kpns:
+                mapping = Mapping(kpn, self.platform)
+                for sf_p in sf_mapping._process_info.keys():
+                    if sf_p.startswith(kpn.name):
+                        p = sf_p[len(kpn.name)+1:]
+                        mapping._process_info[p] = sf_mapping._process_info[sf_p]
+                for sf_c in sf_mapping._channel_info.keys():
+                    if sf_c.startswith(kpn.name):
+                        c = sf_c[len(kpn.name)+1:]
+                        mapping._channel_info[c] = sf_mapping._channel_info[sf_c]
+                mappings.append(mapping)
+
+            # simulate the actual applications
             for mapping,trace in zip(mappings,traces):
                 # instantiate the application
                 app = FiveGRuntimeKpnApplication(name=mapping.kpn.name,
@@ -887,6 +963,3 @@ class FiveGRuntimeKpnApplication(RuntimeKpnApplication):
               "\n"
         )
         pStatFile.close()
-
-        
-
