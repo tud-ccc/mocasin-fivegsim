@@ -1,15 +1,25 @@
-from setuptools import setup, find_packages
-import sys
+# Copyright (C) 2020 TU Dresden
+# All rights reserved
+#
+# Authors: Christian Menard
 
-requires = ["pykpn"]
-if sys.version_info.minor < 7:
-    requires.append("importlib-resources")
+from setuptools import setup, find_namespace_packages, find_packages
+
+project_name = "fivegsim"
+version = "0.1.0"
 
 setup(
-    name="fivegsim",
-    version="0.0.1",
-    packages=find_packages(),
-    install_requires=requires,
-    setup_requires=[],
+    name=project_name,
+    version=version,
+    packages=find_packages(exclude=["test", "*.test"])
+    + find_namespace_packages(include=["hydra_plugins.*"]),
+    install_requires=[
+        "mocasin",
+        "mocasin-maps-examples",
+        "hydra-core<1.1.0",
+        "numpy",
+    ],
+    setup_requires=["pytest-runner"],
+    tests_require=["pytest", "pytest_mock", "mocasin-maps-examples"],
     include_package_data=True,
 )
