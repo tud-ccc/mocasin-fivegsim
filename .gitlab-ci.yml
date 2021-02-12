@@ -1,0 +1,102 @@
+variables:
+  # The mocasin branch to clone. We set the default to the current ref of this
+  # repository, but this variable can be overwritten by an upstream pipeline.
+  MOCASIN_BRANCH: $CI_COMMIT_REF_NAME
+
+stages:
+  - build
+  - test
+
+.build:
+  script:
+    # Clone and install the upstream mocasin. Check out $MOCASIN_BRANCH if it
+    # exists, master otherwise.
+    - echo $MOCASIN_BRANCH
+    - git clone -b $MOCASIN_BRANCH https://gitlab-ci-token:${CI_JOB_TOKEN}@cc.inf.tu-dresden.de/gitlab/mocasin/mocasin /tmp/mocasin || git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@cc.inf.tu-dresden.de/gitlab/mocasin/mocasin /tmp/mocasin
+    - git clone -b $MOCASIN_BRANCH https://gitlab-ci-token:${CI_JOB_TOKEN}@cc.inf.tu-dresden.de/gitlab/mocasin/mocasin-maps-examples /tmp/mocasin-maps-examples || git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@cc.inf.tu-dresden.de/gitlab/mocasin/mocasin-maps-examples /tmp/mocasin-maps-examples
+    - pip wheel --no-deps /tmp/mocasin
+    - pip wheel --no-deps /tmp/mocasin-maps-examples
+    # If this pipeline was triggered by an upstream pipeline, we try to check
+    # out the a local branch with the same name as the upstream branch
+    - if [ "${CI_PIPELINE_SOURCE}" == "pipeline" ]; then git checkout origin/$MOCASIN_BRANCH || true; fi
+    - pip wheel --no-deps .
+  variables:
+    NO_PYNAUTY: 1
+  artifacts:
+    paths:
+      - mocasin*.whl
+
+build-python3.8:
+  extends: .build
+  stage: build
+  image: python:3.8
+  tags:
+    - python3.8
+
+build-python3.7:
+  extends: .build
+  stage: build
+  image: python:3.7
+  tags:
+    - python3.7
+
+build-python3.6:
+  extends: .build
+  stage: build
+  image: python:3.6
+  tags:
+    - python3.6
+
+.test:
+  script:
+    # retrieve pynauty from upstream job
+    - 'curl --location --output pynauty.zip --header "PRIVATE-TOKEN: ${CI_ACCESS_TOKEN}" "https://cc.inf.tu-dresden.de/gitlab/api/v4/projects/26/jobs/artifacts/master/download?job=$PYNAUTY_JOB"' 
+    - file pynauty.zip
+    - unzip pynauty.zip
+    - pip install pynauty*.whl
+    - pip install mocasin*.whl
+    - if [ "${CI_PIPELINE_SOURCE}" == "pipeline" ]; then git checkout origin/$MOCASIN_BRANCH || true; fi
+    - python setup.py test
+
+test-python3.8:
+  extends: .test
+  stage: test
+  image: python:3.8
+  tags:
+    - python3.8
+  variables:
+    PYNAUTY_JOB: build-pynauty-python3.8
+  needs:
+    - build-python3.8
+
+test-python3.7:
+  extends: .test
+  stage: test
+  image: python:3.7
+  tags:
+    - python3.7
+  variables:
+    PYNAUTY_JOB: build-pynauty-python3.7
+  needs:
+    - build-python3.7
+
+test-python3.6:
+  extends: .test
+  stage: test
+  image: python:3.6
+  tags:
+    - python3.6
+  variables:
+    PYNAUTY_JOB: build-pynauty-python3.6
+  needs:
+    - build-python3.6
+
+check-formatting:
+  stage: test
+  image: python:3.8
+  tags:
+    - python3.8
+  needs: []
+  script:
+    - pip install black
+    - black --check .
