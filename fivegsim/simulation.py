@@ -269,6 +269,19 @@ class FivegGraph(DataflowGraph):
             channel = "demap" + str(demap) + "_" + "output"
             self.add_channel(dm_2_out[channel])
 
+    @staticmethod
+    def from_hydra(id, prbs, modulation_scheme, layers, **kwargs):
+        # a little hacky, but it does the trick to instantiate the graph
+        # directly from hydra.
+        class Object(object):
+            pass
+
+        ntrace = Object()
+        ntrace.PRBs = prbs
+        ntrace.modulation_scheme = modulation_scheme
+        ntrace.layers = layers
+        return FivegGraph(id, ntrace)
+
 
 class FivegTraceGenerator(TraceGenerator):
     """Generates traces for the 5G application"""
@@ -976,6 +989,22 @@ class FivegTraceGenerator(TraceGenerator):
         pos = self.trace_pos[process_name]
         self.trace_pos[process_name] = pos + 1
         return self.trace[process_name][processor_type][pos]
+
+    @staticmethod
+    def from_hydra(task_file, prbs, modulation_scheme, layers, **kwargs):
+        # a little hacky, but it does the trick to instantiate the graph
+        # directly from hydra.
+        class Object(object):
+            pass
+
+        ntrace = Object()
+        ntrace.PRBs = prbs
+        ntrace.modulation_scheme = modulation_scheme
+        ntrace.layers = layers
+
+        proc_time = get_task_time(hydra.utils.to_absolute_path(task_file))
+
+        return FivegTraceGenerator(ntrace, proc_time)
 
 
 class FiveGSimulation(BaseSimulation):

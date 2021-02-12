@@ -1,0 +1,14 @@
+# @package _global_
+
+phybench:
+  prbs: 4
+  layers: 4
+  modulation_scheme: 1
+  task_file: "${fivegsim_path:files/lte_processors.tgff}"
+
+graph:
+  _target_: fivegsim.simulation.FivegGraph.from_hydra
+  id: 0
+  prbs: ${phybench.prbs}
+  layers: ${phybench.layers}
+  modulation_scheme: ${phybench.modulation_scheme}
