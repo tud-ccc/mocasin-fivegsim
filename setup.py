@@ -20,7 +20,7 @@ setup(
         "numpy",
     ],
     setup_requires=["pytest-runner"],
-    tests_require=["pytest", "pytest_mock", "mocasin-maps-examples"],
+    tests_require=["pytest", "mocasin-maps-examples"],
     entry_points={
         "console_scripts": [
             "fivegsim=fivegsim.__main__:main",
