@@ -1,7 +1,7 @@
 import os
 import csv
 
-from pykpn.tasks import parse_multirun
+from mocasin.tasks import parse_multirun
 
 
 def fivegsim_stats_parser(dir):

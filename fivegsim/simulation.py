@@ -3,11 +3,11 @@ import logging
 import hydra
 import sys
 
-from pykpn.common.kpn import KpnGraph, KpnProcess, KpnChannel
-from pykpn.common.mapping import Mapping
-from pykpn.common.trace import TraceGenerator, TraceSegment
-from pykpn.simulate import BaseSimulation
-from pykpn.simulate.application import RuntimeKpnApplication
+from mocasin.common.graph import DataflowGraph, DataflowProcess, DataflowChannel
+from mocasin.common.mapping import Mapping
+from mocasin.common.trace import TraceGenerator, TraceSegment
+from mocasin.simulate import BaseSimulation
+from mocasin.simulate.application import RuntimeDataflowApplication
 
 from fivegsim.trace_file_manager import TraceFileManager
 from fivegsim.phybench import PHY
@@ -20,8 +20,8 @@ sys.setrecursionlimit(10000)
 log = logging.getLogger(__name__)
 
 
-class FivegGraph(KpnGraph):
-    """The KPN graph of a 5G application
+class FivegGraph(DataflowGraph):
+    """The Dataflow graph of a 5G application
 
     The 5G application has the following type of tasks:
     micf, combwc, antcomb, demap.
@@ -81,29 +81,29 @@ class FivegGraph(KpnGraph):
 
         # add processes to dictionaries
         process = "input"
-        pin[process] = KpnProcess(process)
+        pin[process] = DataflowProcess(process)
         for ph1 in range(self.num_ph1):
             process = "mf" + str(ph1)
-            pmf[process] = KpnProcess(process)
+            pmf[process] = DataflowProcess(process)
             process = "ifft1" + str(ph1)
-            pifft1[process] = KpnProcess(process)
+            pifft1[process] = DataflowProcess(process)
             process = "wind" + str(ph1)
-            pwind[process] = KpnProcess(process)
+            pwind[process] = DataflowProcess(process)
             process = "fft" + str(ph1)
-            pfft[process] = KpnProcess(process)
+            pfft[process] = DataflowProcess(process)
         for ph2 in range(self.num_ph2):
             process = "comb" + str(ph2)
-            pcomb[process] = KpnProcess(process)
+            pcomb[process] = DataflowProcess(process)
         for ph3 in range(self.num_ph3):
             process = "ant" + str(ph3)
-            pant[process] = KpnProcess(process)
+            pant[process] = DataflowProcess(process)
             process = "ifft2" + str(ph3)
-            pifft2[process] = KpnProcess(process)
+            pifft2[process] = DataflowProcess(process)
         for ph4 in range(self.num_ph4):
             process = "demap" + str(ph4)
-            pdemap[process] = KpnProcess(process)
+            pdemap[process] = DataflowProcess(process)
         process = "output"
-        pout[process] = KpnProcess(process)
+        pout[process] = DataflowProcess(process)
 
         # add channels to dictionaries and connect processes
         # input to MatchedFilter
@@ -111,7 +111,7 @@ class FivegGraph(KpnGraph):
             orig = "input"
             dest = "mf" + str(mf)
             token_size = data_size * (nmbSc)
-            channel = KpnChannel(orig + "_" + dest, token_size)
+            channel = DataflowChannel(orig + "_" + dest, token_size)
             in_2_mf[orig + "_" + dest] = channel
             pin[orig].connect_to_outgoing_channel(channel)
             pmf[dest].connect_to_incomming_channel(channel)
@@ -120,7 +120,7 @@ class FivegGraph(KpnGraph):
             orig = "input"
             dest = "ant" + str(ant)
             token_size = data_size * (nmbSc * lay)
-            channel = KpnChannel(orig + "_" + dest, token_size)
+            channel = DataflowChannel(orig + "_" + dest, token_size)
             in_2_ac[orig + "_" + dest] = channel
             pin[orig].connect_to_outgoing_channel(channel)
             pant[dest].connect_to_incomming_channel(channel)
@@ -130,7 +130,7 @@ class FivegGraph(KpnGraph):
                 orig = "mf" + str(mf)
                 dest = "ifft1" + str(ifft1)
                 token_size = data_size * nmbSc
-                channel = KpnChannel(orig + "_" + dest, token_size)
+                channel = DataflowChannel(orig + "_" + dest, token_size)
                 mf_2_if[orig + "_" + dest] = channel
                 pmf[orig].connect_to_outgoing_channel(channel)
                 pifft1[dest].connect_to_incomming_channel(channel)
@@ -140,7 +140,7 @@ class FivegGraph(KpnGraph):
                 orig = "ifft1" + str(ifft1)
                 dest = "wind" + str(wind)
                 token_size = data_size * nmbSc
-                channel = KpnChannel(orig + "_" + dest, token_size)
+                channel = DataflowChannel(orig + "_" + dest, token_size)
                 if_2_wd[orig + "_" + dest] = channel
                 pifft1[orig].connect_to_outgoing_channel(channel)
                 pwind[dest].connect_to_incomming_channel(channel)
@@ -150,7 +150,7 @@ class FivegGraph(KpnGraph):
                 orig = "wind" + str(wind)
                 dest = "fft" + str(fft)
                 token_size = data_size * nmbSc
-                channel = KpnChannel(orig + "_" + dest, token_size)
+                channel = DataflowChannel(orig + "_" + dest, token_size)
                 wd_2_ff[orig + "_" + dest] = channel
                 pwind[orig].connect_to_outgoing_channel(channel)
                 pfft[dest].connect_to_incomming_channel(channel)
@@ -160,7 +160,7 @@ class FivegGraph(KpnGraph):
                 orig = "fft" + str(fft)
                 dest = "comb" + str(comb)
                 token_size = data_size * nmbSc
-                channel = KpnChannel(orig + "_" + dest, token_size)
+                channel = DataflowChannel(orig + "_" + dest, token_size)
                 ff_2_cw[orig + "_" + dest] = channel
                 pfft[orig].connect_to_outgoing_channel(channel)
                 pcomb[dest].connect_to_incomming_channel(channel)
@@ -170,7 +170,7 @@ class FivegGraph(KpnGraph):
                 orig = "comb" + str(comb)
                 dest = "ant" + str(ant)
                 token_size = data_size * prbs * ant
-                channel = KpnChannel(orig + "_" + dest, token_size)
+                channel = DataflowChannel(orig + "_" + dest, token_size)
                 cw_2_ac[orig + "_" + dest] = channel
                 pcomb[orig].connect_to_outgoing_channel(channel)
                 pant[dest].connect_to_incomming_channel(channel)
@@ -180,7 +180,7 @@ class FivegGraph(KpnGraph):
                 orig = "ant" + str(ant)
                 dest = "ifft2" + str(ifft2)
                 token_size = data_size * prbs * ant
-                channel = KpnChannel(orig + "_" + dest, token_size)
+                channel = DataflowChannel(orig + "_" + dest, token_size)
                 ac_2_if[orig + "_" + dest] = channel
                 pant[orig].connect_to_outgoing_channel(channel)
                 pifft2[dest].connect_to_incomming_channel(channel)
@@ -190,7 +190,7 @@ class FivegGraph(KpnGraph):
                 orig = "ifft2" + str(ifft2)
                 dest = "demap" + str(demap)
                 token_size = data_size * prbs
-                channel = KpnChannel(orig + "_" + dest, token_size)
+                channel = DataflowChannel(orig + "_" + dest, token_size)
                 if_2_dm[orig + "_" + dest] = channel
                 pifft2[orig].connect_to_outgoing_channel(channel)
                 pdemap[dest].connect_to_incomming_channel(channel)
@@ -199,7 +199,7 @@ class FivegGraph(KpnGraph):
             orig = "demap" + str(demap)
             dest = "output"
             token_size = data_size * prbs * mod
-            channel = KpnChannel(orig + "_" + dest, token_size)
+            channel = DataflowChannel(orig + "_" + dest, token_size)
             dm_2_out[orig + "_" + dest] = channel
             pdemap[orig].connect_to_outgoing_channel(channel)
             pout[dest].connect_to_incomming_channel(channel)
@@ -1040,7 +1040,7 @@ class FiveGSimulation(BaseSimulation):
             # XXX Merge the applications and traces generated above into one
             # large kpn and trace for the entire subframe. This is just a
             # workaround for our mapper API that only accepts a single mapping
-            sf_kpn = KpnGraph(name=f"sf_{sf_count}")
+            sf_kpn = DataflowGraph(name=f"sf_{sf_count}")
             # work with a deepcopy of kpns and traces so we don't need to be
             # afraid of breaking anything in the existing data structures and
             # can still use them later
@@ -1118,7 +1118,7 @@ class FiveGSimulation(BaseSimulation):
             # simulate the actual applications
             for mapping, trace in zip(mappings, traces):
                 # instantiate the application
-                app = FiveGRuntimeKpnApplication(
+                app = FiveGRuntimeDataflowApplication(
                     name=mapping.kpn.name,
                     kpn_graph=mapping.kpn,
                     mapping=mapping,
@@ -1182,7 +1182,7 @@ class FiveGSimulation(BaseSimulation):
         return num_miss / len(lines)
 
 
-class FiveGRuntimeKpnApplication(RuntimeKpnApplication):
+class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
     def run(self, criticality, prbs, mod):
         """Start execution of this application
 
