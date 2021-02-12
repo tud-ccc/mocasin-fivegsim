@@ -986,11 +986,11 @@ class FiveGSimulation(BaseSimulation):
         self.cfg = cfg
 
         # Get lte traces
-        self.TFM = TraceFileManager(trace_file)
+        self.TFM = TraceFileManager(hydra.utils.to_absolute_path(trace_file))
         self.ntrace = TraceFileManager.Trace()
 
         # Get task execution time info
-        self.proc_time = get_task_time(task_file)
+        self.proc_time = get_task_time(hydra.utils.to_absolute_path(task_file))
 
     @staticmethod
     def from_hydra(cfg, **kwargs):
@@ -1018,13 +1018,13 @@ class FiveGSimulation(BaseSimulation):
             sf_count += 1
 
             # run 100 instances of the 5G app, start one every 1 ms
-            kpns = []
+            graphs = []
             traces = []
             for ntrace in nsubframe.trace:
                 # create a new graph and trace
                 self.ntrace = ntrace
 
-                kpns.append(FivegGraph(i, self.ntrace))
+                graphs.append(FivegGraph(i, self.ntrace))
                 traces.append(FivegTraceGenerator(self.ntrace, self.proc_time))
                 i += 1
                 criticalities.append(ntrace.UE_criticality)
@@ -1032,34 +1032,34 @@ class FiveGSimulation(BaseSimulation):
                 mod.append(ntrace.modulation_scheme)
 
             # just wait and try again if there is nothing to process
-            if len(kpns) == 0:
+            if len(graphs) == 0:
                 # wait for 1 ms
                 yield self.env.timeout(1000000000)
                 continue
 
             # XXX Merge the applications and traces generated above into one
-            # large kpn and trace for the entire subframe. This is just a
+            # large graph and trace for the entire subframe. This is just a
             # workaround for our mapper API that only accepts a single mapping
-            sf_kpn = DataflowGraph(name=f"sf_{sf_count}")
-            # work with a deepcopy of kpns and traces so we don't need to be
+            sf_graph = DataflowGraph(name=f"sf_{sf_count}")
+            # work with a deepcopy of graphs and traces so we don't need to be
             # afraid of breaking anything in the existing data structures and
             # can still use them later
-            copy_kpns = copy.deepcopy(kpns)
+            copy_graphs = copy.deepcopy(graphs)
             copy_traces = copy.deepcopy(traces)
-            for kpn, trace in zip(copy_kpns, copy_traces):
-                # add all processes and channels to one large kpn
-                for p in kpn.processes():
-                    p.name = f"{kpn.name}_{p.name}"
-                    sf_kpn.add_process(p)
-                for c in kpn.channels():
-                    c.name = f"{kpn.name}_{c.name}"
-                    sf_kpn.add_channel(c)
+            for graph, trace in zip(copy_graphs, copy_traces):
+                # add all processes and channels to one large graph
+                for p in graph.processes():
+                    p.name = f"{graph.name}_{p.name}"
+                    sf_graph.add_process(p)
+                for c in graph.channels():
+                    c.name = f"{graph.name}_{c.name}"
+                    sf_graph.add_channel(c)
 
                 # update keys in the traces
                 for key in list(trace.trace.keys()):
-                    trace.trace[f"{kpn.name}_{key}"] = trace.trace.pop(key)
+                    trace.trace[f"{graph.name}_{key}"] = trace.trace.pop(key)
                 for key in list(trace.trace_pos.keys()):
-                    trace.trace_pos[f"{kpn.name}_{key}"] = trace.trace_pos.pop(
+                    trace.trace_pos[f"{graph.name}_{key}"] = trace.trace_pos.pop(
                         key
                     )
                 # also update the channel references in the trace segments
@@ -1068,10 +1068,10 @@ class FiveGSimulation(BaseSimulation):
                         for segment in core_type_trace:
                             c = segment.read_from_channel
                             if c is not None:
-                                segment.read_from_channel = f"{kpn.name}_{c}"
+                                segment.read_from_channel = f"{graph.name}_{c}"
                             c = segment.write_to_channel
                             if c is not None:
-                                segment.write_to_channel = f"{kpn.name}_{c}"
+                                segment.write_to_channel = f"{graph.name}_{c}"
 
             # merge all the traces into one large trace
             sf_trace = copy_traces[0]
@@ -1080,15 +1080,15 @@ class FiveGSimulation(BaseSimulation):
                 sf_trace.trace_pos.update(t.trace_pos)
 
             # create a new mapper (this should be TETRiS in the future) Note
-            # that we need to create a new mapper here, as the KPN could change
-            # This appears to be a weakness of our mapper interface. The KPN
+            # that we need to create a new mapper here, as the GRAPH could change
+            # This appears to be a weakness of our mapper interface. The GRAPH
             # should probably become a parameter of generate_mapping().
-            log.info(f"generate mapping for {sf_kpn.name}")
+            log.info(f"generate mapping for {sf_graph.name}")
             rep = hydra.utils.instantiate(
-                self.cfg["representation"], sf_kpn, self.platform
+                self.cfg["representation"], sf_graph, self.platform
             )
             mapper = hydra.utils.instantiate(
-                self.cfg["mapper"], sf_kpn, self.platform, sf_trace, rep
+                self.cfg["mapper"], sf_graph, self.platform, sf_trace, rep
             )
             # create a mapping for the entire subframe
             sf_mapping = (
@@ -1098,29 +1098,29 @@ class FiveGSimulation(BaseSimulation):
 
             # split the mapping up again
             mappings = []
-            for kpn in kpns:
-                mapping = Mapping(kpn, self.platform)
+            for graph in graphs:
+                mapping = Mapping(graph, self.platform)
                 for sf_p in sf_mapping._process_info.keys():
-                    if sf_p.startswith(kpn.name):
-                        p = sf_p[len(kpn.name) + 1 :]
+                    if sf_p.startswith(graph.name):
+                        p = sf_p[len(graph.name) + 1 :]
                         mapping._process_info[p] = sf_mapping._process_info[
                             sf_p
                         ]
                 for sf_c in sf_mapping._channel_info.keys():
-                    if sf_c.startswith(kpn.name):
-                        c = sf_c[len(kpn.name) + 1 :]
+                    if sf_c.startswith(graph.name):
+                        c = sf_c[len(graph.name) + 1 :]
                         mapping._channel_info[c] = sf_mapping._channel_info[
                             sf_c
                         ]
                 mappings.append(mapping)
 
-            log.info(f"start application {sf_kpn.name}")
+            log.info(f"start application {sf_graph.name}")
             # simulate the actual applications
             for mapping, trace in zip(mappings, traces):
                 # instantiate the application
                 app = FiveGRuntimeDataflowApplication(
-                    name=mapping.kpn.name,
-                    kpn_graph=mapping.kpn,
+                    name=mapping.graph.name,
+                    graph=mapping.graph,
                     mapping=mapping,
                     trace_generator=trace,
                     system=self.system,
@@ -1164,7 +1164,7 @@ class FiveGSimulation(BaseSimulation):
         finished = self.env.process(self._manager_process())
         # run the actual simulation until the manager process finishes
         self.env.run(finished)
-        # check if all kpn processes finished execution
+        # check if all graph processes finished execution
         self.system.check_errors()
         # save the execution time
         self.exec_time = self.env.now
