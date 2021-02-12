@@ -9,6 +9,7 @@ import hydra
 
 from mocasin.tasks.simulate import simulate
 
+
 @hydra.main(config_path="conf", config_name="fivegsim")
 def main(cfg):
     simulate(cfg)

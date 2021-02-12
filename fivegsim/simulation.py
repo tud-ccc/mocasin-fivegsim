@@ -1088,9 +1088,9 @@ class FiveGSimulation(BaseSimulation):
                 for key in list(trace.trace.keys()):
                     trace.trace[f"{graph.name}_{key}"] = trace.trace.pop(key)
                 for key in list(trace.trace_pos.keys()):
-                    trace.trace_pos[f"{graph.name}_{key}"] = trace.trace_pos.pop(
-                        key
-                    )
+                    trace.trace_pos[
+                        f"{graph.name}_{key}"
+                    ] = trace.trace_pos.pop(key)
                 # also update the channel references in the trace segments
                 for process_trace in trace.trace.values():
                     for core_type_trace in process_trace.values():

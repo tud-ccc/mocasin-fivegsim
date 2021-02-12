@@ -11,10 +11,7 @@ def test_fivegsim(tmpdir):
     trace_file = os.path.join(os.path.dirname(__file__), "test_trace.txt")
 
     res = subprocess.run(
-        [
-            "fivegsim",
-            f"trace_file={trace_file}"
-        ],
+        ["fivegsim", f"trace_file={trace_file}"],
         cwd=tmpdir,
         check=True,
         stdout=subprocess.PIPE,
