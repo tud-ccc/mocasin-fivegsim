@@ -1,0 +1,3 @@
+[tool.black]
+line-length = 80
+exclude = "doc|mocasin/sdf3/_sdf_parser.py|mocasin/maps/mapping/mapsmapping.py|mocasin/maps/mapping/_mapsplatform.py|mocasin/maps/platform/parse.py"

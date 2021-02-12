@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys
 
-requires = ['pykpn']
+requires = ["pykpn"]
 if sys.version_info.minor < 7:
     requires.append("importlib-resources")
 
