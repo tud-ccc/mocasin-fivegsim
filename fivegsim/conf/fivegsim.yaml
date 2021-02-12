@@ -1,0 +1,8 @@
+# @package _global_
+defaults:
+  - common
+  - hydra/job_logging: mocasin
+  - platform: maps_exynos
+  - mapper: static_cfs
+  - representation: SimpleVector
+  - simulation_type: fivegsim

@@ -21,5 +21,10 @@ setup(
     ],
     setup_requires=["pytest-runner"],
     tests_require=["pytest", "pytest_mock", "mocasin-maps-examples"],
+    entry_points={
+        "console_scripts": [
+            "fivegsim=fivegsim.__main__:main",
+        ]
+    },
     include_package_data=True,
 )
