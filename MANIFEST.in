@@ -1,0 +1,3 @@
+recursive-include fivegsim *.yaml
+recursive-include fivegsim *.tgff
+recursive-include fivegsim *.txt
