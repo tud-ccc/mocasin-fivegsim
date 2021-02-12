@@ -1,6 +1,6 @@
 # @package _global_
-trace_file: "../../../../../fivegsim/fivegsim/slicedtrace30BS.txt"
-task_file: "../../../../../fivegsim/fivegsim/lte_processors.tgff"
+trace_file: "${fivegsim_path:files/slicedtrace30BS.txt}"
+task_file: "${fivegsim_path:files/lte_processors.tgff}"
 
 simulation_type:
   _target_: fivegsim.simulation.FiveGSimulation.from_hydra
