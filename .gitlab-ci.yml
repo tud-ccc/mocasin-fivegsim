@@ -27,6 +27,13 @@ stages:
       - mocasin*.whl
       - fivegsim*.whl
 
+build-python3.9:
+  extends: .build
+  stage: build
+  image: python:3.9
+  tags:
+    - python3.9
+
 build-python3.8:
   extends: .build
   stage: build
@@ -59,6 +66,17 @@ build-python3.6:
     - pip install fivegsim*.whl
     - if [ "${CI_PIPELINE_SOURCE}" == "pipeline" ]; then git checkout origin/$MOCASIN_BRANCH || true; fi
     - python setup.py test
+
+test-python3.9:
+  extends: .test
+  stage: test
+  image: python:3.9
+  tags:
+    - python3.9
+  variables:
+    PYNAUTY_JOB: build-pynauty-python3.9
+  needs:
+    - build-python3.9
 
 test-python3.8:
   extends: .test
