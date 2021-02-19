@@ -1,5 +1,5 @@
 # @package _group_
-_target_: fivegsim.simulation.FivegTraceGenerator.from_hydra
+_target_: fivegsim.simulation.FivegTrace.from_hydra
 prbs: ${phybench.prbs}
 layers: ${phybench.layers}
 modulation_scheme: ${phybench.modulation_scheme}

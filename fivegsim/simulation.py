@@ -5,7 +5,13 @@ import sys
 
 from mocasin.common.graph import DataflowGraph, DataflowProcess, DataflowChannel
 from mocasin.common.mapping import Mapping
-from mocasin.common.trace import TraceGenerator, TraceSegment
+from mocasin.common.trace import (
+    DataflowTrace,
+    ComputeSegment,
+    ReadTokenSegment,
+    WriteTokenSegment,
+    SegmentType,
+)
 from mocasin.simulate import BaseSimulation
 from mocasin.simulate.application import RuntimeDataflowApplication
 
@@ -283,7 +289,7 @@ class FivegGraph(DataflowGraph):
         return FivegGraph(id, ntrace)
 
 
-class FivegTraceGenerator(TraceGenerator):
+class FivegTrace(DataflowTrace):
     """Generates traces for the 5G application"""
 
     def __init__(self, ntrace, proc_time):
@@ -323,6 +329,7 @@ class FivegTraceGenerator(TraceGenerator):
         pc_demap_A7 = proc_time[0][demap_offset] * freq_cortex_a7
 
         # process cycles for each task type on ARM_CORTEX_A15
+        # FIXME: the calculated times below appear to be wrong
         pc_mf_A15 = proc_time[0][mf_offset] * freq_cortex_a15
         pc_fft_A15 = proc_time[0][fft_offset] * freq_cortex_a15
         pc_ifft1_A15 = pc_fft_A15
@@ -332,663 +339,210 @@ class FivegTraceGenerator(TraceGenerator):
         pc_ant_A15 = proc_time[0][ant_offset] * freq_cortex_a15
         pc_demap_A15 = proc_time[0][demap_offset] * freq_cortex_a15
 
-        # Define trace dictionaries
-        trace["input"] = {}
-        trace["input"]["ARM_CORTEX_A7"] = list()
-        trace["input"]["ARM_CORTEX_A15"] = list()
-        trace["output"] = {}
-        trace["output"]["ARM_CORTEX_A7"] = list()
-        trace["output"]["ARM_CORTEX_A15"] = list()
-        for ph1 in range(self.num_ph1):
-            trace["mf" + str(ph1)] = {}
-            trace["mf" + str(ph1)]["ARM_CORTEX_A7"] = list()
-            trace["mf" + str(ph1)]["ARM_CORTEX_A15"] = list()
-            trace["ifft1" + str(ph1)] = {}
-            trace["ifft1" + str(ph1)]["ARM_CORTEX_A7"] = list()
-            trace["ifft1" + str(ph1)]["ARM_CORTEX_A15"] = list()
-            trace["wind" + str(ph1)] = {}
-            trace["wind" + str(ph1)]["ARM_CORTEX_A7"] = list()
-            trace["wind" + str(ph1)]["ARM_CORTEX_A15"] = list()
-            trace["fft" + str(ph1)] = {}
-            trace["fft" + str(ph1)]["ARM_CORTEX_A7"] = list()
-            trace["fft" + str(ph1)]["ARM_CORTEX_A15"] = list()
-        for ph2 in range(self.num_ph2):
-            trace["comb" + str(ph2)] = {}
-            trace["comb" + str(ph2)]["ARM_CORTEX_A7"] = list()
-            trace["comb" + str(ph2)]["ARM_CORTEX_A15"] = list()
-        for ph3 in range(self.num_ph3):
-            trace["ant" + str(ph3)] = {}
-            trace["ant" + str(ph3)]["ARM_CORTEX_A7"] = list()
-            trace["ant" + str(ph3)]["ARM_CORTEX_A15"] = list()
-            trace["ifft2" + str(ph3)] = {}
-            trace["ifft2" + str(ph3)]["ARM_CORTEX_A7"] = list()
-            trace["ifft2" + str(ph3)]["ARM_CORTEX_A15"] = list()
-        for ph4 in range(self.num_ph4):
-            trace["demap" + str(ph4)] = {}
-            trace["demap" + str(ph4)]["ARM_CORTEX_A7"] = list()
-            trace["demap" + str(ph4)]["ARM_CORTEX_A15"] = list()
+        self.mf_processor_cycles = {
+            "ARM_CORTEX_A7": pc_mf_A7,
+            "ARM_CORTEX_A15": pc_mf_A15,
+        }
+        self.fft_processor_cycles = {
+            "ARM_CORTEX_A7": pc_fft_A7,
+            "ARM_CORTEX_A15": pc_fft_A15,
+        }
+        self.ifft1_processor_cycles = {
+            "ARM_CORTEX_A7": pc_ifft1_A7,
+            "ARM_CORTEX_A15": pc_ifft1_A15,
+        }
+        self.ifft2_processor_cycles = {
+            "ARM_CORTEX_A7": pc_ifft2_A7,
+            "ARM_CORTEX_A15": pc_ifft2_A15,
+        }
+        self.wind_processor_cycles = {
+            "ARM_CORTEX_A7": pc_wind_A7,
+            "ARM_CORTEX_A15": pc_wind_A15,
+        }
+        self.comb_processor_cycles = {
+            "ARM_CORTEX_A7": pc_comb_A7,
+            "ARM_CORTEX_A15": pc_comb_A15,
+        }
+        self.ant_processor_cycles = {
+            "ARM_CORTEX_A7": pc_ant_A7,
+            "ARM_CORTEX_A15": pc_ant_A15,
+        }
+        self.demap_processor_cycles = {
+            "ARM_CORTEX_A7": pc_demap_A7,
+            "ARM_CORTEX_A15": pc_demap_A15,
+        }
 
+    def get_trace(self, process):
+        if process == "input":
+            yield from self._input_trace()
+        elif process.startswith("mf"):
+            yield from self._mf_trace(process)
+        elif process.startswith("fft"):
+            yield from self._fft_trace(process)
+        elif process.startswith("ifft1"):
+            yield from self._ifft1_trace(process)
+        elif process.startswith("ifft2"):
+            yield from self._ifft2_trace(process)
+        elif process.startswith("wind"):
+            yield from self._wind_trace(process)
+        elif process.startswith("comb"):
+            yield from self._comb_trace(process)
+        elif process.startswith("ant"):
+            yield from self._ant_trace(process)
+        elif process.startswith("demap"):
+            yield from self._demap_trace(process)
+        elif process == "output":
+            yield from self._output_trace()
+        else:
+            raise RuntimeError(f"Unknown process {process}")
+
+    def _input_trace(self):
+        # input task
         for slot in range(2):
-            # input task
             for mf in range(self.num_ph1):
                 # write 1 token to MatchedFilter
-                trace["input"]["ARM_CORTEX_A7"].append(
-                    TraceSegment(
-                        process_cycles=0,
-                        write_to_channel="input" + "_" + "mf" + str(mf),
-                        n_tokens=1,
-                    )
+                yield WriteTokenSegment(
+                    channel="input_mf" + str(mf),
+                    num_tokens=1,
                 )
-                trace["input"]["ARM_CORTEX_A15"].append(
-                    TraceSegment(
-                        process_cycles=0,
-                        write_to_channel="input" + "_" + "mf" + str(mf),
-                        n_tokens=1,
-                    )
-                )
-
             for ant in range(self.num_ph3):
                 # write 1 token to AntennaCombining
-                trace["input"]["ARM_CORTEX_A7"].append(
-                    TraceSegment(
-                        process_cycles=0,
-                        write_to_channel="input" + "_" + "ant" + str(ant),
-                        n_tokens=1,
-                    )
-                )
-                trace["input"]["ARM_CORTEX_A15"].append(
-                    TraceSegment(
-                        process_cycles=0,
-                        write_to_channel="input" + "_" + "ant" + str(ant),
-                        n_tokens=1,
-                    )
+                yield WriteTokenSegment(
+                    channel="input_ant" + str(ant),
+                    num_tokens=1,
                 )
 
-            # MatchedFilter tasks
-            for mf in range(self.num_ph1):
-                # read 1 token from input
-                trace["mf" + str(mf)]["ARM_CORTEX_A7"].append(
-                    TraceSegment(
-                        process_cycles=0,
-                        read_from_channel="input" + "_" + "mf" + str(mf),
-                        n_tokens=1,
-                    )
-                )
-                trace["mf" + str(mf)]["ARM_CORTEX_A15"].append(
-                    TraceSegment(
-                        process_cycles=0,
-                        read_from_channel="input" + "_" + "mf" + str(mf),
-                        n_tokens=1,
-                    )
-                )
-
-                # Process tasks
-                trace["mf" + str(mf)]["ARM_CORTEX_A7"].append(
-                    TraceSegment(process_cycles=pc_mf_A7)
-                )
-                trace["mf" + str(mf)]["ARM_CORTEX_A15"].append(
-                    TraceSegment(process_cycles=pc_mf_A15)
-                )
-
-                # write 1 token to IFFT1
-                for ifft1 in range(self.num_ph1):
-                    trace["mf" + str(mf)]["ARM_CORTEX_A7"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            write_to_channel="mf"
-                            + str(mf)
-                            + "_"
-                            + "ifft1"
-                            + str(ifft1),
-                            n_tokens=1,
-                        )
-                    )
-                    trace["mf" + str(mf)]["ARM_CORTEX_A15"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            write_to_channel="mf"
-                            + str(mf)
-                            + "_"
-                            + "ifft1"
-                            + str(ifft1),
-                            n_tokens=1,
-                        )
-                    )
-
-            # IFFT1 tasks
-            for ifft1 in range(self.num_ph1):
-                # read 1 token from MF
-                for mf in range(self.num_ph1):
-                    trace["ifft1" + str(ifft1)]["ARM_CORTEX_A7"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            read_from_channel="mf"
-                            + str(mf)
-                            + "_"
-                            + "ifft1"
-                            + str(ifft1),
-                            n_tokens=1,
-                        )
-                    )
-                    trace["ifft1" + str(ifft1)]["ARM_CORTEX_A15"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            read_from_channel="mf"
-                            + str(mf)
-                            + "_"
-                            + "ifft1"
-                            + str(ifft1),
-                            n_tokens=1,
-                        )
-                    )
-
-                # Process tasks
-                trace["ifft1" + str(ifft1)]["ARM_CORTEX_A7"].append(
-                    TraceSegment(process_cycles=pc_ifft1_A7)
-                )
-                trace["ifft1" + str(ifft1)]["ARM_CORTEX_A15"].append(
-                    TraceSegment(process_cycles=pc_ifft1_A15)
-                )
-
-                # write 1 token to Windowing
-                for wind in range(self.num_ph1):
-                    trace["ifft1" + str(ifft1)]["ARM_CORTEX_A7"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            write_to_channel="ifft1"
-                            + str(ifft1)
-                            + "_"
-                            + "wind"
-                            + str(wind),
-                            n_tokens=1,
-                        )
-                    )
-                    trace["ifft1" + str(ifft1)]["ARM_CORTEX_A15"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            write_to_channel="ifft1"
-                            + str(ifft1)
-                            + "_"
-                            + "wind"
-                            + str(wind),
-                            n_tokens=1,
-                        )
-                    )
-
-            # Windowing tasks
-            for wind in range(self.num_ph1):
-                # read 1 token from IFFT1
-                for ifft1 in range(self.num_ph1):
-                    trace["wind" + str(wind)]["ARM_CORTEX_A7"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            read_from_channel="ifft1"
-                            + str(ifft1)
-                            + "_"
-                            + "wind"
-                            + str(wind),
-                            n_tokens=1,
-                        )
-                    )
-                    trace["wind" + str(wind)]["ARM_CORTEX_A15"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            read_from_channel="ifft1"
-                            + str(ifft1)
-                            + "_"
-                            + "wind"
-                            + str(wind),
-                            n_tokens=1,
-                        )
-                    )
-
-                # Process tasks
-                trace["wind" + str(wind)]["ARM_CORTEX_A7"].append(
-                    TraceSegment(process_cycles=pc_wind_A7)
-                )
-                trace["wind" + str(wind)]["ARM_CORTEX_A15"].append(
-                    TraceSegment(process_cycles=pc_wind_A15)
-                )
-
-                # write 1 token to FFT
-                for fft in range(self.num_ph1):
-                    trace["wind" + str(wind)]["ARM_CORTEX_A7"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            write_to_channel="wind"
-                            + str(wind)
-                            + "_"
-                            + "fft"
-                            + str(fft),
-                            n_tokens=1,
-                        )
-                    )
-                    trace["wind" + str(wind)]["ARM_CORTEX_A15"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            write_to_channel="wind"
-                            + str(wind)
-                            + "_"
-                            + "fft"
-                            + str(fft),
-                            n_tokens=1,
-                        )
-                    )
-
-            # FFT tasks
-            for fft in range(self.num_ph1):
-                # read 1 token from IFFT1
-                for wind in range(self.num_ph1):
-                    trace["fft" + str(fft)]["ARM_CORTEX_A7"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            read_from_channel="wind"
-                            + str(wind)
-                            + "_"
-                            + "fft"
-                            + str(fft),
-                            n_tokens=1,
-                        )
-                    )
-                    trace["fft" + str(fft)]["ARM_CORTEX_A15"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            read_from_channel="wind"
-                            + str(wind)
-                            + "_"
-                            + "fft"
-                            + str(fft),
-                            n_tokens=1,
-                        )
-                    )
-
-                # Process tasks
-                trace["fft" + str(fft)]["ARM_CORTEX_A7"].append(
-                    TraceSegment(process_cycles=pc_fft_A7)
-                )
-                trace["fft" + str(fft)]["ARM_CORTEX_A15"].append(
-                    TraceSegment(process_cycles=pc_fft_A15)
-                )
-
-                # write 1 token to FFT
-                for comb in range(self.num_ph2):
-                    trace["fft" + str(fft)]["ARM_CORTEX_A7"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            write_to_channel="fft"
-                            + str(fft)
-                            + "_"
-                            + "comb"
-                            + str(comb),
-                            n_tokens=1,
-                        )
-                    )
-                    trace["fft" + str(fft)]["ARM_CORTEX_A15"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            write_to_channel="fft"
-                            + str(fft)
-                            + "_"
-                            + "comb"
-                            + str(comb),
-                            n_tokens=1,
-                        )
-                    )
-
-            # CombW tasks
-            for comb in range(self.num_ph2):
-                # read 1 token from FFT
-                for fft in range(self.num_ph1):
-                    trace["comb" + str(comb)]["ARM_CORTEX_A7"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            read_from_channel="fft"
-                            + str(fft)
-                            + "_"
-                            + "comb"
-                            + str(comb),
-                            n_tokens=1,
-                        )
-                    )
-                    trace["comb" + str(comb)]["ARM_CORTEX_A15"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            read_from_channel="fft"
-                            + str(fft)
-                            + "_"
-                            + "comb"
-                            + str(comb),
-                            n_tokens=1,
-                        )
-                    )
-
-                # Process tasks
-                trace["comb" + str(comb)]["ARM_CORTEX_A7"].append(
-                    TraceSegment(process_cycles=pc_comb_A7)
-                )
-                trace["comb" + str(comb)]["ARM_CORTEX_A15"].append(
-                    TraceSegment(process_cycles=pc_comb_A15)
-                )
-
-                # write 1 token to AntComb
-                for ant in range(self.num_ph3):
-                    trace["comb" + str(comb)]["ARM_CORTEX_A7"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            write_to_channel="comb"
-                            + str(comb)
-                            + "_"
-                            + "ant"
-                            + str(ant),
-                            n_tokens=1,
-                        )
-                    )
-                    trace["comb" + str(comb)]["ARM_CORTEX_A15"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            write_to_channel="comb"
-                            + str(comb)
-                            + "_"
-                            + "ant"
-                            + str(ant),
-                            n_tokens=1,
-                        )
-                    )
-
-            # AntComb tasks
-            for ant in range(self.num_ph3):
-                # read 1 token from input
-                trace["ant" + str(ant)]["ARM_CORTEX_A7"].append(
-                    TraceSegment(
-                        process_cycles=0,
-                        read_from_channel="input" + "_" + "ant" + str(ant),
-                        n_tokens=1,
-                    )
-                )
-                trace["ant" + str(ant)]["ARM_CORTEX_A15"].append(
-                    TraceSegment(
-                        process_cycles=0,
-                        read_from_channel="input" + "_" + "ant" + str(ant),
-                        n_tokens=1,
-                    )
-                )
-
-                # read 1 token from CombW
-                for comb in range(self.num_ph2):
-                    trace["ant" + str(ant)]["ARM_CORTEX_A7"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            read_from_channel="comb"
-                            + str(comb)
-                            + "_"
-                            + "ant"
-                            + str(ant),
-                            n_tokens=1,
-                        )
-                    )
-                    trace["ant" + str(ant)]["ARM_CORTEX_A15"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            read_from_channel="comb"
-                            + str(comb)
-                            + "_"
-                            + "ant"
-                            + str(ant),
-                            n_tokens=1,
-                        )
-                    )
-
-                # Process tasks
-                trace["ant" + str(ant)]["ARM_CORTEX_A7"].append(
-                    TraceSegment(process_cycles=pc_ant_A7)
-                )
-                trace["ant" + str(ant)]["ARM_CORTEX_A15"].append(
-                    TraceSegment(process_cycles=pc_ant_A15)
-                )
-
-                # write 1 token to IFFT2
-                for ifft2 in range(self.num_ph3):
-                    trace["ant" + str(ant)]["ARM_CORTEX_A7"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            write_to_channel="ant"
-                            + str(ant)
-                            + "_"
-                            + "ifft2"
-                            + str(ifft2),
-                            n_tokens=1,
-                        )
-                    )
-                    trace["ant" + str(ant)]["ARM_CORTEX_A15"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            write_to_channel="ant"
-                            + str(ant)
-                            + "_"
-                            + "ifft2"
-                            + str(ifft2),
-                            n_tokens=1,
-                        )
-                    )
-
-            # IFFT2 tasks
-            for ifft2 in range(self.num_ph3):
-                # read 1 token from AntComb
-                for ant in range(self.num_ph3):
-                    trace["ifft2" + str(ifft2)]["ARM_CORTEX_A7"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            read_from_channel="ant"
-                            + str(ant)
-                            + "_"
-                            + "ifft2"
-                            + str(ifft2),
-                            n_tokens=1,
-                        )
-                    )
-                    trace["ifft2" + str(ifft2)]["ARM_CORTEX_A15"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            read_from_channel="ant"
-                            + str(ant)
-                            + "_"
-                            + "ifft2"
-                            + str(ifft2),
-                            n_tokens=1,
-                        )
-                    )
-
-                # Process tasks
-                trace["ifft2" + str(ifft2)]["ARM_CORTEX_A7"].append(
-                    TraceSegment(process_cycles=pc_ifft2_A7)
-                )
-                trace["ifft2" + str(ifft2)]["ARM_CORTEX_A15"].append(
-                    TraceSegment(process_cycles=pc_ifft2_A15)
-                )
-
-                # write 1 token to Windowing
-                for demap in range(self.num_ph4):
-                    trace["ifft2" + str(ifft2)]["ARM_CORTEX_A7"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            write_to_channel="ifft2"
-                            + str(ifft2)
-                            + "_"
-                            + "demap"
-                            + str(demap),
-                            n_tokens=1,
-                        )
-                    )
-                    trace["ifft2" + str(ifft2)]["ARM_CORTEX_A15"].append(
-                        TraceSegment(
-                            process_cycles=0,
-                            write_to_channel="ifft2"
-                            + str(ifft2)
-                            + "_"
-                            + "demap"
-                            + str(demap),
-                            n_tokens=1,
-                        )
-                    )
-
-        # Demap tasks
-        for demap in range(self.num_ph4):
-            trace["demap" + str(demap)] = {}
-            trace["demap" + str(demap)]["ARM_CORTEX_A7"] = list()
-            trace["demap" + str(demap)]["ARM_CORTEX_A15"] = list()
-
-            # read 2 tokens from IFFT2
-            for ifft2 in range(self.num_ph3):
-                trace["demap" + str(demap)]["ARM_CORTEX_A7"].append(
-                    TraceSegment(
-                        process_cycles=0,
-                        read_from_channel="ifft2"
-                        + str(ifft2)
-                        + "_"
-                        + "demap"
-                        + str(demap),
-                        n_tokens=2,
-                    )
-                )
-                trace["demap" + str(demap)]["ARM_CORTEX_A15"].append(
-                    TraceSegment(
-                        process_cycles=0,
-                        read_from_channel="ifft2"
-                        + str(ifft2)
-                        + "_"
-                        + "demap"
-                        + str(demap),
-                        n_tokens=2,
-                    )
-                )
-
+    def _mf_trace(self, process):
+        # MatchedFilter tasks
+        for slot in range(2):
+            # read 1 token from input
+            yield ReadTokenSegment(channel=f"input_{process}", num_tokens=1)
             # Process tasks
-            trace["demap" + str(demap)]["ARM_CORTEX_A7"].append(
-                TraceSegment(process_cycles=pc_demap_A7)
-            )
-            trace["demap" + str(demap)]["ARM_CORTEX_A15"].append(
-                TraceSegment(process_cycles=pc_demap_A15)
-            )
-
-            # write 1 token to output
-            trace["demap" + str(demap)]["ARM_CORTEX_A7"].append(
-                TraceSegment(
-                    process_cycles=0,
-                    write_to_channel="demap" + str(demap) + "_" + "output",
-                    n_tokens=1,
+            yield ComputeSegment(self.mf_processor_cycles)
+            # write 1 token to IFFT1
+            for ifft1 in range(self.num_ph1):
+                yield WriteTokenSegment(
+                    channel=f"{process}_ifft1{ifft1}", num_tokens=1
                 )
-            )
-            trace["demap" + str(demap)]["ARM_CORTEX_A15"].append(
-                TraceSegment(
-                    process_cycles=0,
-                    write_to_channel="demap" + str(demap) + "_" + "output",
-                    n_tokens=1,
-                )
-            )
 
+    def _ifft1_trace(self, process):
+        # IFFT1 tasks
+        for slot in range(2):
+            # read 1 token from MF
+            for mf in range(self.num_ph1):
+                yield ReadTokenSegment(
+                    channel=f"mf{mf}_{process}", num_tokens=1
+                )
+            # Process tasks
+            yield ComputeSegment(self.ifft1_processor_cycles)
+
+            # write 1 token to Windowing
+            for wind in range(self.num_ph1):
+                yield WriteTokenSegment(
+                    channel=f"{process}_wind{wind}", num_tokens=1
+                )
+
+    def _wind_trace(self, process):
+        # Windowing tasks
+        for slot in range(2):
+            # read 1 token from IFFT1
+            for ifft1 in range(self.num_ph1):
+                yield ReadTokenSegment(
+                    channel=f"ifft1{ifft1}_{process}", num_tokens=1
+                )
+            # Process tasks
+            yield ComputeSegment(self.wind_processor_cycles)
+            # write 1 token to FFT
+            for fft in range(self.num_ph1):
+                yield WriteTokenSegment(
+                    channel=f"{process}_fft{fft}", num_tokens=1
+                )
+
+    def _fft_trace(self, process):
+        # FFT tasks
+        for slot in range(2):
+            # read 1 token from IFFT1
+            for wind in range(self.num_ph1):
+                yield ReadTokenSegment(
+                    channel=f"wind{wind}_{process}", num_tokens=1
+                )
+            # Process tasks
+            yield ComputeSegment(self.fft_processor_cycles)
+            # write 1 token to CombW
+            for comb in range(self.num_ph2):
+                yield WriteTokenSegment(
+                    channel=f"{process}_comb{comb}", num_tokens=1
+                )
+
+    def _comb_trace(self, process):
+        # CombW tasks
+        for slot in range(2):
+            # read 1 token from FFT
+            for fft in range(self.num_ph1):
+                yield ReadTokenSegment(
+                    channel=f"fft{fft}_{process}", num_tokens=1
+                )
+            # Process tasks
+            yield ComputeSegment(self.comb_processor_cycles)
+
+            # write 1 token to AntComb
+            for ant in range(self.num_ph3):
+                yield WriteTokenSegment(
+                    channel=f"{process}_ant{ant}", num_tokens=1
+                )
+
+    def _ant_trace(self, process):
+        # AntComb tasks
+        for slot in range(2):
+            # read 1 token from input
+            yield ReadTokenSegment(channel=f"input_{process}", num_tokens=1)
+            # read 1 token from CombW
+            for comb in range(self.num_ph2):
+                yield ReadTokenSegment(
+                    channel=f"comb{comb}_{process}", num_tokens=1
+                )
+            # Process tasks
+            yield ComputeSegment(self.ant_processor_cycles)
+            # write 1 token to IFFT2
+            for ifft2 in range(self.num_ph3):
+                yield WriteTokenSegment(
+                    channel=f"{process}_ifft2{ifft2}", num_tokens=1
+                )
+
+    def _ifft2_trace(self, process):
+        # IFFT2 tasks
+        for slot in range(2):
+            # read 1 token from AntComb
+            for ant in range(self.num_ph3):
+                yield ReadTokenSegment(
+                    channel=f"ant{ant}_{process}", num_tokens=1
+                )
+            # Process tasks
+            yield ComputeSegment(self.ifft2_processor_cycles)
+
+            # write 1 token to Windowing
+            for demap in range(self.num_ph4):
+                yield WriteTokenSegment(
+                    channel=f"{process}_demap{demap}", num_tokens=1
+                )
+
+    def _demap_trace(self, process):
+        # Demap tasks
+        # read 2 tokens from IFFT2
+        for ifft2 in range(self.num_ph3):
+            yield ReadTokenSegment(
+                channel=f"ifft2{ifft2}_{process}", num_tokens=2
+            )
+        # Process tasks
+        yield ComputeSegment(self.demap_processor_cycles)
+        # write 1 token to output
+        yield WriteTokenSegment(channel=f"{process}_output", num_tokens=1)
+
+    def _output_trace(self):
         # Output task
         # read 1 token from Demap
         for demap in range(self.num_ph4):
-            trace["output"]["ARM_CORTEX_A7"].append(
-                TraceSegment(
-                    process_cycles=0,
-                    read_from_channel="demap" + str(demap) + "_" + "output",
-                    n_tokens=1,
-                )
-            )
-            trace["output"]["ARM_CORTEX_A15"].append(
-                TraceSegment(
-                    process_cycles=0,
-                    read_from_channel="demap" + str(demap) + "_" + "output",
-                    n_tokens=1,
-                )
-            )
-
-        # terminate all tasks
-        trace["input"]["ARM_CORTEX_A7"].append(
-            TraceSegment(process_cycles=0, terminate=True)
-        )
-        trace["input"]["ARM_CORTEX_A15"].append(
-            TraceSegment(process_cycles=0, terminate=True)
-        )
-        for mf in range(self.num_ph1):
-            trace["mf" + str(mf)]["ARM_CORTEX_A7"].append(
-                TraceSegment(process_cycles=0, terminate=True)
-            )
-            trace["mf" + str(mf)]["ARM_CORTEX_A15"].append(
-                TraceSegment(process_cycles=0, terminate=True)
-            )
-        for ifft1 in range(self.num_ph1):
-            trace["ifft1" + str(ifft1)]["ARM_CORTEX_A7"].append(
-                TraceSegment(process_cycles=0, terminate=True)
-            )
-            trace["ifft1" + str(ifft1)]["ARM_CORTEX_A15"].append(
-                TraceSegment(process_cycles=0, terminate=True)
-            )
-        for wind in range(self.num_ph1):
-            trace["wind" + str(wind)]["ARM_CORTEX_A7"].append(
-                TraceSegment(process_cycles=0, terminate=True)
-            )
-            trace["wind" + str(wind)]["ARM_CORTEX_A15"].append(
-                TraceSegment(process_cycles=0, terminate=True)
-            )
-        for fft in range(self.num_ph1):
-            trace["fft" + str(fft)]["ARM_CORTEX_A7"].append(
-                TraceSegment(process_cycles=0, terminate=True)
-            )
-            trace["fft" + str(fft)]["ARM_CORTEX_A15"].append(
-                TraceSegment(process_cycles=0, terminate=True)
-            )
-        for comb in range(self.num_ph2):
-            trace["comb" + str(comb)]["ARM_CORTEX_A7"].append(
-                TraceSegment(process_cycles=0, terminate=True)
-            )
-            trace["comb" + str(comb)]["ARM_CORTEX_A15"].append(
-                TraceSegment(process_cycles=0, terminate=True)
-            )
-        for ant in range(self.num_ph3):
-            trace["ant" + str(ant)]["ARM_CORTEX_A7"].append(
-                TraceSegment(process_cycles=0, terminate=True)
-            )
-            trace["ant" + str(ant)]["ARM_CORTEX_A15"].append(
-                TraceSegment(process_cycles=0, terminate=True)
-            )
-        for ifft2 in range(self.num_ph3):
-            trace["ifft2" + str(ifft2)]["ARM_CORTEX_A7"].append(
-                TraceSegment(process_cycles=0, terminate=True)
-            )
-            trace["ifft2" + str(ifft2)]["ARM_CORTEX_A15"].append(
-                TraceSegment(process_cycles=0, terminate=True)
-            )
-        for demap in range(self.num_ph4):
-            trace["demap" + str(demap)]["ARM_CORTEX_A7"].append(
-                TraceSegment(process_cycles=0, terminate=True)
-            )
-            trace["demap" + str(demap)]["ARM_CORTEX_A15"].append(
-                TraceSegment(process_cycles=0, terminate=True)
-            )
-        trace["output"]["ARM_CORTEX_A7"].append(
-            TraceSegment(process_cycles=0, terminate=True)
-        )
-        trace["output"]["ARM_CORTEX_A15"].append(
-            TraceSegment(process_cycles=0, terminate=True)
-        )
-
-        self.trace = trace
-
-        # we also need to keep track of the current position in the trace
-        self.trace_pos = {}
-        for key in self.trace.keys():
-            self.trace_pos[key] = 0
-
-    def reset(self):
-        for key in self.trace.keys():
-            self.trace_pos[key] = 0
-
-    def next_segment(self, process_name, processor_type):
-        pos = self.trace_pos[process_name]
-        self.trace_pos[process_name] = pos + 1
-        return self.trace[process_name][processor_type][pos]
+            yield ReadTokenSegment(channel=f"demap{demap}_output", num_tokens=1)
 
     @staticmethod
     def from_hydra(task_file, prbs, modulation_scheme, layers, **kwargs):
@@ -1004,7 +558,34 @@ class FivegTraceGenerator(TraceGenerator):
 
         proc_time = get_task_time(hydra.utils.to_absolute_path(task_file))
 
-        return FivegTraceGenerator(ntrace, proc_time)
+        return FivegTrace(ntrace, proc_time)
+
+
+class MergedFivegTrace(DataflowTrace):
+    def __init__(self, prefixes, traces):
+        self.prefixes = prefixes
+        self.traces = {p: t for p, t in zip(prefixes, traces)}
+
+    def get_trace(self, process):
+        # find the prefix that matches the given process
+        prefix = None
+        for p in self.prefixes:
+            if process.startswith(p):
+                prefix = p
+        assert prefix is not None
+
+        process = process[len(prefix) :]  # remove the prefix from process name
+
+        # iterate over all segments
+        for segment in self.traces[prefix].get_trace(process):
+            # add the prefix to all channel names
+            if (
+                segment.segment_type == SegmentType.WRITE_TOKEN
+                or segment.segment_type == SegmentType.READ_TOKEN
+            ):
+                segment._channel = prefix + segment.channel
+
+            yield segment
 
 
 class FiveGSimulation(BaseSimulation):
@@ -1054,7 +635,7 @@ class FiveGSimulation(BaseSimulation):
                 self.ntrace = ntrace
 
                 graphs.append(FivegGraph(i, self.ntrace))
-                traces.append(FivegTraceGenerator(self.ntrace, self.proc_time))
+                traces.append(FivegTrace(self.ntrace, self.proc_time))
                 i += 1
                 criticalities.append(ntrace.UE_criticality)
                 prbs.append(ntrace.PRBs)
@@ -1070,12 +651,11 @@ class FiveGSimulation(BaseSimulation):
             # large graph and trace for the entire subframe. This is just a
             # workaround for our mapper API that only accepts a single mapping
             sf_graph = DataflowGraph(name=f"sf_{sf_count}")
-            # work with a deepcopy of graphs and traces so we don't need to be
+            # work with a deepcopy of graphs so we don't need to be
             # afraid of breaking anything in the existing data structures and
             # can still use them later
             copy_graphs = copy.deepcopy(graphs)
-            copy_traces = copy.deepcopy(traces)
-            for graph, trace in zip(copy_graphs, copy_traces):
+            for graph in copy_graphs:
                 # add all processes and channels to one large graph
                 for p in graph.processes():
                     p.name = f"{graph.name}_{p.name}"
@@ -1084,29 +664,9 @@ class FiveGSimulation(BaseSimulation):
                     c.name = f"{graph.name}_{c.name}"
                     sf_graph.add_channel(c)
 
-                # update keys in the traces
-                for key in list(trace.trace.keys()):
-                    trace.trace[f"{graph.name}_{key}"] = trace.trace.pop(key)
-                for key in list(trace.trace_pos.keys()):
-                    trace.trace_pos[
-                        f"{graph.name}_{key}"
-                    ] = trace.trace_pos.pop(key)
-                # also update the channel references in the trace segments
-                for process_trace in trace.trace.values():
-                    for core_type_trace in process_trace.values():
-                        for segment in core_type_trace:
-                            c = segment.read_from_channel
-                            if c is not None:
-                                segment.read_from_channel = f"{graph.name}_{c}"
-                            c = segment.write_to_channel
-                            if c is not None:
-                                segment.write_to_channel = f"{graph.name}_{c}"
-
-            # merge all the traces into one large trace
-            sf_trace = copy_traces[0]
-            for t in copy_traces[1:]:
-                sf_trace.trace.update(t.trace)
-                sf_trace.trace_pos.update(t.trace_pos)
+            # create a combined trace object
+            prefixes = [f"{g.name}_" for g in copy_graphs]
+            sf_trace = MergedFivegTrace(prefixes, traces)
 
             # create a new mapper (this should be TETRiS in the future) Note
             # that we need to create a new mapper here, as the GRAPH could change
@@ -1151,7 +711,7 @@ class FiveGSimulation(BaseSimulation):
                     name=mapping.graph.name,
                     graph=mapping.graph,
                     mapping=mapping,
-                    trace_generator=trace,
+                    app_trace=trace,
                     system=self.system,
                 )
                 # record application start in the simulation trace
