@@ -133,257 +133,162 @@ class FivegGraph(DataflowGraph):
 class FivegTrace(DataflowTrace):
     """Generates traces for the 5G application"""
 
+    class kernelTrace:
+        """Represents a single LTE trace."""
+
+        def __init__(self, name, n_firings, read_from, input_tokens,
+                     write_to, output_tokens, n_instances,
+                     processor_cycles):
+            self.name = name
+            self.n_firings = n_firings
+            self.read_from = read_from
+            self.input_tokens = input_tokens
+            self.write_to = write_to
+            self.output_tokens = output_tokens
+            self.n_instances = n_instances
+            self.processor_cycles = processor_cycles
+
     def __init__(self, ntrace, proc_time):
-        # build a dictionary of all the traces
-        trace = {}
 
         # Number of tasks of each type
-        self.num_ph1 = PHY.get_num_micf(ntrace.layers)
-        self.num_ph2 = PHY.get_num_combwc()
-        self.num_ph3 = PHY.get_num_antcomb(ntrace.layers)
-        self.num_ph4 = PHY.get_num_demap()
+        num_ph1 = PHY.get_num_micf(ntrace.layers)
+        num_ph2 = PHY.get_num_combwc()
+        num_ph3 = PHY.get_num_antcomb(ntrace.layers)
+        num_ph4 = PHY.get_num_demap()
 
-        # number of PRBs
         prbs = ntrace.PRBs
-        # modulation scheme
         mod = ntrace.modulation_scheme
 
-        # clock frequency for core types Cortex A7 and Cortex15
-        freq_cortex_a7 = 1300000000
-        freq_cortex_a15 = 2000000000
+        # kernel names
+        kernels = ["input",
+                   "mf",
+                   "ifft1",
+                   "wind",
+                   "fft",
+                   "comb",
+                   "ant",
+                   "ifft2",
+                   "demap",
+                   "output"]
 
-        mf_offset = prbs - 1
-        fft_offset = prbs + 100 - 1
-        wind_offset = prbs + 200 - 1
-        comb_offset = prbs + 300 - 1
-        ant_offset = prbs + 400 - 1
-        demap_offset = prbs + (500 + 100 * mod) - 1
+        # number of firings for each kernel type
+        firings = [2, 2, 2, 2, 2, 2, 2, 2, 1, 1]
 
-        # process cycles for each task type on ARM_CORTEX_A7
-        pc_mf_A7 = proc_time[0][mf_offset] * freq_cortex_a7
-        pc_fft_A7 = proc_time[0][fft_offset] * freq_cortex_a7
-        pc_ifft1_A7 = pc_fft_A7
-        pc_ifft2_A7 = pc_fft_A7
-        pc_wind_A7 = proc_time[0][wind_offset] * freq_cortex_a7
-        pc_comb_A7 = proc_time[0][comb_offset] * freq_cortex_a7
-        pc_ant_A7 = proc_time[0][ant_offset] * freq_cortex_a7
-        pc_demap_A7 = proc_time[0][demap_offset] * freq_cortex_a7
+        # processes read from
+        read_from = [[],
+                     ["input"], 
+                     ["mf"],
+                     ["ifft1"], 
+                     ["wind"],
+                     ["fft"],
+                     ["input","comb"],
+                     ["ant"],
+                     ["ifft2"],
+                     ["demap"]]
 
-        # process cycles for each task type on ARM_CORTEX_A15
-        # FIXME: the calculated times below appear to be wrong
-        pc_mf_A15 = proc_time[0][mf_offset] * freq_cortex_a15
-        pc_fft_A15 = proc_time[0][fft_offset] * freq_cortex_a15
-        pc_ifft1_A15 = pc_fft_A15
-        pc_ifft2_A15 = pc_fft_A15
-        pc_wind_A15 = proc_time[0][wind_offset] * freq_cortex_a15
-        pc_comb_A15 = proc_time[0][comb_offset] * freq_cortex_a15
-        pc_ant_A15 = proc_time[0][ant_offset] * freq_cortex_a15
-        pc_demap_A15 = proc_time[0][demap_offset] * freq_cortex_a15
+        # number of input tokens
+        input_tokens = [[None], [1], [1], [1], [1], [1], [1,1], [1], [2], [1]]
 
-        self.mf_processor_cycles = {
-            "ARM_CORTEX_A7": pc_mf_A7,
-            "ARM_CORTEX_A15": pc_mf_A15,
+        # processes read from
+        write_to = [["mf", "ant"],
+                    ["ifft1"],
+                    ["wind"],
+                    ["fft"],
+                    ["comb"],
+                    ["ant"],
+                    ["ifft2"],
+                    ["demap"],
+                    ["output"],
+                    []]
+
+        # number of input tokens
+        output_tokens = [[1,1], [1], [1], [1], [1], [1], [1], [1], [1], [None]]
+
+        # number of instances for each kernel
+        n_instances = [1,
+                          num_ph1,
+                          num_ph1,
+                          num_ph1,
+                          num_ph1,
+                          num_ph2,
+                          num_ph3,
+                          num_ph3,
+                          num_ph4,
+                          1]
+
+        # offsets on tgff file
+        offset = [None,
+                  prbs - 1,
+                  prbs + 100 - 1,
+                  prbs + 200 - 1, 
+                  prbs + 100 - 1,
+                  prbs + 300 - 1,
+                  prbs + 400 - 1,
+                  prbs + 100 - 1,
+                  prbs + (500 + 100 * mod) - 1,
+                  None]
+
+        # processors and frequency
+        freq = {
+            "ARM_CORTEX_A7" : 1300000000, # ARM_CORTEX_A7
+            "ARM_CORTEX_A15" : 2000000000  # ARM_CORTEX_A15
         }
-        self.fft_processor_cycles = {
-            "ARM_CORTEX_A7": pc_fft_A7,
-            "ARM_CORTEX_A15": pc_fft_A15,
-        }
-        self.ifft1_processor_cycles = {
-            "ARM_CORTEX_A7": pc_ifft1_A7,
-            "ARM_CORTEX_A15": pc_ifft1_A15,
-        }
-        self.ifft2_processor_cycles = {
-            "ARM_CORTEX_A7": pc_ifft2_A7,
-            "ARM_CORTEX_A15": pc_ifft2_A15,
-        }
-        self.wind_processor_cycles = {
-            "ARM_CORTEX_A7": pc_wind_A7,
-            "ARM_CORTEX_A15": pc_wind_A15,
-        }
-        self.comb_processor_cycles = {
-            "ARM_CORTEX_A7": pc_comb_A7,
-            "ARM_CORTEX_A15": pc_comb_A15,
-        }
-        self.ant_processor_cycles = {
-            "ARM_CORTEX_A7": pc_ant_A7,
-            "ARM_CORTEX_A15": pc_ant_A15,
-        }
-        self.demap_processor_cycles = {
-            "ARM_CORTEX_A7": pc_demap_A7,
-            "ARM_CORTEX_A15": pc_demap_A15,
-        }
+
+        pcs = {}
+        pcs["input"] = {"ARM_CORTEX_A7" : 0, "ARM_CORTEX_A15" : 0}
+        pcs["output"] = {"ARM_CORTEX_A7" : 0, "ARM_CORTEX_A15" : 0}
+        for k in range(len(kernels)):
+            if (kernels[k] != "input") & (kernels[k] != "output"):
+                pcs[kernels[k]] = {
+                    "ARM_CORTEX_A7" : proc_time[0][offset[k]] * freq["ARM_CORTEX_A7"],
+                    "ARM_CORTEX_A15" : proc_time[1][offset[k]] * freq["ARM_CORTEX_A15"]
+                }
+
+        self.processes = {}
+        for k in range(len(kernels)):
+            self.processes[kernels[k]] =  self.kernelTrace(
+                                        kernels[k],
+                                        firings[k],
+                                        read_from[k],
+                                        input_tokens[k],
+                                        write_to[k],
+                                        output_tokens[k],
+                                        n_instances[k],
+                                        pcs[kernels[k]]
+            )
 
     def get_trace(self, process):
-        if process == "input0":
-            yield from self._input_trace()
-        elif process.startswith("mf"):
-            yield from self._mf_trace(process)
-        elif process.startswith("fft"):
-            yield from self._fft_trace(process)
-        elif process.startswith("ifft1"):
-            yield from self._ifft1_trace(process)
-        elif process.startswith("ifft2"):
-            yield from self._ifft2_trace(process)
-        elif process.startswith("wind"):
-            yield from self._wind_trace(process)
-        elif process.startswith("comb"):
-            yield from self._comb_trace(process)
-        elif process.startswith("ant"):
-            yield from self._ant_trace(process)
-        elif process.startswith("demap"):
-            yield from self._demap_trace(process)
-        elif process == "output0":
-            yield from self._output_trace()
-        else:
-            raise RuntimeError(f"Unknown process {process}")
+        yield from self._generic_trace(process)
 
-    def _input_trace(self):
-        # input task
-        for slot in range(2):
-            for mf in range(self.num_ph1):
-                # write 1 token to MatchedFilter
-                yield WriteTokenSegment(
-                    channel="input0_mf" + str(mf),
-                    num_tokens=1,
-                )
-            for ant in range(self.num_ph3):
-                # write 1 token to AntennaCombining
-                yield WriteTokenSegment(
-                    channel="input0_ant" + str(ant),
-                    num_tokens=1,
-                )
+    def _generic_trace(self, process):
+        kern = next(val for key, val in self.processes.items() if process.startswith(key))
+        #else:
+            #raise RuntimeError(f"Unknown process {process}")
+        for firing in range(kern.n_firings):
+            # read tokens from input
+            for i in range(len(kern.read_from)):
+                orig_name = kern.read_from[i]
+                orig = next(val for key, 
+                             val in self.processes.items() if key.startswith(orig_name))
+                for n in range(orig.n_instances):
+                    yield ReadTokenSegment(
+                        channel=f"{orig_name}{n}_{process}",
+                        num_tokens=kern.input_tokens[i]
+                    )
 
-    def _mf_trace(self, process):
-        # MatchedFilter tasks
-        for slot in range(2):
-            # read 1 token from input
-            yield ReadTokenSegment(channel=f"input0_{process}", num_tokens=1)
             # Process tasks
-            yield ComputeSegment(self.mf_processor_cycles)
-            # write 1 token to IFFT1
-            for ifft1 in range(self.num_ph1):
-                yield WriteTokenSegment(
-                    channel=f"{process}_ifft1{ifft1}", num_tokens=1
-                )
+            yield ComputeSegment(kern.processor_cycles)
 
-    def _ifft1_trace(self, process):
-        # IFFT1 tasks
-        for slot in range(2):
-            # read 1 token from MF
-            for mf in range(self.num_ph1):
-                yield ReadTokenSegment(
-                    channel=f"mf{mf}_{process}", num_tokens=1
-                )
-            # Process tasks
-            yield ComputeSegment(self.ifft1_processor_cycles)
-
-            # write 1 token to Windowing
-            for wind in range(self.num_ph1):
-                yield WriteTokenSegment(
-                    channel=f"{process}_wind{wind}", num_tokens=1
-                )
-
-    def _wind_trace(self, process):
-        # Windowing tasks
-        for slot in range(2):
-            # read 1 token from IFFT1
-            for ifft1 in range(self.num_ph1):
-                yield ReadTokenSegment(
-                    channel=f"ifft1{ifft1}_{process}", num_tokens=1
-                )
-            # Process tasks
-            yield ComputeSegment(self.wind_processor_cycles)
-            # write 1 token to FFT
-            for fft in range(self.num_ph1):
-                yield WriteTokenSegment(
-                    channel=f"{process}_fft{fft}", num_tokens=1
-                )
-
-    def _fft_trace(self, process):
-        # FFT tasks
-        for slot in range(2):
-            # read 1 token from IFFT1
-            for wind in range(self.num_ph1):
-                yield ReadTokenSegment(
-                    channel=f"wind{wind}_{process}", num_tokens=1
-                )
-            # Process tasks
-            yield ComputeSegment(self.fft_processor_cycles)
-            # write 1 token to CombW
-            for comb in range(self.num_ph2):
-                yield WriteTokenSegment(
-                    channel=f"{process}_comb{comb}", num_tokens=1
-                )
-
-    def _comb_trace(self, process):
-        # CombW tasks
-        for slot in range(2):
-            # read 1 token from FFT
-            for fft in range(self.num_ph1):
-                yield ReadTokenSegment(
-                    channel=f"fft{fft}_{process}", num_tokens=1
-                )
-            # Process tasks
-            yield ComputeSegment(self.comb_processor_cycles)
-
-            # write 1 token to AntComb
-            for ant in range(self.num_ph3):
-                yield WriteTokenSegment(
-                    channel=f"{process}_ant{ant}", num_tokens=1
-                )
-
-    def _ant_trace(self, process):
-        # AntComb tasks
-        for slot in range(2):
-            # read 1 token from input
-            yield ReadTokenSegment(channel=f"input0_{process}", num_tokens=1)
-            # read 1 token from CombW
-            for comb in range(self.num_ph2):
-                yield ReadTokenSegment(
-                    channel=f"comb{comb}_{process}", num_tokens=1
-                )
-            # Process tasks
-            yield ComputeSegment(self.ant_processor_cycles)
-            # write 1 token to IFFT2
-            for ifft2 in range(self.num_ph3):
-                yield WriteTokenSegment(
-                    channel=f"{process}_ifft2{ifft2}", num_tokens=1
-                )
-
-    def _ifft2_trace(self, process):
-        # IFFT2 tasks
-        for slot in range(2):
-            # read 1 token from AntComb
-            for ant in range(self.num_ph3):
-                yield ReadTokenSegment(
-                    channel=f"ant{ant}_{process}", num_tokens=1
-                )
-            # Process tasks
-            yield ComputeSegment(self.ifft2_processor_cycles)
-
-            # write 1 token to Windowing
-            for demap in range(self.num_ph4):
-                yield WriteTokenSegment(
-                    channel=f"{process}_demap{demap}", num_tokens=1
-                )
-
-    def _demap_trace(self, process):
-        # Demap tasks
-        # read 2 tokens from IFFT2
-        for ifft2 in range(self.num_ph3):
-            yield ReadTokenSegment(
-                channel=f"ifft2{ifft2}_{process}", num_tokens=2
-            )
-        # Process tasks
-        yield ComputeSegment(self.demap_processor_cycles)
-        # write 1 token to output
-        yield WriteTokenSegment(channel=f"{process}_output0", num_tokens=1)
-
-    def _output_trace(self):
-        # Output task
-        # read 1 token from Demap
-        for demap in range(self.num_ph4):
-            yield ReadTokenSegment(channel=f"demap{demap}_output0", num_tokens=1)
+            # write tokens to ouput
+            for i in range(len(kern.write_to)):
+                dest_name = kern.write_to[i]
+                dest = next(val for key,
+                             val in self.processes.items() if key.startswith(dest_name))
+                for n in range(dest.n_instances):
+                    yield WriteTokenSegment(
+                        channel=f"{process}_{dest_name}{n}",
+                        num_tokens=kern.output_tokens[i]
+                    )
 
     @staticmethod
     def from_hydra(task_file, prbs, modulation_scheme, layers, **kwargs):
