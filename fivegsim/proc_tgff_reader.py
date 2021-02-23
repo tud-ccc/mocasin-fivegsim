@@ -3,7 +3,6 @@
 #
 # Authors: Julian Robledo
 
-
 def get_task_time(tgff_name):
     """Read task execution time information on TGFF format
     and return a list of task times
@@ -20,13 +19,12 @@ def get_task_time(tgff_name):
 
     while len(lines) > 0:
         line = lines.pop(0)
-
         if len(line) == 7:
             task_list[int(line[0])] = float(line[3])
         elif line[0].find("}") != -1:
             proc_list.append(task_list)
         elif line[0].find("@PROC") != -1:
-            pass
+            task_list = {}
 
     proc_file.close()
     return proc_list
