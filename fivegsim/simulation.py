@@ -36,12 +36,6 @@ class FivegGraph(DataflowGraph):
     def __init__(self, i, ntrace):
         super().__init__(f"fiveg{i}")
 
-        # Number of processes for each phase
-        self.num_ph1 = PHY.get_num_micf(ntrace.layers)
-        self.num_ph2 = PHY.get_num_combwc()
-        self.num_ph3 = PHY.get_num_antcomb(ntrace.layers)
-        self.num_ph4 = PHY.get_num_demap()
-
         prbs = ntrace.PRBs
         mod = ntrace.modulation_scheme
         lay = ntrace.layers
@@ -61,219 +55,66 @@ class FivegGraph(DataflowGraph):
         elif mod == 4:
             mod = 16
 
-        # dictionary for processes
-        pin = {}  # input
-        pmf = {}  # MatchedFilter
-        pifft1 = {}  # IFFT1
-        pwind = {}  # Windowing
-        pfft = {}  # FFT
-        pcomb = {}  # CombinerWeights
-        pant = {}  # AntennaCombining
-        pifft2 = {}  # IFFT2
-        pdemap = {}  # Demap
-        pout = {}  # output
+        num_phase1 = PHY.get_num_micf(ntrace.layers)
+        num_phase2 = PHY.get_num_combwc()
+        num_phase3 = PHY.get_num_antcomb(ntrace.layers)
+        num_phase4 = PHY.get_num_demap()
 
-        # dictionary for channels
-        in_2_mf = {}  # input to MatchedFilter
-        in_2_ac = {}  # input to AntennaCombining
-        mf_2_if = {}  # MatchedFilter to IFFT
-        if_2_wd = {}  # IFFT to Windowing
-        wd_2_ff = {}  # Windowing to FFT
-        ff_2_cw = {}  # FFT to CombinerWeights
-        cw_2_ac = {}  # CombinerWeights to AntennaCombining
-        ac_2_if = {}  # AntennaCombining to IFFT
-        if_2_dm = {}  # IFFT to Demap
-        dm_2_out = {}  # Demap to Output
+        # kernels: name, number of instances
+        kern = {
+            "input" : 1,
+            "mf" : num_phase1,
+            "ifft1" : num_phase1,
+            "wind" : num_phase1,
+            "fft" : num_phase1,
+            "comb" : num_phase2,
+            "ant" : num_phase3,
+            "ifft2" : num_phase3,
+            "demap" : num_phase4,
+            "output" : 1
+        }
 
-        # add processes to dictionaries
-        process = "input"
-        pin[process] = DataflowProcess(process)
-        for ph1 in range(self.num_ph1):
-            process = "mf" + str(ph1)
-            pmf[process] = DataflowProcess(process)
-            process = "ifft1" + str(ph1)
-            pifft1[process] = DataflowProcess(process)
-            process = "wind" + str(ph1)
-            pwind[process] = DataflowProcess(process)
-            process = "fft" + str(ph1)
-            pfft[process] = DataflowProcess(process)
-        for ph2 in range(self.num_ph2):
-            process = "comb" + str(ph2)
-            pcomb[process] = DataflowProcess(process)
-        for ph3 in range(self.num_ph3):
-            process = "ant" + str(ph3)
-            pant[process] = DataflowProcess(process)
-            process = "ifft2" + str(ph3)
-            pifft2[process] = DataflowProcess(process)
-        for ph4 in range(self.num_ph4):
-            process = "demap" + str(ph4)
-            pdemap[process] = DataflowProcess(process)
-        process = "output"
-        pout[process] = DataflowProcess(process)
+        # connections: origin, destination, token size
+        connections = [
+              ["input", "mf", data_size * nmbSc],
+              ["input", "ant", data_size * nmbSc * lay],
+              ["mf", "ifft1", data_size * nmbSc],
+              ["ifft1", "wind", data_size * nmbSc],
+              ["wind", "fft", data_size * nmbSc],
+              ["fft", "comb", data_size * nmbSc],
+              ["comb", "ant", data_size * prbs * ant],
+              ["ant", "ifft2", data_size * prbs * ant],
+              ["ifft2", "demap", data_size * prbs],
+              ["demap", "output", data_size * prbs * mod],
+        ]
 
-        # add channels to dictionaries and connect processes
-        # input to MatchedFilter
-        for mf in range(self.num_ph1):
-            orig = "input"
-            dest = "mf" + str(mf)
-            token_size = data_size * (nmbSc)
-            channel = DataflowChannel(orig + "_" + dest, token_size)
-            in_2_mf[orig + "_" + dest] = channel
-            pin[orig].connect_to_outgoing_channel(channel)
-            pmf[dest].connect_to_incomming_channel(channel)
-        # input to AntennaCombining
-        for ant in range(self.num_ph3):
-            orig = "input"
-            dest = "ant" + str(ant)
-            token_size = data_size * (nmbSc * lay)
-            channel = DataflowChannel(orig + "_" + dest, token_size)
-            in_2_ac[orig + "_" + dest] = channel
-            pin[orig].connect_to_outgoing_channel(channel)
-            pant[dest].connect_to_incomming_channel(channel)
-        # MatchedFilter to IFFT
-        for mf in range(self.num_ph1):
-            for ifft1 in range(self.num_ph1):
-                orig = "mf" + str(mf)
-                dest = "ifft1" + str(ifft1)
-                token_size = data_size * nmbSc
-                channel = DataflowChannel(orig + "_" + dest, token_size)
-                mf_2_if[orig + "_" + dest] = channel
-                pmf[orig].connect_to_outgoing_channel(channel)
-                pifft1[dest].connect_to_incomming_channel(channel)
-        # IFFT to Windowing
-        for ifft1 in range(self.num_ph1):
-            for wind in range(self.num_ph1):
-                orig = "ifft1" + str(ifft1)
-                dest = "wind" + str(wind)
-                token_size = data_size * nmbSc
-                channel = DataflowChannel(orig + "_" + dest, token_size)
-                if_2_wd[orig + "_" + dest] = channel
-                pifft1[orig].connect_to_outgoing_channel(channel)
-                pwind[dest].connect_to_incomming_channel(channel)
-        # Windowing to FFT
-        for wind in range(self.num_ph1):
-            for fft in range(self.num_ph1):
-                orig = "wind" + str(wind)
-                dest = "fft" + str(fft)
-                token_size = data_size * nmbSc
-                channel = DataflowChannel(orig + "_" + dest, token_size)
-                wd_2_ff[orig + "_" + dest] = channel
-                pwind[orig].connect_to_outgoing_channel(channel)
-                pfft[dest].connect_to_incomming_channel(channel)
-        # FFT to CombinerWeights
-        for fft in range(self.num_ph1):
-            for comb in range(self.num_ph2):
-                orig = "fft" + str(fft)
-                dest = "comb" + str(comb)
-                token_size = data_size * nmbSc
-                channel = DataflowChannel(orig + "_" + dest, token_size)
-                ff_2_cw[orig + "_" + dest] = channel
-                pfft[orig].connect_to_outgoing_channel(channel)
-                pcomb[dest].connect_to_incomming_channel(channel)
-        # CombinerWeights to AntennaCombining
-        for comb in range(self.num_ph2):
-            for ant in range(self.num_ph3):
-                orig = "comb" + str(comb)
-                dest = "ant" + str(ant)
-                token_size = data_size * prbs * ant
-                channel = DataflowChannel(orig + "_" + dest, token_size)
-                cw_2_ac[orig + "_" + dest] = channel
-                pcomb[orig].connect_to_outgoing_channel(channel)
-                pant[dest].connect_to_incomming_channel(channel)
-        # AntennaCombining to IFFT
-        for ant in range(self.num_ph3):
-            for ifft2 in range(self.num_ph3):
-                orig = "ant" + str(ant)
-                dest = "ifft2" + str(ifft2)
-                token_size = data_size * prbs * ant
-                channel = DataflowChannel(orig + "_" + dest, token_size)
-                ac_2_if[orig + "_" + dest] = channel
-                pant[orig].connect_to_outgoing_channel(channel)
-                pifft2[dest].connect_to_incomming_channel(channel)
-        # IFFT to Demap
-        for ifft2 in range(self.num_ph3):
-            for demap in range(self.num_ph4):
-                orig = "ifft2" + str(ifft2)
-                dest = "demap" + str(demap)
-                token_size = data_size * prbs
-                channel = DataflowChannel(orig + "_" + dest, token_size)
-                if_2_dm[orig + "_" + dest] = channel
-                pifft2[orig].connect_to_outgoing_channel(channel)
-                pdemap[dest].connect_to_incomming_channel(channel)
-        # Demap to Output
-        for demap in range(self.num_ph4):
-            orig = "demap" + str(demap)
-            dest = "output"
-            token_size = data_size * prbs * mod
-            channel = DataflowChannel(orig + "_" + dest, token_size)
-            dm_2_out[orig + "_" + dest] = channel
-            pdemap[orig].connect_to_outgoing_channel(channel)
-            pout[dest].connect_to_incomming_channel(channel)
+        # add processes
+        kernels = {}
+        for k in kern:
+            for n in range(kern[k]):
+                process_name = k + str(n)
+                kernels[process_name] = DataflowProcess(process_name)
+
+        # add channels and connect processes
+        channels = {}
+        for conn in connections:
+            for p1 in range(kern[conn[0]]):
+                for p2 in range(kern[conn[1]]):
+                    orig = conn[0] + str(p1)
+                    dest = conn[1] + str(p2)
+                    token_size = conn[2]
+                    channel = DataflowChannel(orig + "_" + dest, token_size)
+                    channels[orig + "_" + dest] = channel
+                    kernels[orig].connect_to_outgoing_channel(channel)
+                    kernels[dest].connect_to_incomming_channel(channel)
 
         # register all processes
-        process = "input"
-        self.add_process(pin[process])
-        for ph1 in range(self.num_ph1):
-            process = "mf" + str(ph1)
-            self.add_process(pmf[process])
-            process = "ifft1" + str(ph1)
-            self.add_process(pifft1[process])
-            process = "wind" + str(ph1)
-            self.add_process(pwind[process])
-            process = "fft" + str(ph1)
-            self.add_process(pfft[process])
-        for ph2 in range(self.num_ph2):
-            process = "comb" + str(ph2)
-            self.add_process(pcomb[process])
-        for ph3 in range(self.num_ph3):
-            process = "ant" + str(ph3)
-            self.add_process(pant[process])
-            process = "ifft2" + str(ph3)
-            self.add_process(pifft2[process])
-        for ph4 in range(self.num_ph4):
-            process = "demap" + str(ph4)
-            self.add_process(pdemap[process])
-        process = "output"
-        self.add_process(pout[process])
+        for k in kernels:
+            self.add_process(kernels[k])
 
         # register all channels
-        for mf in range(self.num_ph1):
-            channel = "input" + "_" + "mf" + str(mf)
-            self.add_channel(in_2_mf[channel])
-        for ant in range(self.num_ph3):
-            channel = "input" + "_" + "ant" + str(ant)
-            self.add_channel(in_2_ac[channel])
-        for mf in range(self.num_ph1):
-            for ifft1 in range(self.num_ph1):
-                channel = "mf" + str(mf) + "_" + "ifft1" + str(ifft1)
-                self.add_channel(mf_2_if[channel])
-        for ifft1 in range(self.num_ph1):
-            for wind in range(self.num_ph1):
-                channel = "ifft1" + str(ifft1) + "_" + "wind" + str(wind)
-                self.add_channel(if_2_wd[channel])
-        for wind in range(self.num_ph1):
-            for fft in range(self.num_ph1):
-                channel = "wind" + str(wind) + "_" + "fft" + str(fft)
-                self.add_channel(wd_2_ff[channel])
-        for fft in range(self.num_ph1):
-            for comb in range(self.num_ph2):
-                channel = "fft" + str(fft) + "_" + "comb" + str(comb)
-                self.add_channel(ff_2_cw[channel])
-        for comb in range(self.num_ph2):
-            for ant in range(self.num_ph3):
-                channel = "comb" + str(comb) + "_" + "ant" + str(ant)
-                self.add_channel(cw_2_ac[channel])
-        for ant in range(self.num_ph3):
-            for ifft2 in range(self.num_ph3):
-                channel = "ant" + str(ant) + "_" + "ifft2" + str(ifft2)
-                self.add_channel(ac_2_if[channel])
-        for ifft2 in range(self.num_ph3):
-            for demap in range(self.num_ph4):
-                channel = "ifft2" + str(ifft2) + "_" + "demap" + str(demap)
-                self.add_channel(if_2_dm[channel])
-        for demap in range(self.num_ph4):
-            channel = "demap" + str(demap) + "_" + "output"
-            self.add_channel(dm_2_out[channel])
+        for c in channels:
+            self.add_channel(channels[c])
 
     @staticmethod
     def from_hydra(id, prbs, modulation_scheme, layers, **kwargs):
@@ -373,7 +214,7 @@ class FivegTrace(DataflowTrace):
         }
 
     def get_trace(self, process):
-        if process == "input":
+        if process == "input0":
             yield from self._input_trace()
         elif process.startswith("mf"):
             yield from self._mf_trace(process)
@@ -391,7 +232,7 @@ class FivegTrace(DataflowTrace):
             yield from self._ant_trace(process)
         elif process.startswith("demap"):
             yield from self._demap_trace(process)
-        elif process == "output":
+        elif process == "output0":
             yield from self._output_trace()
         else:
             raise RuntimeError(f"Unknown process {process}")
@@ -402,13 +243,13 @@ class FivegTrace(DataflowTrace):
             for mf in range(self.num_ph1):
                 # write 1 token to MatchedFilter
                 yield WriteTokenSegment(
-                    channel="input_mf" + str(mf),
+                    channel="input0_mf" + str(mf),
                     num_tokens=1,
                 )
             for ant in range(self.num_ph3):
                 # write 1 token to AntennaCombining
                 yield WriteTokenSegment(
-                    channel="input_ant" + str(ant),
+                    channel="input0_ant" + str(ant),
                     num_tokens=1,
                 )
 
@@ -416,7 +257,7 @@ class FivegTrace(DataflowTrace):
         # MatchedFilter tasks
         for slot in range(2):
             # read 1 token from input
-            yield ReadTokenSegment(channel=f"input_{process}", num_tokens=1)
+            yield ReadTokenSegment(channel=f"input0_{process}", num_tokens=1)
             # Process tasks
             yield ComputeSegment(self.mf_processor_cycles)
             # write 1 token to IFFT1
@@ -495,7 +336,7 @@ class FivegTrace(DataflowTrace):
         # AntComb tasks
         for slot in range(2):
             # read 1 token from input
-            yield ReadTokenSegment(channel=f"input_{process}", num_tokens=1)
+            yield ReadTokenSegment(channel=f"input0_{process}", num_tokens=1)
             # read 1 token from CombW
             for comb in range(self.num_ph2):
                 yield ReadTokenSegment(
@@ -536,13 +377,13 @@ class FivegTrace(DataflowTrace):
         # Process tasks
         yield ComputeSegment(self.demap_processor_cycles)
         # write 1 token to output
-        yield WriteTokenSegment(channel=f"{process}_output", num_tokens=1)
+        yield WriteTokenSegment(channel=f"{process}_output0", num_tokens=1)
 
     def _output_trace(self):
         # Output task
         # read 1 token from Demap
         for demap in range(self.num_ph4):
-            yield ReadTokenSegment(channel=f"demap{demap}_output", num_tokens=1)
+            yield ReadTokenSegment(channel=f"demap{demap}_output0", num_tokens=1)
 
     @staticmethod
     def from_hydra(task_file, prbs, modulation_scheme, layers, **kwargs):
