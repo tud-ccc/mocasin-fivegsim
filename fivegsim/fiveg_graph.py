@@ -4,8 +4,7 @@
 # Authors: Julian Robledo, Christian Menard
 
 from mocasin.common.graph import DataflowGraph, DataflowProcess, DataflowChannel
-from fivegsim.phybench import PHY
-from fivegsim.phybench import LTE
+from fivegsim.phybench import Phybench
 
 class FivegGraph(DataflowGraph):
     """The Dataflow graph of a 5G application
@@ -20,8 +19,8 @@ class FivegGraph(DataflowGraph):
         prbs = ntrace.PRBs
         mod = ntrace.modulation_scheme
         lay = ntrace.layers
-        ant = LTE.num_antenna
-        sc = LTE.SC
+        ant = Phybench.num_antenna
+        sc = Phybench.SC
         data_size = 4  # bytes
         nmbSc = prbs * sc
 
@@ -36,10 +35,10 @@ class FivegGraph(DataflowGraph):
         elif mod == 4:
             mod = 16
 
-        num_phase1 = PHY.get_num_micf(ntrace.layers)
-        num_phase2 = PHY.get_num_combwc()
-        num_phase3 = PHY.get_num_antcomb(ntrace.layers)
-        num_phase4 = PHY.get_num_demap()
+        num_phase1 = Phybench.get_num_micf(ntrace.layers)
+        num_phase2 = Phybench.get_num_combwc()
+        num_phase3 = Phybench.get_num_antcomb(ntrace.layers)
+        num_phase4 = Phybench.get_num_demap()
 
         # kernels: name, number of instances
         kern = {

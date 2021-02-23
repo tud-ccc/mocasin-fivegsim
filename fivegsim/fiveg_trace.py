@@ -12,7 +12,7 @@ from mocasin.common.trace import (
     WriteTokenSegment
 )
 
-from fivegsim.phybench import PHY
+from fivegsim.phybench import Phybench
 from fivegsim.proc_tgff_reader import get_task_time
 
 class FivegTrace(DataflowTrace):
@@ -36,10 +36,10 @@ class FivegTrace(DataflowTrace):
     def __init__(self, ntrace, proc_time):
 
         # Number of tasks of each type
-        num_ph1 = PHY.get_num_micf(ntrace.layers)
-        num_ph2 = PHY.get_num_combwc()
-        num_ph3 = PHY.get_num_antcomb(ntrace.layers)
-        num_ph4 = PHY.get_num_demap()
+        num_ph1 = Phybench.get_num_micf(ntrace.layers)
+        num_ph2 = Phybench.get_num_combwc()
+        num_ph3 = Phybench.get_num_antcomb(ntrace.layers)
+        num_ph4 = Phybench.get_num_demap()
 
         prbs = ntrace.PRBs
         mod = ntrace.modulation_scheme
