@@ -26,6 +26,7 @@ sys.setrecursionlimit(10000)
 
 log = logging.getLogger(__name__)
 
+
 class MergedFivegTrace(DataflowTrace):
     def __init__(self, prefixes, traces):
         self.prefixes = prefixes

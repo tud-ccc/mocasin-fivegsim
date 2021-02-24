@@ -6,6 +6,7 @@
 from mocasin.common.graph import DataflowGraph, DataflowProcess, DataflowChannel
 from fivegsim.phybench import Phybench
 
+
 class FivegGraph(DataflowGraph):
     """The Dataflow graph of a 5G application
 
@@ -42,30 +43,30 @@ class FivegGraph(DataflowGraph):
 
         # kernels: name, number of instances
         kern = {
-            "input" : 1,
-            "mf" : num_phase1,
-            "ifft1" : num_phase1,
-            "wind" : num_phase1,
-            "fft" : num_phase1,
-            "comb" : num_phase2,
-            "ant" : num_phase3,
-            "ifft2" : num_phase3,
-            "demap" : num_phase4,
-            "output" : 1
+            "input": 1,
+            "mf": num_phase1,
+            "ifft1": num_phase1,
+            "wind": num_phase1,
+            "fft": num_phase1,
+            "comb": num_phase2,
+            "ant": num_phase3,
+            "ifft2": num_phase3,
+            "demap": num_phase4,
+            "output": 1,
         }
 
         # connections: origin, destination, token size
         connections = [
-              ["input", "mf", data_size * nmbSc],
-              ["input", "ant", data_size * nmbSc * lay],
-              ["mf", "ifft1", data_size * nmbSc],
-              ["ifft1", "wind", data_size * nmbSc],
-              ["wind", "fft", data_size * nmbSc],
-              ["fft", "comb", data_size * nmbSc],
-              ["comb", "ant", data_size * prbs * ant],
-              ["ant", "ifft2", data_size * prbs * ant],
-              ["ifft2", "demap", data_size * prbs],
-              ["demap", "output", data_size * prbs * mod],
+            ["input", "mf", data_size * nmbSc],
+            ["input", "ant", data_size * nmbSc * lay],
+            ["mf", "ifft1", data_size * nmbSc],
+            ["ifft1", "wind", data_size * nmbSc],
+            ["wind", "fft", data_size * nmbSc],
+            ["fft", "comb", data_size * nmbSc],
+            ["comb", "ant", data_size * prbs * ant],
+            ["ant", "ifft2", data_size * prbs * ant],
+            ["ifft2", "demap", data_size * prbs],
+            ["demap", "output", data_size * prbs * mod],
         ]
 
         # add processes
@@ -108,4 +109,3 @@ class FivegGraph(DataflowGraph):
         ntrace.modulation_scheme = modulation_scheme
         ntrace.layers = layers
         return FivegGraph(id, ntrace)
-

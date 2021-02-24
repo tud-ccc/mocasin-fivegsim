@@ -3,6 +3,7 @@
 #
 # Authors: Julian Robledo
 
+
 def get_task_time(tgff_name):
     """Read task execution time information on TGFF format
     and return a list of task times
