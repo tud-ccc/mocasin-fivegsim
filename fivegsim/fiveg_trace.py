@@ -142,7 +142,7 @@ class FivegTrace(DataflowTrace):
         pcs["input"] = {"ARM_CORTEX_A7": 0, "ARM_CORTEX_A15": 0}
         pcs["output"] = {"ARM_CORTEX_A7": 0, "ARM_CORTEX_A15": 0}
         for k in range(len(kernels)):
-            if (kernels[k] != "input") & (kernels[k] != "output"):
+            if (kernels[k] != "input") and (kernels[k] != "output"):
                 pcs[kernels[k]] = {
                     "ARM_CORTEX_A7": proc_time[0][offset[k]]
                     * freq["ARM_CORTEX_A7"],
