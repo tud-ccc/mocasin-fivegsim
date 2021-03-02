@@ -111,7 +111,7 @@ class FiveGSimulation(BaseSimulation):
         return sf_graph
 
     def _generate_mapper(self, sf_graph, sf_trace, graphs):
-         # create a new mapper (this should be TETRiS in the future) Note
+        # create a new mapper (this should be TETRiS in the future) Note
         # that we need to create a new mapper here, as the GRAPH could change
         # This appears to be a weakness of our mapper interface. The GRAPH
         # should probably become a parameter of generate_mapping().
@@ -135,15 +135,11 @@ class FiveGSimulation(BaseSimulation):
             for sf_p in sf_mapping._process_info.keys():
                 if sf_p.startswith(graph.name):
                     p = sf_p[len(graph.name) + 1 :]
-                    mapping._process_info[p] = sf_mapping._process_info[
-                        sf_p
-                    ]
+                    mapping._process_info[p] = sf_mapping._process_info[sf_p]
             for sf_c in sf_mapping._channel_info.keys():
                 if sf_c.startswith(graph.name):
                     c = sf_c[len(graph.name) + 1 :]
-                    mapping._channel_info[c] = sf_mapping._channel_info[
-                        sf_c
-                    ]
+                    mapping._channel_info[c] = sf_mapping._channel_info[sf_c]
             mappings.append(mapping)
 
         log.info(f"start application {sf_graph.name}")
@@ -169,9 +165,7 @@ class FiveGSimulation(BaseSimulation):
             # record application start in the simulation trace
             trace_writer.begin_duration("instances", app.name, app.name)
             # start the application
-            finished = self.env.process(
-                app.run(criticality, prbs, mod)
-            )
+            finished = self.env.process(app.run(criticality, prbs, mod))
             cnt += 1
             # register a callback to record the application termination
             # in the simulation trace
