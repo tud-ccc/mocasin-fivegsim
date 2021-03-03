@@ -88,14 +88,9 @@ class FiveGSimulation(BaseSimulation):
             traces.append(FivegTrace(ntrace, proc_time))
         return traces
 
-    def _merge_graphs_and_traces(self, copy_graphs, traces):
-        # create a combined trace object
-        prefixes = [f"{g.name}_" for g in copy_graphs]
-        sf_trace = MergedFivegTrace(prefixes, traces)
-        return sf_trace
-
-    def _graph_deepcopy(self, name, graphs):
-        sf_graph = DataflowGraph(name)
+    def _merge_graphs_and_traces(self, app_name, graphs, traces):
+        # create a combined graph
+        sf_graph = DataflowGraph(app_name)
         # work with a deepcopy of graphs so we don't need to be
         # afraid of breaking anything in the existing data structures and
         # can still use them later
@@ -108,14 +103,26 @@ class FiveGSimulation(BaseSimulation):
             for c in graph.channels():
                 c.name = f"{graph.name}_{c.name}"
                 sf_graph.add_channel(c)
-        return sf_graph
 
-    def _generate_mapper(self, sf_graph, sf_trace, graphs):
+        # create a combined trace object
+        prefixes = [f"{g.name}_" for g in copy_graphs]
+        sf_trace = MergedFivegTrace(prefixes, traces)
+
+        return sf_graph, sf_trace
+
+    def _generate_mappings(self, sf_name, graphs, traces):
+        # XXX Merge the applications and traces given above into one large
+        # graph and trace for the entire subframe. This is just a workaround
+        # for our mapper API that only accepts a single mapping
+        sf_graph, sf_trace = self._merge_graphs_and_traces(
+            sf_name, graphs, traces
+        )
+
         # create a new mapper (this should be TETRiS in the future) Note
         # that we need to create a new mapper here, as the GRAPH could change
         # This appears to be a weakness of our mapper interface. The GRAPH
         # should probably become a parameter of generate_mapping().
-        log.info(f"generate mapping for {sf_graph.name}")
+        log.info(f"generate mapping for {sf_name}")
         rep = hydra.utils.instantiate(
             self.cfg["representation"], sf_graph, self.platform
         )
@@ -128,7 +135,10 @@ class FiveGSimulation(BaseSimulation):
         )  # TODO: collect and add load here
         log.info(f"mapping generation done")
 
-        # split the mapping up again
+        # Split the mapping up again. We merged all graphs and traces
+        # into a single graph and trace and generated a mapping for this big
+        # combined application. Now we need to extract "submappings" for the
+        # individual graphs.
         mappings = []
         for graph in graphs:
             mapping = Mapping(graph, self.platform)
@@ -142,7 +152,6 @@ class FiveGSimulation(BaseSimulation):
                     mapping._channel_info[c] = sf_mapping._channel_info[sf_c]
             mappings.append(mapping)
 
-        log.info(f"start application {sf_graph.name}")
         return mappings
 
     def _simulate(self, mappings, traces, nsubframe):
@@ -192,7 +201,6 @@ class FiveGSimulation(BaseSimulation):
             nsubframe = self.TFM.get_next_subframe()
             sf_count += 1
 
-            # run 100 instances of the 5G app, start one every 1 ms
             graphs = self._generate_graphs(nsubframe)
             traces = self._generate_traces(nsubframe, self.proc_time)
 
@@ -202,16 +210,11 @@ class FiveGSimulation(BaseSimulation):
                 yield self.env.timeout(1000000000)
                 continue
 
-            # XXX Merge the applications and traces generated above into one
-            # large graph and trace for the entire subframe. This is just a
-            # workaround for our mapper API that only accepts a single mapping
-            sf_trace = self._merge_graphs_and_traces(graphs, traces)
-
-            # generate mappers
-            sf_graph = self._graph_deepcopy(f"sf_{sf_count}", graphs)
-            mappings = self._generate_mapper(sf_graph, sf_trace, graphs)
+            # generate mappings
+            mappings = self._generate_mappings(f"sf_{sf_count}", graphs, traces)
 
             # simulate the actual applications
+            log.info(f"start applications for subframe {sf_count}")
             self._simulate(mappings, traces, nsubframe)
 
             # wait for 1 ms
