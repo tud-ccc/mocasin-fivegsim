@@ -19,7 +19,7 @@ class Phybench(object):
     num_antenna = 4  # number of antennas - fixed to 4 for all base stations
     num_symb = 6  # number of symbols per slot - standard defined
     SC = 12  # Number of subCarriers per symbol - standard defined
-    num_slots = 2
+    num_slots = 2 # Number of slots per subframe - standard defined
 
     @staticmethod
     def get_num_micf(layers):
