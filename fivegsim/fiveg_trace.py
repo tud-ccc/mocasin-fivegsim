@@ -164,9 +164,6 @@ class FivegTrace(DataflowTrace):
             )
 
     def get_trace(self, process):
-        yield from self._generic_trace(process)
-
-    def _generic_trace(self, process):
         kern = next(
             val
             for key, val in self.processes.items()

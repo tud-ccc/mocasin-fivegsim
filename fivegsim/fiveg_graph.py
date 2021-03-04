@@ -14,8 +14,8 @@ class FivegGraph(DataflowGraph):
     micf, combwc, antcomb, demap.
     """
 
-    def __init__(self, i, ntrace):
-        super().__init__(f"fiveg{i}")
+    def __init__(self, name, ntrace):
+        super().__init__(name)
 
         prbs = ntrace.PRBs
         mod = ntrace.modulation_scheme
@@ -108,4 +108,4 @@ class FivegGraph(DataflowGraph):
         ntrace.PRBs = prbs
         ntrace.modulation_scheme = modulation_scheme
         ntrace.layers = layers
-        return FivegGraph(id, ntrace)
+        return FivegGraph(f"fiveg{id}", ntrace)

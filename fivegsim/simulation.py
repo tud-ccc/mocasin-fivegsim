@@ -68,24 +68,28 @@ class FiveGSimulation(BaseSimulation):
         # Get task execution time info
         self.proc_time = get_task_time(hydra.utils.to_absolute_path(task_file))
 
+        # a list of application started during execution
+        self.app_finished = []
+
     @staticmethod
     def from_hydra(cfg, **kwargs):
         platform = hydra.utils.instantiate(cfg["platform"])
         return FiveGSimulation(platform, cfg, **kwargs)
 
-    def _generate_graphs(self, nsubframe):
+    def _generate_graphs(self, sf_id, nsubframe):
         graphs = []
+        i = 0
         for ntrace in nsubframe.trace:
             # create a new graph
-            graphs.append(FivegGraph(self.graph_cnt, ntrace))
-            self.graph_cnt += 1
+            graphs.append(FivegGraph(f"fiveg_sf{sf_id}_{i}", ntrace))
+            i += 1
         return graphs
 
-    def _generate_traces(self, nsubframe, proc_time):
+    def _generate_traces(self, nsubframe):
         traces = []
         for ntrace in nsubframe.trace:
             # create a new graph
-            traces.append(FivegTrace(ntrace, proc_time))
+            traces.append(FivegTrace(ntrace, self.proc_time))
         return traces
 
     def _merge_graphs_and_traces(self, app_name, graphs, traces):
@@ -154,7 +158,7 @@ class FiveGSimulation(BaseSimulation):
 
         return mappings
 
-    def _simulate(self, mappings, traces, nsubframe):
+    def _start_applications(self, mappings, traces, nsubframe):
         cnt = 0
         trace_writer = self.system.trace_writer
 
@@ -186,22 +190,24 @@ class FiveGSimulation(BaseSimulation):
             # keep the finished event for later
             self.app_finished.append(finished)
 
-    def _manager_process(self):
-        self.app_finished = []
+    def _process_5g_subframes(self):
+        """Iterate over all subframes found in the 5g trace and simulate their
+        processing.
+        """
         sf_count = 0
-        self.graph_cnt = 0
 
         with open("stats.csv", "w") as stats_file:
             stats_file.write("startTime,endTime,criticality,miss,prbs,mod\n")
 
         # while end of file not reached:
         while self.TFM.TF_EOF is not True:
-
+            # get next subframe
             nsubframe = self.TFM.get_next_subframe()
-            sf_count += 1
 
-            graphs = self._generate_graphs(nsubframe)
-            traces = self._generate_traces(nsubframe, self.proc_time)
+            # generate graphs and traces for current subframe
+            graphs = self._generate_graphs(sf_count, nsubframe)
+            traces = self._generate_traces(nsubframe)
+            sf_count += 1
 
             # just wait and try again if there is nothing to process
             if len(graphs) == 0:
@@ -212,9 +218,9 @@ class FiveGSimulation(BaseSimulation):
             # generate mappings
             mappings = self._generate_mappings(f"sf_{sf_count}", graphs, traces)
 
-            # simulate the actual applications
+            # simulate the application execution
             log.info(f"start applications for subframe {sf_count}")
-            self._simulate(mappings, traces, nsubframe)
+            self._start_applications(mappings, traces, nsubframe)
 
             # wait for 1 ms
             yield self.env.timeout(1000000000)
@@ -235,7 +241,7 @@ class FiveGSimulation(BaseSimulation):
         # start all schedulers
         self.system.start_schedulers()
         # start the f process
-        finished = self.env.process(self._fiveg_process())
+        finished = self.env.process(self._process_5g_subframes())
         # run the actual simulation until the manager process finishes
         self.env.run(finished)
         # check if all graph processes finished execution
