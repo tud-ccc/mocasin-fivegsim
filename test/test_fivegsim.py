@@ -22,7 +22,7 @@ def test_fivegsim(tmpdir):
     stdout = res.stdout.decode()
     for line in stdout.split("\n"):
         if line.startswith("missrate = "):
-            assert line == "missrate = 0.2777777777777778"
+            assert line == "missrate = 0.1111111111111111"
             found_miss_line = True
         if line.startswith("Total simulated time: "):
             time = line[22:]
