@@ -191,9 +191,8 @@ class FiveGSimulation(BaseSimulation):
         sf_count = 0
         self.graph_cnt = 0
 
-        pStatFile = open("stats.csv", "w")
-        pStatFile.write("startTime,endTime,criticality,miss,prbs,mod" + "\n")
-        pStatFile.close()
+        with open("stats.csv", "w") as stats_file:
+            stats_file.write("startTime,endTime,criticality,miss,prbs,mod\n")
 
         # while end of file not reached:
         while self.TFM.TF_EOF is not True:
@@ -235,8 +234,8 @@ class FiveGSimulation(BaseSimulation):
 
         # start all schedulers
         self.system.start_schedulers()
-        # start the manager process
-        finished = self.env.process(self._manager_process())
+        # start the f process
+        finished = self.env.process(self._fiveg_process())
         # run the actual simulation until the manager process finishes
         self.env.run(finished)
         # check if all graph processes finished execution
@@ -245,15 +244,14 @@ class FiveGSimulation(BaseSimulation):
         self.exec_time = self.env.now
 
     def get_missrate(self):
-        pStatFile = open("stats.csv", "r")
-        lines = pStatFile.readlines()  # Load all lines
+        with open("stats.csv", "r") as stats_file:
+            lines = stats_file.readlines()  # Load all lines
         lines.pop(0)  # Remove first line
         lines = [x.strip() for x in lines]
         lines = [x.split(",") for x in lines]
         num_miss = 0
         for line in lines:
             num_miss += int(line[3])
-        pStatFile.close()
         return num_miss / len(lines)
 
 
@@ -290,19 +288,7 @@ class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
             miss = 1
 
         # save stats
-        pStatFile = open("stats.csv", "a")
-        pStatFile.write(
-            str(start)
-            + ","
-            + str(end)
-            + ","
-            + str(criticality)
-            + ","
-            + str(miss)
-            + ","
-            + str(prbs)
-            + ","
-            + str(mod)
-            + "\n"
-        )
-        pStatFile.close()
+        with open("stats.csv", "a") as stats_file:
+            stats_file.write(
+                f"{start},{end},{criticality},{miss},{prbs},{mod}\n"
+            )
