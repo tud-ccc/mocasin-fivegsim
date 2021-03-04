@@ -58,14 +58,14 @@ class FivegGraph(DataflowGraph):
         # connections: origin, destination, token size
         connections = [
             ["input", "mf", data_size * nmbSc],
-            ["input", "ant", data_size * nmbSc * lay],
+            ["input", "ant", data_size * nmbSc * ant],
             ["mf", "ifft1", data_size * nmbSc],
             ["ifft1", "wind", data_size * nmbSc],
             ["wind", "fft", data_size * nmbSc],
-            ["fft", "comb", data_size * nmbSc],
+            ["fft", "comb", data_size * prbs],
             ["comb", "ant", data_size * prbs * ant],
-            ["ant", "ifft2", data_size * prbs * ant],
-            ["ifft2", "demap", data_size * prbs],
+            ["ant", "ifft2", data_size * prbs],
+            ["ifft2", "demap", (data_size * prbs) / 2],
             ["demap", "output", data_size * prbs * mod],
         ]
 
