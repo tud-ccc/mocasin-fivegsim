@@ -5,9 +5,10 @@
 
 import copy
 import logging
-import hydra
 import sys
 import csv
+
+import hydra
 
 from mocasin.common.graph import DataflowGraph
 from mocasin.common.mapping import Mapping
@@ -15,6 +16,7 @@ from mocasin.common.trace import (
     DataflowTrace,
     SegmentType,
 )
+from mocasin.tetris.manager import ResourceManager
 from mocasin.simulate import BaseSimulation, SimulationResult
 from mocasin.simulate import scheduler
 
@@ -25,6 +27,7 @@ from fivegsim.fiveg_trace import FivegTrace
 from fivegsim.fiveg_app import FiveGRuntimeDataflowApplication
 from fivegsim.load_balancer import PhybenchLoadBalancer
 from fivegsim.statistics import FiveGManagerStatistics
+from fivegsim.tetris import FiveGRuntimeTetrisManager
 
 sys.setrecursionlimit(10000)
 
@@ -196,14 +199,28 @@ class FiveGSimulation(BaseSimulation):
         """
         sf_count = 0
 
-        # start load balancer runtime if needed
         runtime = None
+        assert not (self.cfg["load_balancer"] and self.cfg["tetris_runtime"])
+
+        # start load balancer runtime if needed
         if self.cfg["load_balancer"]:
             runtime = PhybenchLoadBalancer(self.system, self.cfg, self.stats)
             finished = self.env.process(runtime.run())
             self.app_finished = [finished]
             # make sure the startup of the runtime is processed completely
             yield self.env.timeout(0)
+
+        # start tetris runtime if needed
+        if self.cfg["tetris_runtime"]:
+            scheduler = hydra.utils.instantiate(
+                self.cfg["resource_manager"], self.platform
+            )
+            resource_manager = ResourceManager(self.platform, scheduler)
+            runtime = FiveGRuntimeTetrisManager(
+                resource_manager, self.system, self.cfg, self.stats
+            )
+            finished = self.env.process(runtime.run())
+            self.app_finished = [finished]
 
         # while end of file not reached:
         while self.TFM.TF_EOF is not True:
@@ -240,7 +257,7 @@ class FiveGSimulation(BaseSimulation):
             # wait for 1 ms
             yield self.env.timeout(1000000000)
 
-        # if we use the load balancer runtime, we let it know that applications
+        # if we use the runtime manager, we let it know that applications
         # for all subframes where started and it can shutdown as soon as all
         # the applications finish
         if runtime:

@@ -17,6 +17,7 @@ simtrace:
 
 stats: "stats.csv"
 load_balancer: False
+tetris_runtime: False
 
 pareto_metadata_simulate: False
 pareto_time_scale: 1.0
