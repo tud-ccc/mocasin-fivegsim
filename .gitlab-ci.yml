@@ -9,6 +9,7 @@ stages:
 
 .build:
   script:
+    - python -m pip install --upgrade pip
     # Clone and install the upstream mocasin. Check out $MOCASIN_BRANCH if it
     # exists, master otherwise.
     - echo $MOCASIN_BRANCH
