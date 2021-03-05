@@ -278,16 +278,15 @@ class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
             "instances", self.name, self.name
         )
 
+        # record start time
         start = self.env.now
-        for process, mapping_info in self._mapping_infos.items():
-            self.system.start_process(process, mapping_info)
-        finished = self.env.all_of([p.finished for p in self.processes()])
-        finished.callbacks.append(
-            lambda _: self._log.info(f"Application {self.name} terminates")
-        )
-        yield finished | self.env.timeout(timeout)
+        # start the application
+        finished = self.env.process(super().run())
+        # wait until the application finished or we reach the timeout
+        yield self.env.any_of([finished, self.env.timeout(timeout)])
+        # record termination time
         end = self.env.now
-
+        # kill the application if it is not finished (we reached the timeout)
         if not finished.processed:
             self.kill()
             miss = 1
