@@ -17,6 +17,10 @@ class FivegGraph(DataflowGraph):
     def __init__(self, name, ntrace):
         super().__init__(name)
 
+        self.prbs = ntrace.PRBs
+        self.mod = ntrace.modulation_scheme
+        self.criticality = ntrace.UE_criticality
+
         prbs = ntrace.PRBs
         mod = ntrace.modulation_scheme
         lay = ntrace.layers
@@ -108,4 +112,5 @@ class FivegGraph(DataflowGraph):
         ntrace.PRBs = prbs
         ntrace.modulation_scheme = modulation_scheme
         ntrace.layers = layers
+        ntrace.UE_criticality = None
         return FivegGraph(f"fiveg{id}", ntrace)

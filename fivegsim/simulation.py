@@ -137,7 +137,7 @@ class FiveGSimulation(BaseSimulation):
         sf_mapping = (
             mapper.generate_mapping()
         )  # TODO: collect and add load here
-        log.info(f"mapping generation done")
+        log.info("mapping generation done")
 
         # Split the mapping up again. We merged all graphs and traces
         # into a single graph and trace and generated a mapping for this big
@@ -159,13 +159,7 @@ class FiveGSimulation(BaseSimulation):
         return mappings
 
     def _start_applications(self, mappings, traces, nsubframe):
-        cnt = 0
-
         for mapping, trace in zip(mappings, traces):
-            criticality = nsubframe.trace[cnt].UE_criticality
-            prbs = nsubframe.trace[cnt].PRBs
-            mod = nsubframe.trace[cnt].modulation_scheme
-
             # instantiate the application
             app = FiveGRuntimeDataflowApplication(
                 name=mapping.graph.name,
@@ -175,8 +169,7 @@ class FiveGSimulation(BaseSimulation):
                 system=self.system,
             )
             # start the application
-            finished = self.env.process(app.run(criticality, prbs, mod))
-            cnt += 1
+            finished = self.env.process(app.run())
             # keep the finished event for later
             self.app_finished.append(finished)
 
@@ -252,7 +245,15 @@ class FiveGSimulation(BaseSimulation):
 
 
 class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
-    def run(self, criticality, prbs, mod):
+    def __init__(self, name, graph, mapping, app_trace, system):
+        super().__init__(name, graph, mapping, app_trace, system)
+
+        assert isinstance(graph, FivegGraph)
+        self.criticality = graph.criticality
+        self.prbs = graph.prbs
+        self.mod = graph.mod
+
+    def run(self):
         """Start execution of this application
 
         Yields:
@@ -261,17 +262,21 @@ class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
         """
         miss = 0
 
-        if criticality == 0:
+        if self.criticality == 0:
             timeout = 2500000000
-        elif criticality == 1:
+        elif self.criticality == 1:
             timeout = 500000000
-        elif criticality == 2:
+        elif self.criticality == 2:
             timeout = 2500000000
+        else:
+            raise ValueError("Unknown criticality")
 
         self._log.info(f"Application {self.name} starts")
 
         # record application start in the simulation trace
-        self.trace_writer.begin_duration("instances", self.name, self.name)
+        self.system.trace_writer.begin_duration(
+            "instances", self.name, self.name
+        )
 
         start = self.env.now
         for process, mapping_info in self._mapping_infos.items():
@@ -288,10 +293,11 @@ class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
             miss = 1
 
         # record application termination in the simulation trace
-        self.trace_writer.end_duration("instances", self.name, self.name)
+        self.system.trace_writer.end_duration("instances", self.name, self.name)
 
         # save stats
         with open("stats.csv", "a") as stats_file:
             stats_file.write(
-                f"{start},{end},{criticality},{miss},{prbs},{mod}\n"
+                f"{start},{end},{self.criticality},{miss},{self.prbs},"
+                f"{self.mod}\n"
             )
