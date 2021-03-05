@@ -7,6 +7,7 @@ from fivegsim.fiveg_graph import FivegGraph
 
 from mocasin.simulate.application import RuntimeDataflowApplication
 
+
 class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
     def __init__(self, name, graph, mapping, app_trace, system):
         super().__init__(name, graph, mapping, app_trace, system)
