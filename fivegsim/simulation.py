@@ -160,7 +160,6 @@ class FiveGSimulation(BaseSimulation):
 
     def _start_applications(self, mappings, traces, nsubframe):
         cnt = 0
-        trace_writer = self.system.trace_writer
 
         for mapping, trace in zip(mappings, traces):
             criticality = nsubframe.trace[cnt].UE_criticality
@@ -175,18 +174,9 @@ class FiveGSimulation(BaseSimulation):
                 app_trace=trace,
                 system=self.system,
             )
-            # record application start in the simulation trace
-            trace_writer.begin_duration("instances", app.name, app.name)
             # start the application
             finished = self.env.process(app.run(criticality, prbs, mod))
             cnt += 1
-            # register a callback to record the application termination
-            # in the simulation trace
-            finished.callbacks.append(
-                lambda _, name=app.name: trace_writer.end_duration(
-                    "instances", name, name
-                )
-            )
             # keep the finished event for later
             self.app_finished.append(finished)
 
@@ -279,6 +269,10 @@ class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
             timeout = 2500000000
 
         self._log.info(f"Application {self.name} starts")
+
+        # record application start in the simulation trace
+        self.trace_writer.begin_duration("instances", self.name, self.name)
+
         start = self.env.now
         for process, mapping_info in self._mapping_infos.items():
             self.system.start_process(process, mapping_info)
@@ -292,6 +286,9 @@ class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
         if not finished.processed:
             self.kill()
             miss = 1
+
+        # record application termination in the simulation trace
+        self.trace_writer.end_duration("instances", self.name, self.name)
 
         # save stats
         with open("stats.csv", "a") as stats_file:
