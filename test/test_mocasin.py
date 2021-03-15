@@ -29,9 +29,9 @@ def test_generate_mapping(tmpdir):
 @pytest.mark.parametrize(
     "prbs,layers,mod,expected",
     [
-        (4, 4, 1, "0.503603266 ms"),
-        (10, 10, 2, "1.463484362 ms"),
-        (32, 16, 4, "5.774557101 ms"),
+        (4, 4, 1, "0.485606411 ms"),
+        (10, 10, 2, "1.450309122 ms"),
+        (32, 16, 4, "5.692628535 ms"),
     ],
 )
 def test_simulate(tmpdir, prbs, layers, mod, expected):
