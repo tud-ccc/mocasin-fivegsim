@@ -28,8 +28,10 @@ class FivegTrace(DataflowTrace):
             n_firings,
             read_from,
             input_tokens,
+            input_fully_interconnect,
             write_to,
             output_tokens,
+            output_fully_interconnect,
             n_instances,
             processor_cycles,
         ):
@@ -37,8 +39,10 @@ class FivegTrace(DataflowTrace):
             self.n_firings = n_firings
             self.read_from = read_from
             self.input_tokens = input_tokens
+            self.input_fully_interconnect = input_fully_interconnect
             self.write_to = write_to
             self.output_tokens = output_tokens
+            self.output_fully_interconnect = output_fully_interconnect
             self.n_instances = n_instances
             self.processor_cycles = processor_cycles
 
@@ -52,71 +56,6 @@ class FivegTrace(DataflowTrace):
 
         prbs = ntrace.PRBs
         mod = ntrace.modulation_scheme
-
-        # kernel names
-        kernels = [
-            "input",
-            "mf",
-            "ifft1",
-            "wind",
-            "fft",
-            "comb",
-            "ant",
-            "ifft2",
-            "demap",
-            "output",
-        ]
-
-        # number of firings for each kernel type
-        firings = [2, 2, 2, 2, 2, 2, 2, 2, 1, 1]
-
-        # processes read from
-        read_from = [
-            [],
-            ["input"],
-            ["mf"],
-            ["ifft1"],
-            ["wind"],
-            ["fft"],
-            ["input", "comb"],
-            ["ant"],
-            ["ifft2"],
-            ["demap"],
-        ]
-
-        # number of input tokens
-        input_tokens = [[None], [1], [1], [1], [1], [1], [1, 1], [1], [2], [1]]
-
-        # processes read from
-        write_to = [
-            ["mf", "ant"],
-            ["ifft1"],
-            ["wind"],
-            ["fft"],
-            ["comb"],
-            ["ant"],
-            ["ifft2"],
-            ["demap"],
-            ["output"],
-            [],
-        ]
-
-        # number of input tokens
-        output_tokens = [[1, 1], [1], [1], [1], [1], [1], [1], [1], [1], [None]]
-
-        # number of instances for each kernel
-        n_instances = [
-            1,
-            num_ph1,
-            num_ph1,
-            num_ph1,
-            num_ph1,
-            num_ph2,
-            num_ph3,
-            num_ph3,
-            num_ph4,
-            1,
-        ]
 
         # offsets on tgff file
         offset = [
@@ -134,34 +73,147 @@ class FivegTrace(DataflowTrace):
 
         # processors and frequency
         freq = {
-            "ARM_CORTEX_A7": 1300000000,  # ARM_CORTEX_A7
-            "ARM_CORTEX_A15": 2000000000,  # ARM_CORTEX_A15
+            "ARM_CORTEX_A7": 1300000000,
+            "ARM_CORTEX_A15": 2000000000,
         }
 
-        pcs = {}
-        pcs["input"] = {"ARM_CORTEX_A7": 0, "ARM_CORTEX_A15": 0}
-        pcs["output"] = {"ARM_CORTEX_A7": 0, "ARM_CORTEX_A15": 0}
-        for k in range(len(kernels)):
-            if (kernels[k] != "input") and (kernels[k] != "output"):
-                pcs[kernels[k]] = {
-                    "ARM_CORTEX_A7": proc_time[0][offset[k]]
-                    * freq["ARM_CORTEX_A7"],
-                    "ARM_CORTEX_A15": proc_time[1][offset[k]]
-                    * freq["ARM_CORTEX_A15"],
-                }
+        pcs = []
+        for k in range(len(offset)):
+            if offset[k] is None:
+                pcs.append({"ARM_CORTEX_A7": 0, "ARM_CORTEX_A15": 0})
+            else:
+                pcs.append(
+                    {
+                        "ARM_CORTEX_A7": proc_time[0][offset[k]]
+                        * freq["ARM_CORTEX_A7"],
+                        "ARM_CORTEX_A15": proc_time[1][offset[k]]
+                        * freq["ARM_CORTEX_A15"],
+                    }
+                )
 
-        self.processes = {}
-        for k in range(len(kernels)):
-            self.processes[kernels[k]] = self.kernelTrace(
-                kernels[k],
-                firings[k],
-                read_from[k],
-                input_tokens[k],
-                write_to[k],
-                output_tokens[k],
-                n_instances[k],
-                pcs[kernels[k]],
-            )
+        # kernel
+        self.processes = {
+            "input": self.kernelTrace(
+                "input",
+                2,
+                [],
+                [None],
+                [False],
+                ["mf", "ant"],
+                [1, 1],
+                [True, True],
+                1,
+                pcs[0],
+            ),
+            "mf": self.kernelTrace(
+                "mf",
+                2,
+                ["input"],
+                [1],
+                [True],
+                ["ifftm"],
+                [1],
+                [False],
+                num_ph1,
+                pcs[1],
+            ),
+            "ifftm": self.kernelTrace(
+                "ifftm",
+                2,
+                ["mf"],
+                [1],
+                [False],
+                ["wind"],
+                [1],
+                [False],
+                num_ph1,
+                pcs[2],
+            ),
+            "wind": self.kernelTrace(
+                "wind",
+                2,
+                ["ifftm"],
+                [1],
+                [False],
+                ["fft"],
+                [1],
+                [False],
+                num_ph1,
+                pcs[3],
+            ),
+            "fft": self.kernelTrace(
+                "fft",
+                2,
+                ["wind"],
+                [1],
+                [False],
+                ["comb"],
+                [1],
+                [True],
+                num_ph1,
+                pcs[4],
+            ),
+            "comb": self.kernelTrace(
+                "comb",
+                2,
+                ["fft"],
+                [1],
+                [True],
+                ["ant"],
+                [1],
+                [True],
+                num_ph2,
+                pcs[5],
+            ),
+            "ant": self.kernelTrace(
+                "ant",
+                2,
+                ["input", "comb"],
+                [1, 1],
+                [True, True],
+                ["iffta"],
+                [1],
+                [False],
+                num_ph3,
+                pcs[6],
+            ),
+            "iffta": self.kernelTrace(
+                "iffta",
+                2,
+                ["ant"],
+                [1],
+                [False],
+                ["demap"],
+                [1],
+                [True],
+                num_ph3,
+                pcs[7],
+            ),
+            "demap": self.kernelTrace(
+                "demap",
+                1,
+                ["iffta"],
+                [2],
+                [True],
+                ["output"],
+                [1],
+                [True],
+                num_ph4,
+                pcs[8],
+            ),
+            "output": self.kernelTrace(
+                "output",
+                1,
+                ["demap"],
+                [1],
+                [True],
+                [],
+                [None],
+                [False],
+                1,
+                pcs[9],
+            ),
+        }
 
     def get_trace(self, process):
         kern = next(
@@ -169,10 +221,11 @@ class FivegTrace(DataflowTrace):
             for key, val in self.processes.items()
             if process.startswith(key)
         )
-        # else:
-        # raise RuntimeError(f"Unknown process {process}")
+        if not kern:
+            raise RuntimeError(f"Unknown process {process}")
+
         for firing in range(kern.n_firings):
-            # read tokens from input
+            # read tokens from input channels
             for i in range(len(kern.read_from)):
                 orig_name = kern.read_from[i]
                 orig = next(
@@ -180,7 +233,14 @@ class FivegTrace(DataflowTrace):
                     for key, val in self.processes.items()
                     if key.startswith(orig_name)
                 )
-                for n in range(orig.n_instances):
+                if kern.input_fully_interconnect[i]:
+                    for n in range(orig.n_instances):
+                        yield ReadTokenSegment(
+                            channel=f"{orig_name}{n}_{process}",
+                            num_tokens=kern.input_tokens[i],
+                        )
+                else:
+                    n = process.replace(kern.name, "")
                     yield ReadTokenSegment(
                         channel=f"{orig_name}{n}_{process}",
                         num_tokens=kern.input_tokens[i],
@@ -189,7 +249,7 @@ class FivegTrace(DataflowTrace):
             # Process tasks
             yield ComputeSegment(kern.processor_cycles)
 
-            # write tokens to ouput
+            # write tokens to ouput channels
             for i in range(len(kern.write_to)):
                 dest_name = kern.write_to[i]
                 dest = next(
@@ -197,7 +257,14 @@ class FivegTrace(DataflowTrace):
                     for key, val in self.processes.items()
                     if key.startswith(dest_name)
                 )
-                for n in range(dest.n_instances):
+                if kern.output_fully_interconnect[i]:
+                    for n in range(dest.n_instances):
+                        yield WriteTokenSegment(
+                            channel=f"{process}_{dest_name}{n}",
+                            num_tokens=kern.output_tokens[i],
+                        )
+                else:
+                    n = process.replace(kern.name, "")
                     yield WriteTokenSegment(
                         channel=f"{process}_{dest_name}{n}",
                         num_tokens=kern.output_tokens[i],

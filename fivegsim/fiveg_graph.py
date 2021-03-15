@@ -40,62 +40,81 @@ class FivegGraph(DataflowGraph):
         elif mod == 4:
             mod = 16
 
-        num_phase1 = Phybench.get_num_micf(ntrace.layers)
+        num_phase1 = Phybench.get_num_micf(lay)
         num_phase2 = Phybench.get_num_combwc()
-        num_phase3 = Phybench.get_num_antcomb(ntrace.layers)
+        num_phase3 = Phybench.get_num_antcomb(lay)
         num_phase4 = Phybench.get_num_demap()
 
         # kernels: name, number of instances
-        kern = {
-            "input": 1,
-            "mf": num_phase1,
-            "ifft1": num_phase1,
-            "wind": num_phase1,
-            "fft": num_phase1,
-            "comb": num_phase2,
-            "ant": num_phase3,
-            "ifft2": num_phase3,
-            "demap": num_phase4,
-            "output": 1,
+        kernels = {
+            "input": {"num_instances": 1, "subkernels": ["input"]},
+            "phase1": {
+                "num_instances": num_phase1,
+                "subkernels": ["mf", "ifftm", "wind", "fft"],
+            },
+            "phase2": {"num_instances": num_phase2, "subkernels": ["comb"]},
+            "phase3": {
+                "num_instances": num_phase3,
+                "subkernels": ["ant", "iffta"],
+            },
+            "phase4": {"num_instances": num_phase4, "subkernels": ["demap"]},
+            "output": {"num_instances": 1, "subkernels": ["output"]},
         }
 
         # connections: origin, destination, token size
-        connections = [
-            ["input", "mf", data_size * nmbSc],
-            ["input", "ant", data_size * nmbSc * lay],
-            ["mf", "ifft1", data_size * nmbSc],
-            ["ifft1", "wind", data_size * nmbSc],
-            ["wind", "fft", data_size * nmbSc],
-            ["fft", "comb", data_size * nmbSc],
-            ["comb", "ant", data_size * prbs * ant],
-            ["ant", "ifft2", data_size * prbs * ant],
-            ["ifft2", "demap", data_size * prbs],
-            ["demap", "output", data_size * prbs * mod],
+        kernel_connections = [
+            ["input", "phase1", data_size * nmbSc],
+            ["input", "phase3", data_size * nmbSc * ant],
+            ["phase1", "phase2", data_size * prbs],
+            ["phase2", "phase3", data_size * prbs * ant],
+            ["phase3", "phase4", (data_size * prbs) / 2],
+            ["phase4", "output", data_size * prbs * mod],
+        ]
+
+        # connections: phase, origin, destination, token size
+        subkernel_connections = [
+            ["phase1", "mf", "ifftm", data_size * nmbSc],
+            ["phase1", "ifftm", "wind", data_size * nmbSc],
+            ["phase1", "wind", "fft", data_size * nmbSc],
+            ["phase3", "ant", "iffta", data_size * prbs],
         ]
 
         # add processes
-        kernels = {}
-        for k in kern:
-            for n in range(kern[k]):
-                process_name = k + str(n)
-                kernels[process_name] = DataflowProcess(process_name)
+        processes = {}
+        for k in kernels:
+            for s in kernels[k]["subkernels"]:
+                for n in range(kernels[k]["num_instances"]):
+                    process_name = s + str(n)
+                    processes[process_name] = DataflowProcess(process_name)
 
-        # add channels and connect processes
         channels = {}
-        for conn in connections:
-            for p1 in range(kern[conn[0]]):
-                for p2 in range(kern[conn[1]]):
-                    orig = conn[0] + str(p1)
-                    dest = conn[1] + str(p2)
+
+        # Fully interconnect phases
+        for conn in kernel_connections:
+            for p1 in range(kernels[conn[0]]["num_instances"]):
+                for p2 in range(kernels[conn[1]]["num_instances"]):
+                    orig = kernels[conn[0]]["subkernels"][-1] + str(p1)
+                    dest = kernels[conn[1]]["subkernels"][0] + str(p2)
                     token_size = conn[2]
                     channel = DataflowChannel(orig + "_" + dest, token_size)
                     channels[orig + "_" + dest] = channel
-                    kernels[orig].connect_to_outgoing_channel(channel)
-                    kernels[dest].connect_to_incomming_channel(channel)
+                    processes[orig].connect_to_outgoing_channel(channel)
+                    processes[dest].connect_to_incomming_channel(channel)
+
+        # interconnect subkernels inside a kernel
+        for conn in subkernel_connections:
+            for p1 in range(kernels[conn[0]]["num_instances"]):
+                orig = conn[1] + str(p1)
+                dest = conn[2] + str(p1)
+                token_size = conn[3]
+                channel = DataflowChannel(orig + "_" + dest, token_size)
+                channels[orig + "_" + dest] = channel
+                processes[orig].connect_to_outgoing_channel(channel)
+                processes[dest].connect_to_incomming_channel(channel)
 
         # register all processes
-        for k in kernels:
-            self.add_process(kernels[k])
+        for p in processes:
+            self.add_process(processes[p])
 
         # register all channels
         for c in channels:
