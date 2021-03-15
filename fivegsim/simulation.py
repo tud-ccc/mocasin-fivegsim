@@ -232,6 +232,11 @@ class FiveGSimulation(BaseSimulation):
         # save the execution time
         self.exec_time = self.env.now
 
+        if self.system.power_enabled:
+            energy_results = self.system.calculate_energy()
+            (self.static_energy, self.dynamic_energy) = energy_results
+            self.total_energy = self.static_energy + self.dynamic_energy
+
     def get_missrate(self):
         with open("stats.csv", "r") as stats_file:
             lines = stats_file.readlines()  # Load all lines
