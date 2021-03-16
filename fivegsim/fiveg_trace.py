@@ -71,12 +71,16 @@ class FivegTrace(DataflowTrace):
             None,
         ]
 
-        # processors and frequency
+        # the following frequency settings were also used in the real odroid
+        # platform to measure task execution time
+        # here frequencies are hard-coded since a single platform can have
+        # multiple frequency domains
         freq = {
-            "ARM_CORTEX_A7": 1300000000,
-            "ARM_CORTEX_A15": 2000000000,
+            "ARM_CORTEX_A7": 1500000000,
+            "ARM_CORTEX_A15": 1800000000,
         }
 
+        # calculate clock cycles for each task type
         pcs = []
         for k in range(len(offset)):
             if offset[k] is None:
@@ -91,7 +95,7 @@ class FivegTrace(DataflowTrace):
                     }
                 )
 
-        # kernel
+        # kernels
         self.processes = {
             "input": self.kernelTrace(
                 "input",
