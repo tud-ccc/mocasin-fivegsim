@@ -7,6 +7,7 @@ variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
 stages:
+  - maintenance
   - build
   - test
 
@@ -15,11 +16,13 @@ stages:
 # the local pipeline on the master-ci branch with interfering with other local
 # pipelines run on master.
 mirror-ci-branch:
-  stage: build
+  stage: maintenance
   script:
-    - git push -o ci.skip origin master:master-ci
+    - git push -o ci.skip https://project_206_bot1:${CI_ACCESS_TOKEN}@cc.inf.tu-dresden.de/gitlab/mocasin/fivegsim HEAD:master-ci
   only:
     - master
+  tags:
+    - python3.9
 
 .build:
   script:
