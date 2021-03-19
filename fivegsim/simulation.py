@@ -14,7 +14,7 @@ from mocasin.common.trace import (
     DataflowTrace,
     SegmentType,
 )
-from mocasin.simulate import BaseSimulation
+from mocasin.simulate import BaseSimulation, SimulationResult
 
 from fivegsim.trace_file_manager import TraceFileManager
 from fivegsim.proc_tgff_reader import get_task_time
@@ -216,9 +216,9 @@ class FiveGSimulation(BaseSimulation):
     def _run(self):
         """Run the simulation.
 
-        May only be called once. Updates the :attr:`exec_time` attribute.
+        May only be called once. Updates the :attr:`results` attribute.
         """
-        if self.exec_time is not None:
+        if self.result is not None:
             raise RuntimeError("A FiveGSimulation may only be run once!")
 
         # start all schedulers
@@ -230,12 +230,14 @@ class FiveGSimulation(BaseSimulation):
         # check if all graph processes finished execution
         self.system.check_errors()
         # save the execution time
-        self.exec_time = self.env.now
-
+        self.result = SimulationResult(
+            exec_time=self.env.now, static_energy=None, dynamic_energy=None
+        )
+        # If the power model is enabled, also save the energy consumption
         if self.system.power_enabled:
-            energy_results = self.system.calculate_energy()
-            (self.static_energy, self.dynamic_energy) = energy_results
-            self.total_energy = self.static_energy + self.dynamic_energy
+            static_energy, dynamic_energy = self.system.calculate_energy()
+            self.result.static_energy = static_energy
+            self.result.dynamic_energy = dynamic_energy
 
     def get_missrate(self):
         with open("stats.csv", "r") as stats_file:
