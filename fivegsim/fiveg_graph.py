@@ -19,6 +19,7 @@ class FivegGraph(DataflowGraph):
 
         self.prbs = ntrace.PRBs
         self.mod = ntrace.modulation_scheme
+        self.layers = ntrace.layers
         self.criticality = ntrace.UE_criticality
 
         prbs = ntrace.PRBs
