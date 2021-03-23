@@ -9,15 +9,15 @@ from mocasin.simulate.application import RuntimeDataflowApplication
 
 
 class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
-    def __init__(self, name, graph, mapping, app_trace, system):
-        super().__init__(name, graph, mapping, app_trace, system)
+    def __init__(self, name, graph, app_trace, system):
+        super().__init__(name, graph, app_trace, system)
 
         assert isinstance(graph, FivegGraph)
         self.criticality = graph.criticality
         self.prbs = graph.prbs
         self.mod = graph.mod
 
-    def run(self):
+    def run(self, mapping):
         """Start execution of this application
 
         Yields:
@@ -45,7 +45,7 @@ class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
         # record start time
         start = self.env.now
         # start the application
-        finished = self.env.process(super().run())
+        finished = self.env.process(super().run(mapping))
         # wait until the application finished or we reach the timeout
         yield self.env.any_of([finished, self.env.timeout(timeout)])
         # record termination time

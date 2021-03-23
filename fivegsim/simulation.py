@@ -164,12 +164,11 @@ class FiveGSimulation(BaseSimulation):
             app = FiveGRuntimeDataflowApplication(
                 name=mapping.graph.name,
                 graph=mapping.graph,
-                mapping=mapping,
                 app_trace=trace,
                 system=self.system,
             )
             # start the application
-            finished = self.env.process(app.run())
+            finished = self.env.process(app.run(mapping))
             # keep the finished event for later
             self.app_finished.append(finished)
 
