@@ -198,6 +198,8 @@ class FiveGSimulation(BaseSimulation):
             runtime = PhybenchLoadBalancer(self.system, self.cfg)
             finished = self.env.process(runtime.run())
             self.app_finished = [finished]
+            # make sure the startup of the runtime is processed completely
+            yield self.env.timeout(0)
 
         # while end of file not reached:
         while self.TFM.TF_EOF is not True:
