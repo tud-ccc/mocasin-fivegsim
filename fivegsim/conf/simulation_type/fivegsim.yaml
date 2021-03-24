@@ -16,3 +16,4 @@ simtrace:
     time_frame: 10000000000  # consider the load of the last 10ms
 
 stats: "stats.csv"
+load_balancer: False

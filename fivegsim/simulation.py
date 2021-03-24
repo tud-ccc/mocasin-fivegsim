@@ -23,6 +23,7 @@ from fivegsim.fiveg_graph import FivegGraph
 from fivegsim.fiveg_trace import FivegTrace
 from fivegsim.fiveg_app import FiveGRuntimeDataflowApplication
 from fivegsim.statistics import SimulationStatistics
+from fivegsim.load_balancer import PhybenchLoadBalancer
 
 sys.setrecursionlimit(10000)
 
@@ -191,6 +192,13 @@ class FiveGSimulation(BaseSimulation):
         """
         sf_count = 0
 
+        # start load balancer runtime if needed
+        runtime = None
+        if self.cfg["load_balancer"]:
+            runtime = PhybenchLoadBalancer(self.system, self.cfg)
+            finished = self.env.process(runtime.run())
+            self.app_finished = [finished]
+
         # while end of file not reached:
         while self.TFM.TF_EOF is not True:
             # get next subframe
@@ -207,15 +215,30 @@ class FiveGSimulation(BaseSimulation):
                 yield self.env.timeout(1000000000)
                 continue
 
-            # generate mappings
-            mappings = self._generate_mappings(f"sf_{sf_count}", graphs, traces)
+            if runtime:
+                # let the runtime handle the applications
+                runtime.start_applications(graphs, traces)
+            else:
+                # if there is no runtime, we directly create mappings and start
+                # the applications
 
-            # simulate the application execution
-            log.info(f"start applications for subframe {sf_count}")
-            self._start_applications(mappings, traces, nsubframe)
+                # generate mappings
+                mappings = self._generate_mappings(
+                    f"sf_{sf_count}", graphs, traces
+                )
+
+                # simulate the application execution
+                log.info(f"start applications for subframe {sf_count}")
+                self._start_applications(mappings, traces, nsubframe)
 
             # wait for 1 ms
             yield self.env.timeout(1000000000)
+
+        # if we use the load balancer runtime, we let it know that applications
+        # for all subframes where started and it can shutdown as soon as all
+        # the applications finish
+        if runtime:
+            runtime.shutdown()
 
         # wait until all applications finished
         yield self.env.all_of(self.app_finished)
