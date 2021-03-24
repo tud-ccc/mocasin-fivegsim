@@ -66,7 +66,7 @@ class PhybenchLoadBalancer:
             # of the new apps and ready processes
             yield self.env.timeout(0)
 
-            self._log.debug("Started new apps. Looking for idle schedulers.")
+            self._log.debug("Looking for idle schedulers.")
 
             for scheduler in self._schedulers:
                 if scheduler.is_idle:
@@ -133,16 +133,29 @@ class PhybenchLoadBalancer:
             process_mapping_info = ProcessMappingInfo(scheduler, processor)
             mapping.add_process_info(p, process_mapping_info)
 
+        # search all primitives that work for all the processors. Normally this
+        # will find the primitive using the DRAm
+        # FIXME: we should be smarter here and select better primitives, but its
+        # not trivial to "move" individual primitives when task stealing.  For
+        # this reason, we select the slow but large primitive and don't need to
+        # worry about primitives when moving tasks
+        processors = list(platform.processors())
+        suitable_primitives = []
+        for primitive in platform.primitives():
+            if all(
+                (
+                    p in primitive.producers and p in primitive.consumers
+                    for p in processors
+                )
+            ):
+                suitable_primitives.append(primitive)
+
+        # FIXME: We should probably be smarter in case there are multiple
+        # primitives found
+        primitive = suitable_primitives[0]
+
         for c in graph.channels():
-            suitable_primitives = [
-                prim
-                for prim in platform.primitives()
-                if prim.is_suitable(processor, [processor])
-            ]
-            suitable_primitives.sort(
-                key=lambda p: p.static_costs(processor, processor),
-            )
-            channel_info = ChannelMappingInfo(suitable_primitives[0], 16)
+            channel_info = ChannelMappingInfo(primitive, 16)
             mapping.add_channel_info(c, channel_info)
 
         return mapping
@@ -152,6 +165,8 @@ class PhybenchLoadBalancer:
         self._log.debug(f"Scheduler {scheduler.name} became idle")
         # register the callback again
         scheduler.idle.callbacks.append(self._scheduler_idle_callback)
+        # and try to steal something to work on
+        self._steal_task(scheduler)
 
     def _scheduler_ready_callback(self, _):
         self._log.debug("A scheduler has new ready processes")
@@ -177,9 +192,11 @@ class PhybenchLoadBalancer:
                     f"{scheduler.name} steals {process.name} from "
                     f"{busy_scheduler.name}"
                 )
-                self.system.move_process(
-                    process, busy_scheduler._processor, scheduler._processor
-                )
+                # FIXME: should not access private member directly
+                from_processor = busy_scheduler._processor
+                to_processor = scheduler._processor
+                self.system.move_process(process, from_processor, to_processor)
+
                 found_task_to_steal = True
             else:
                 ready_events.append(busy_scheduler.process_ready)
