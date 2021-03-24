@@ -5,8 +5,13 @@
 
 import hydra
 import logging
+import itertools
 
-from mocasin.mapper.random import RandomMapper
+from mocasin.common.mapping import (
+    Mapping,
+    ChannelMappingInfo,
+    ProcessMappingInfo,
+)
 from mocasin.simulate.adapter import SimulateLoggerAdapter
 
 from fivegsim.simulation import FiveGRuntimeDataflowApplication
@@ -30,6 +35,11 @@ class PhybenchLoadBalancer:
 
         # a list to keep track of all events indicating when an app finished
         self._finished_events = []
+
+        # a cyclic iterator over all processors in the platform
+        self._processor_iterator = iter(
+            itertools.cycle(system.platform.processors())
+        )
 
     def run(self):
         """A simpy process modelling the actual runtime."""
@@ -58,6 +68,8 @@ class PhybenchLoadBalancer:
         return self.system.env
 
     def start_applications(self, graphs, traces):
+        platform = self.system.platform
+
         # clean up running applications first
         for name, app in self._running_applications.items():
             if app.is_finished():
@@ -68,8 +80,9 @@ class PhybenchLoadBalancer:
             rep = hydra.utils.instantiate(
                 self.cfg["representation"], graph, self.system.platform
             )
-            mapper = RandomMapper(graph, self.system.platform, trace, rep)
-            mapping = mapper.generate_mapping()
+            mapping = self._generate_single_core_mapping(
+                graph, trace, next(self._processor_iterator)
+            )
 
             app = FiveGRuntimeDataflowApplication(
                 name=graph.name,
@@ -82,3 +95,29 @@ class PhybenchLoadBalancer:
             self._running_applications[app.name] = app
             finished = self.env.process(app.run(mapping))
             self._finished_events.append(finished)
+
+    def _generate_single_core_mapping(self, graph, trace, processor):
+        self._log.debug(f"Mapping {graph.name} to processor {processor.name}")
+
+        platform = self.system.platform
+        scheduler = platform.find_scheduler_for_processor(processor)
+
+        mapping = Mapping(graph, platform)
+
+        for p in graph.processes():
+            process_mapping_info = ProcessMappingInfo(scheduler, processor)
+            mapping.add_process_info(p, process_mapping_info)
+
+        for c in graph.channels():
+            suitable_primitives = [
+                prim
+                for prim in platform.primitives()
+                if prim.is_suitable(processor, [processor])
+            ]
+            suitable_primitives.sort(
+                key=lambda p: p.static_costs(processor, processor),
+            )
+            channel_info = ChannelMappingInfo(suitable_primitives[0], 16)
+            mapping.add_channel_info(c, channel_info)
+
+        return mapping
