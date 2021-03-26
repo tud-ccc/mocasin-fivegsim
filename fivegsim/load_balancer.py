@@ -50,28 +50,6 @@ class PhybenchLoadBalancer:
         for scheduler in self._schedulers:
             scheduler.idle.callbacks.append(self._scheduler_idle_callback)
 
-        # search all primitives that work for all the processors. Normally this
-        # will find the primitive using the DRAm
-        # FIXME: we should be smarter here and select better primitives, but its
-        # not trivial to "move" individual primitives when task stealing.  For
-        # this reason, we select the slow but large primitive and don't need to
-        # worry about primitives when moving tasks
-        processors = list(platform.processors())
-        suitable_primitives = []
-        for primitive in platform.primitives():
-            if all(
-                (
-                    p in primitive.producers and p in primitive.consumers
-                    for p in processors
-                )
-            ):
-                suitable_primitives.append(primitive)
-
-        # store the primitive for use later when mapping applications
-        # FIXME: We should probably be smarter in case there are multiple
-        # primitives found
-        self._primitive = suitable_primitives[0]
-
     def run(self):
         """A simpy process modelling the actual runtime."""
 
@@ -155,11 +133,24 @@ class PhybenchLoadBalancer:
             process_mapping_info = ProcessMappingInfo(scheduler, processor)
             mapping.add_process_info(p, process_mapping_info)
 
+        primitive = self._find_best_primitive(processor, processor)
+
         for c in graph.channels():
-            channel_info = ChannelMappingInfo(self._primitive, 16)
+            channel_info = ChannelMappingInfo(primitive, 16)
             mapping.add_channel_info(c, channel_info)
 
         return mapping
+
+    def _find_best_primitive(self, src, sink):
+        # find all suitable_primitives
+        suitable_primitives = []
+        for primitive in self.system.platform.primitives():
+            if primitive.is_suitable(src, [sink]):
+                suitable_primitives.append(primitive)
+
+        # return the best one
+        suitable_primitives.sort(key=lambda p: p.static_costs(src, sink))
+        return suitable_primitives[0]
 
     def _scheduler_idle_callback(self, event):
         scheduler = event.value
@@ -193,12 +184,33 @@ class PhybenchLoadBalancer:
                     f"{scheduler.name} steals {process.name} from "
                     f"{busy_scheduler.name}"
                 )
+                found_task_to_steal = True
+
+                app = process.app
+
+                # move the task
                 # FIXME: should not access private member directly
                 from_processor = busy_scheduler._processor
                 to_processor = scheduler._processor
                 self.system.move_process(process, from_processor, to_processor)
+                app._process_mappings[process] = to_processor
 
-                found_task_to_steal = True
+                # and update its primitives
+                # FIXME: should not access private member directly
+                for channel in process._channels.values():
+                    # the algorithm only works for channels with a single sink
+                    assert len(channel._sinks) == 1
+
+                    src_process = channel._src
+                    sink_process = channel._sinks[0]
+
+                    src_processor = app._process_mappings[src_process]
+                    sink_processor = app._process_mappings[sink_process]
+
+                    channel._primitive = self._find_best_primitive(
+                        src_processor, sink_processor
+                    )
+
             else:
                 ready_events.append(busy_scheduler.process_ready)
 
