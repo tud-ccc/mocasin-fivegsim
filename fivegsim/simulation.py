@@ -25,7 +25,12 @@ from fivegsim.fiveg_app import FiveGRuntimeDataflowApplication
 from fivegsim.statistics import SimulationStatistics
 from fivegsim.load_balancer import PhybenchLoadBalancer
 
+from mocasin.simulate import scheduler
+
 sys.setrecursionlimit(10000)
+
+# increase queue len that is used for load calculations
+scheduler._MAX_DEQUE_LEN = 5000
 
 log = logging.getLogger(__name__)
 
