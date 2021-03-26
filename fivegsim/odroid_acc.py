@@ -3,6 +3,7 @@
 #
 # Authors: Felix Teweleit, Andres Goens, Christian Menard
 
+import copy
 
 from mocasin.common.platform import Platform, Processor
 from mocasin.platforms.platformDesigner import PlatformDesigner
@@ -29,9 +30,7 @@ class OdroidWithAccelerators(Platform):
             processor_1 = instantiate(processor_1)
         if not isinstance(processor_acc, Processor):
             processor_acc = instantiate(processor_acc)
-        super().__init__(
-            name, kwargs.get("symmetries_json", None)
-        )
+        super().__init__(name, kwargs.get("symmetries_json", None))
 
         designer = PlatformDesigner(self)
         designer.setSchedulingPolicy("FIFO", 1000)
@@ -97,3 +96,15 @@ class OdroidWithAccelerators(Platform):
             frequencyDomain=933000000.0,
         )
         designer.finishElement()
+
+        # Reduce the scheduling cycles for the accelerators
+        for scheduler in self.schedulers():
+            if scheduler.processors[0].type.startswith("acc_"):
+                # need to copy the policy first, because the designer assigns
+                # each scheduler the same policy object
+                scheduler.policy = copy.deepcopy(scheduler.policy)
+
+                # FIXME: the 50 cycles is just a guess and it might need
+                # adjustment
+                # accelerators use 50 cycles for task switching
+                scheduler.policy.scheduling_cycles = 50
