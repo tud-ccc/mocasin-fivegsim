@@ -112,6 +112,10 @@ class PhybenchLoadBalancer:
                 graph, arrival=self.env.now, deadline=deadline
             )
             processor = next(self._processor_iterator)
+            # don't map on accelerators
+            while processor.type.startswith("acc"):
+                processor = next(self._processor_iterator)
+            # create the mapping
             mapping = self._generate_single_core_mapping(
                 graph, trace, processor
             )
@@ -185,14 +189,30 @@ class PhybenchLoadBalancer:
         if len(busy_schedulers) == 0:
             return
 
+        is_acc = scheduler._processor.type.startswith("acc_")
+        if is_acc:
+            processor_type = scheduler._processor.type
+            acc_tasks = processor_type[4:].split(",")
+
         found_task_to_steal = False
         ready_events = []
         # iterate over all busy schedulers
         for busy_scheduler in busy_schedulers:
             # check if the scheduler has ready tasks
             # FIXME: should not access private member directly
+            process = None
             if len(busy_scheduler._ready_queue) > 0:
-                process = busy_scheduler._ready_queue[0]
+                if is_acc:
+                    # if we are stealing tasks for an accelerator, then we can
+                    # only steal those tasks supported by the accelerator. Thus
+                    # we need to actively search for a fitting task
+                    for p in busy_scheduler._ready_queue:
+                        if p.name.startswith(tuple(acc_tasks)):
+                            process = p
+                            break
+                else:
+                    process = busy_scheduler._ready_queue[0]
+            if process:
                 self._log.debug(
                     f"{scheduler.name} steals {process.name} from "
                     f"{busy_scheduler.name}"
