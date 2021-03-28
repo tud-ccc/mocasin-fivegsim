@@ -21,6 +21,7 @@ from fivegsim.proc_tgff_reader import get_task_time
 from fivegsim.fiveg_graph import FivegGraph
 from fivegsim.fiveg_trace import FivegTrace
 from fivegsim.fiveg_app import FiveGRuntimeDataflowApplication
+from fivegsim.statistics import SimulationStatistics
 
 sys.setrecursionlimit(10000)
 
@@ -70,6 +71,9 @@ class FiveGSimulation(BaseSimulation):
 
         # a list of application started during execution
         self.app_finished = []
+
+        # initialize simulation statistics
+        self.stats = SimulationStatistics()
 
     @staticmethod
     def from_hydra(cfg, **kwargs):
@@ -160,12 +164,20 @@ class FiveGSimulation(BaseSimulation):
 
     def _start_applications(self, mappings, traces, nsubframe):
         for mapping, trace in zip(mappings, traces):
+            graph = mapping.graph
+            # create a statistics entry for the application
+            deadline = self.env.now + graph.timeout
+            stats_entry = self.stats.create_entry(
+                graph, arrival=self.env.now, deadline=deadline
+            )
             # instantiate the application
             app = FiveGRuntimeDataflowApplication(
-                name=mapping.graph.name,
-                graph=mapping.graph,
+                name=graph.name,
+                graph=graph,
                 app_trace=trace,
                 system=self.system,
+                deadline=deadline,
+                stats_entry=stats_entry,
             )
             # start the application
             finished = self.env.process(app.run(mapping))
@@ -177,9 +189,6 @@ class FiveGSimulation(BaseSimulation):
         processing.
         """
         sf_count = 0
-
-        with open("stats.csv", "w") as stats_file:
-            stats_file.write("startTime,endTime,criticality,miss,prbs,mod\n")
 
         # while end of file not reached:
         while self.TFM.TF_EOF is not True:
@@ -210,7 +219,9 @@ class FiveGSimulation(BaseSimulation):
         # wait until all applications finished
         yield self.env.all_of(self.app_finished)
 
-        print("missrate = " + str(self.get_missrate()))
+        print(f"Total applications: {self.stats.length()}")
+        print(f"Total rejected: {self.stats.total_rejected()}")
+        print(f"Missed deadline: {self.stats.total_missed()}")
 
     def _run(self):
         """Run the simulation.
@@ -238,13 +249,4 @@ class FiveGSimulation(BaseSimulation):
             self.result.static_energy = static_energy
             self.result.dynamic_energy = dynamic_energy
 
-    def get_missrate(self):
-        with open("stats.csv", "r") as stats_file:
-            lines = stats_file.readlines()  # Load all lines
-        lines.pop(0)  # Remove first line
-        lines = [x.strip() for x in lines]
-        lines = [x.split(",") for x in lines]
-        num_miss = 0
-        for line in lines:
-            num_miss += int(line[3])
-        return num_miss / len(lines)
+        self.stats.dump(self.cfg["stats"])

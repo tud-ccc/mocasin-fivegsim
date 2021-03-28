@@ -120,6 +120,18 @@ class FivegGraph(DataflowGraph):
         for c in channels:
             self.add_channel(channels[c])
 
+    @property
+    def timeout(self):
+        if self.criticality == 0:
+            timeout = 2500000000
+        elif self.criticality == 1:
+            timeout = 500000000
+        elif self.criticality == 2:
+            timeout = 2500000000
+        else:
+            raise ValueError("Unknown criticality")
+        return timeout
+
     @staticmethod
     def from_hydra(id, prbs, modulation_scheme, layers, **kwargs):
         # a little hacky, but it does the trick to instantiate the graph

@@ -9,13 +9,34 @@ from mocasin.simulate.application import RuntimeDataflowApplication
 
 
 class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
-    def __init__(self, name, graph, app_trace, system):
+    """Represents the runtime instance of the 5g application.
+
+    Args:
+        name (str): the application name
+        graph (FivegGraph): the graph denoting the dataflow application
+        mapping (Mapping): a mapping to the platform implemented by system
+        app_trace (FivegTrace): the trace representing the execution
+            behavior of the application
+        system (System): the system the application is supposed to be
+            executed on
+        deadline (int): the absolute deadline if specified, otherwise it is
+            calculated from the application criticality
+        stats_entry (SimulationStatisticsEntry): the statistics entry of
+            the application
+    """
+
+    def __init__(
+        self, name, graph, app_trace, system, deadline=None, stats_entry=None
+    ):
+
         super().__init__(name, graph, app_trace, system)
 
         assert isinstance(graph, FivegGraph)
         self.criticality = graph.criticality
         self.prbs = graph.prbs
         self.mod = graph.mod
+        self.deadline = deadline
+        self.stats_entry = stats_entry
 
     def run(self, mapping):
         """Start execution of this application
@@ -26,15 +47,6 @@ class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
         """
         miss = 0
 
-        if self.criticality == 0:
-            timeout = 2500000000
-        elif self.criticality == 1:
-            timeout = 500000000
-        elif self.criticality == 2:
-            timeout = 2500000000
-        else:
-            raise ValueError("Unknown criticality")
-
         self._log.info(f"Application {self.name} starts")
 
         # record application start in the simulation trace
@@ -44,6 +56,14 @@ class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
 
         # record start time
         start = self.env.now
+
+        # calculate the deadline
+        if not self.deadline:
+            timeout = self.graph.timeout
+            self.deadline = start + timeout
+        timeout = self.deadline - start
+        assert timeout > 0
+
         # start the application
         finished = self.env.process(super().run(mapping))
         # wait until the application finished or we reach the timeout
@@ -59,8 +79,7 @@ class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
         self.system.trace_writer.end_duration("instances", self.name, self.name)
 
         # save stats
-        with open("stats.csv", "a") as stats_file:
-            stats_file.write(
-                f"{start},{end},{self.criticality},{miss},{self.prbs},"
-                f"{self.mod}\n"
-            )
+        if self.stats_entry:
+            self.stats_entry.start_time = start
+            self.stats_entry.end_time = end
+            self.stats_entry.deadline_miss = miss

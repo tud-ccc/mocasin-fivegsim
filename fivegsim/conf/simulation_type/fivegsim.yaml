@@ -12,6 +12,7 @@ simtrace:
   app: False
   platform: True
   load:
-    granularity: 100000000  # every 1ms
+    granularity: 100000000  # every 100us
     time_frame: 10000000000  # consider the load of the last 10ms
 
+stats: "stats.csv"
