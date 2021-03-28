@@ -17,17 +17,20 @@ def test_fivegsim(tmpdir):
         stdout=subprocess.PIPE,
     )
 
-    found_time_line = False
-    found_miss_line = False
+    found_lines = 0x0
     stdout = res.stdout.decode()
     for line in stdout.split("\n"):
-        if line.startswith("missrate = "):
-            assert line == "missrate = 0.2777777777777778"
-            found_miss_line = True
+        if line.startswith("Total applications: "):
+            total = line[20:]
+            assert total == "18"
+            found_lines |= 0x1
+        if line.startswith("Missed deadline: "):
+            missed = line[17:]
+            assert missed == "5"
+            found_lines |= 0x2
         if line.startswith("Total simulated time: "):
             time = line[22:]
             assert time == "31.0 ms"
-            found_time_line = True
+            found_lines |= 0x4
 
-    assert found_miss_line
-    assert found_time_line
+    assert found_lines == 0x7
