@@ -3,8 +3,10 @@
 #
 # Authors: Julian Robledo, Christian Menard
 
-from mocasin.common.graph import DataflowGraph, DataflowProcess, DataflowChannel
+from collections import OrderedDict
+
 from fivegsim.phybench import Phybench
+from mocasin.common.graph import DataflowGraph, DataflowProcess, DataflowChannel
 
 
 class FivegGraph(DataflowGraph):
@@ -47,20 +49,36 @@ class FivegGraph(DataflowGraph):
         num_phase4 = Phybench.get_num_demap()
 
         # kernels: name, number of instances
-        kernels = {
-            "input": {"num_instances": 1, "subkernels": ["input"]},
-            "phase1": {
-                "num_instances": num_phase1,
-                "subkernels": ["mf", "ifftm", "wind", "fft"],
-            },
-            "phase2": {"num_instances": num_phase2, "subkernels": ["comb"]},
-            "phase3": {
-                "num_instances": num_phase3,
-                "subkernels": ["ant", "iffta"],
-            },
-            "phase4": {"num_instances": num_phase4, "subkernels": ["demap"]},
-            "output": {"num_instances": 1, "subkernels": ["output"]},
-        }
+        self.structure = OrderedDict(
+            [
+                ("input", {"num_instances": 1, "subkernels": ["input"]}),
+                (
+                    "phase1",
+                    {
+                        "num_instances": num_phase1,
+                        "subkernels": ["mf", "ifftm", "wind", "fft"],
+                    },
+                ),
+                (
+                    "phase2",
+                    {"num_instances": num_phase2, "subkernels": ["comb"]},
+                ),
+                (
+                    "phase3",
+                    {
+                        "num_instances": num_phase3,
+                        "subkernels": ["ant", "iffta"],
+                    },
+                ),
+                (
+                    "phase4",
+                    {"num_instances": num_phase4, "subkernels": ["demap"]},
+                ),
+                ("output", {"num_instances": 1, "subkernels": ["output"]}),
+            ]
+        )
+        # Shortcut for laters uses
+        kernels = self.structure
 
         # connections: origin, destination, token size
         kernel_connections = [

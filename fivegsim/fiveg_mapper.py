@@ -5,12 +5,19 @@
 
 """This is a placeholder for FiveGMapper, which will be implemented soon."""
 
+from collections import Counter
 from copy import copy
+import logging
 
 import hydra
 
-from mocasin.mapper.fair import StaticCFSMapper
+from mocasin.common.mapping import Mapping, ProcessMappingInfo
+from mocasin.mapper.partial import ComPartialMapper
+from mocasin.mapper.random import RandomPartialMapper
 from mocasin.mapper.utils import SimulationManager
+
+
+log = logging.getLogger(__name__)
 
 
 class FiveGParetoFrontCache:
@@ -37,7 +44,9 @@ class FiveGParetoFrontCache:
         rep = hydra.utils.instantiate(
             self.cfg["representation"], graph, self.platform
         )
-        mapper = StaticCFSMapper(graph, self.platform, trace, rep)
+        mapper = hydra.utils.instantiate(
+            self.cfg["mapper"], graph, self.platform, trace, rep
+        )
         pareto_front = mapper.generate_pareto_front()
         simulation_manager = SimulationManager(
             rep, trace, jobs=None, parallel=True
@@ -63,4 +72,116 @@ class FiveGMapper:
     in balanced fashion.
     """
 
-    pass
+    def __init__(self, graph, platform, trace, representation):
+        self.platform = platform
+        self.full_mapper = True  # flag indicating the mapper type
+        self.graph = graph
+        self.trace = trace
+        self.randMapGen = RandomPartialMapper(self.graph, self.platform)
+        self.comMapGen = ComPartialMapper(
+            self.graph, self.platform, self.randMapGen
+        )
+
+    def map_to_core(self, mapping, process, core):
+        scheduler = list(self.platform.schedulers())[0]
+        affinity = core
+        priority = 0
+        info = ProcessMappingInfo(scheduler, affinity, priority)
+        mapping.add_process_info(process, info)
+
+    def _map_phase(self, mapping, phase, processors):
+        """Map processes in the specific phase.
+
+        Args:
+            mapping (Mapping): currently constructed mapping
+            phase (str): a phase name
+            processors (list of `Processor`): a list of processors to map to.
+
+        Returns: the execution time of the phase.
+        """
+        log.debug(f"Mapping phase: {phase}")
+        num_instances = self.graph.structure[phase]["num_instances"]
+        subkernels = self.graph.structure[phase]["subkernels"]
+
+        # execution time of already mapped processes
+        processor_time = Counter(dict.fromkeys(processors, 0))
+
+        # collect the amount of cycles at each core for the whole kernel
+        acc_cycles = Counter()
+        for kernel in subkernels:
+            acc_cycles += Counter(
+                self.trace.accumulate_processor_cycles(f"{kernel}0")
+            )
+
+        # transform cycles to ticks
+        phase_processor_time = Counter()
+        for pe in processors:
+            phase_processor_time[pe] = pe.ticks(acc_cycles[pe.type])
+
+        # perform load balancing
+        processor_instances = dict.fromkeys(processors, 0)
+        for _ in range(num_instances):
+            pe_time_added = processor_time + phase_processor_time
+            pe_min = min(
+                pe_time_added, key=pe_time_added.get, default=processors[0]
+            )
+            processor_instances[pe_min] += 1
+            processor_time[pe_min] += phase_processor_time[pe_min]
+
+        # assign cores to the processes
+        i = 0
+        for pe, count in processor_instances.items():
+            for _ in range(count):
+                for subkernel in subkernels:
+                    process = self.graph.find_process(f"{subkernel}{i}")
+                    self.map_to_core(mapping, process, pe)
+                i += 1
+
+        assert i == num_instances
+        return max(processor_time.values(), default=0)
+
+    def generate_mapping(self, restricted=None):
+        """Generate the mapping for the graph.
+
+        The mappings are mapped on all cores, except specified in `restricted`.
+        """
+        if not restricted:
+            restricted = []
+
+        processors = [
+            pe for pe in self.platform.processors() if pe.name not in restricted
+        ]
+
+        mapping = Mapping(self.graph, self.platform)
+
+        exec_time = 0
+
+        # map applications phase by phase
+        for phase in self.graph.structure:
+            exec_time += self._map_phase(mapping, phase, processors)
+
+        mapping = self.comMapGen.generate_mapping(mapping)
+        return mapping
+
+    def generate_pareto_front(self):
+        pareto = []
+        restricted = [[]]
+        cores = {}
+        all_cores = list(self.platform.processors())
+        for core_type, _ in self.platform.get_processor_types().items():
+            cores[core_type] = [
+                core.name for core in all_cores if core.type == core_type
+            ]
+        for core_type in self.platform.get_processor_types():
+            new_res = []
+            for r in restricted:
+                for i in range(len(cores[core_type])):
+                    new_res.append(r + cores[core_type][: i + 1])
+            restricted = restricted + new_res
+        restricted = restricted[:-1]
+        log.debug(f"Length of restricted = {len(restricted)}")
+        log.debug(f"{restricted}")
+        for res in restricted:
+            mapping = self.generate_mapping(restricted=res)
+            pareto.append(mapping)
+        return pareto
