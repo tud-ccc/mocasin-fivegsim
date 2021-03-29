@@ -222,6 +222,11 @@ class FiveGSimulation(BaseSimulation):
         print(f"Total applications: {self.stats.length()}")
         print(f"Total rejected: {self.stats.total_rejected()}")
         print(f"Missed deadline: {self.stats.total_missed()}")
+        self.to_file(
+            self.stats.length(),
+            self.stats.total_rejected(),
+            self.stats.total_missed(),
+        )
 
     def _run(self):
         """Run the simulation.
@@ -250,3 +255,10 @@ class FiveGSimulation(BaseSimulation):
             self.result.dynamic_energy = dynamic_energy
 
         self.stats.dump(self.cfg["stats"])
+
+    def to_file(self, total_apps, total_rejected, total_missed):
+        file = open("missrate.txt", "x")
+        file.write(f"Total applications: {total_apps}\n")
+        file.write(f"Total rejected: {total_rejected}\n")
+        file.write(f"Missed deadline: {total_missed}")
+        file.close()
