@@ -2,9 +2,6 @@
 # All Rights Reserved
 #
 # Authors: Robert Khasanov
-
-"""This is a placeholder for FiveGMapper, which will be implemented soon."""
-
 from collections import Counter
 from copy import copy
 import logging
@@ -21,6 +18,8 @@ log = logging.getLogger(__name__)
 
 
 class FiveGParetoFrontCache:
+    """FiveG Pareto-Front Cache."""
+
     def __init__(self, platform, cfg):
         self.platform = platform
         self.cfg = cfg
@@ -37,6 +36,7 @@ class FiveGParetoFrontCache:
 
     # FIXME: remove the trace
     def get_pareto_front(self, graph, trace):
+        """Get Pareto-Front for a given graph and trace."""
         invariant = self._get_graph_invariant(graph)
         if invariant in self._cache:
             pareto_front = []
@@ -95,7 +95,7 @@ class FiveGMapper:
             self.graph, self.platform, self.randMapGen
         )
 
-    def map_to_core(self, mapping, process, core):
+    def _map_to_core(self, mapping, process, core):
         scheduler = list(self.platform.schedulers())[0]
         affinity = core
         priority = 0
@@ -140,7 +140,7 @@ class FiveGMapper:
         # transform cycles to ticks
         phase_processor_time = Counter()
         for pe in processors:
-            phase_processor_time[pe] = pe.ticks(acc_cycles[pe.type])
+            phase_processor_time[pe] = pe.ticks(phase_processor_cycles[pe])
 
         # perform load balancing
         processor_instances = dict.fromkeys(processors, 0)
@@ -167,7 +167,7 @@ class FiveGMapper:
         # estimate energy
         dynamic_energy = 0
         for pe in processors:
-            dynamic_energy += phase_processor_time[pe] * pe.dynamic_power()
+            dynamic_energy += processor_time[pe] * pe.dynamic_power()
 
         return exec_time, dynamic_energy
 
@@ -198,10 +198,10 @@ class FiveGMapper:
 
         mapping.metadata.exec_time = exec_time / 1000000000.0
         mapping.metadata.energy = dynamic_energy / 1000000000.0
-
         return mapping
 
     def generate_pareto_front(self):
+        """Generate Pareto-Front."""
         pareto = []
         restricted = [[]]
         cores = {}
