@@ -24,7 +24,12 @@ class FiveGParetoFrontCache:
     def __init__(self, platform, cfg):
         self.platform = platform
         self.cfg = cfg
+        self.pareto_metadata_simulate = cfg["pareto_metadata_simulate"]
+        self.pareto_time_scale = cfg["pareto_time_scale"]
         self._cache = {}
+
+        assert isinstance(self.pareto_metadata_simulate, bool)
+        assert isinstance(self.pareto_time_scale, float)
 
     def _get_graph_invariant(self, graph):
         """Get the internal graph invariant based on its properies."""
@@ -48,12 +53,20 @@ class FiveGParetoFrontCache:
             self.cfg["mapper"], graph, self.platform, trace, rep
         )
         pareto_front = mapper.generate_pareto_front()
-        simulation_manager = SimulationManager(
-            rep, trace, jobs=None, parallel=True
-        )
-        simulation_manager.simulate(pareto_front)
+
+        # estimate time and energy by simulation
+        if self.pareto_metadata_simulate:
+            simulation_manager = SimulationManager(
+                rep, trace, jobs=None, parallel=True
+            )
+            simulation_manager.simulate(pareto_front)
+            for mapping in pareto_front:
+                simulation_manager.append_mapping_metadata(mapping)
+
+        # rescale execution time
         for mapping in pareto_front:
-            simulation_manager.append_mapping_metadata(mapping)
+            mapping.metadata.exec_time *= self.pareto_time_scale
+
         self._cache[invariant] = pareto_front
         return pareto_front
 
@@ -97,7 +110,7 @@ class FiveGMapper:
             phase (str): a phase name
             processors (list of `Processor`): a list of processors to map to.
 
-        Returns: the execution time of the phase.
+        Returns: a tuple (execution time, dynamic energy) of the phase
         """
         log.debug(f"Mapping phase: {phase}")
         num_instances = self.graph.structure[phase]["num_instances"]
@@ -112,6 +125,17 @@ class FiveGMapper:
             acc_cycles += Counter(
                 self.trace.accumulate_processor_cycles(f"{kernel}0")
             )
+        phase_processor_cycles = Counter()
+        for pe in processors:
+            phase_processor_cycles[pe] = acc_cycles[pe.type]
+
+        # add context switsch cycles
+        for scheduler in self.platform.schedulers():
+            for pe in scheduler.processors:
+                phase_context_switch_cycles = (
+                    scheduler.policy.scheduling_cycles * len(subkernels)
+                )
+                phase_processor_cycles[pe] += phase_context_switch_cycles
 
         # transform cycles to ticks
         phase_processor_time = Counter()
@@ -138,7 +162,14 @@ class FiveGMapper:
                 i += 1
 
         assert i == num_instances
-        return max(processor_time.values(), default=0)
+
+        exec_time = max(processor_time.values(), default=0)
+        # estimate energy
+        dynamic_energy = 0
+        for pe in processors:
+            dynamic_energy += phase_processor_time[pe] * pe.dynamic_power()
+
+        return exec_time, dynamic_energy
 
     def generate_mapping(self, restricted=None):
         """Generate the mapping for the graph.
@@ -155,12 +186,19 @@ class FiveGMapper:
         mapping = Mapping(self.graph, self.platform)
 
         exec_time = 0
+        dynamic_energy = 0
 
         # map applications phase by phase
         for phase in self.graph.structure:
-            exec_time += self._map_phase(mapping, phase, processors)
+            phase_results = self._map_phase(mapping, phase, processors)
+            exec_time += phase_results[0]
+            dynamic_energy += phase_results[1]
 
         mapping = self.comMapGen.generate_mapping(mapping)
+
+        mapping.metadata.exec_time = exec_time / 1000000000.0
+        mapping.metadata.energy = dynamic_energy / 1000000000.0
+
         return mapping
 
     def generate_pareto_front(self):
