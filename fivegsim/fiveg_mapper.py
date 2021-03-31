@@ -24,11 +24,13 @@ class FiveGParetoFrontCache:
         self.platform = platform
         self.cfg = cfg
         self.pareto_metadata_simulate = cfg["pareto_metadata_simulate"]
-        self.pareto_time_scale = cfg["pareto_time_scale"]
+        self.pareto_time_scale = cfg["pareto_time_scale"] * 1.0
+        self.pareto_time_offset = cfg["pareto_time_offset"] * 1.0
         self._cache = {}
 
         assert isinstance(self.pareto_metadata_simulate, bool)
         assert isinstance(self.pareto_time_scale, float)
+        assert isinstance(self.pareto_time_offset, float)
 
     def _get_graph_invariant(self, graph):
         """Get the internal graph invariant based on its properies."""
@@ -65,7 +67,10 @@ class FiveGParetoFrontCache:
 
         # rescale execution time
         for mapping in pareto_front:
-            mapping.metadata.exec_time *= self.pareto_time_scale
+            mapping.metadata.exec_time = (
+                mapping.metadata.exec_time * self.pareto_time_scale
+                + self.pareto_time_offset
+            )
 
         self._cache[invariant] = pareto_front
         return pareto_front
