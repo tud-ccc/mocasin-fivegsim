@@ -20,9 +20,9 @@ processor_acc:
   _target_: mocasin.platforms.platformDesigner.genericProcessor
   type : 'acc_fft,ifftm,iffta'
   # FIXME These numbers are just made up!
-  frequency : 500000000
-  static_power: 0.1
-  dynamic_power: 0.5
+  frequency : 300000000
+  static_power: 0.3125
+  dynamic_power: 0.0625
 num_big : 4
 num_little : 4
 num_acc : 2
