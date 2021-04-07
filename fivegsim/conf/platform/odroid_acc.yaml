@@ -26,6 +26,8 @@ processor_acc:
 num_big : 4
 num_little : 4
 num_acc : 2
+# The static power not included in the processors
+extra_static_power: 0.7633
 name: 'odroid_acc'
 symmetries_json: null
 embedding_json: null
