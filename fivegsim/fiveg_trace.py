@@ -72,23 +72,23 @@ class FivegTrace(DataflowTrace):
         ]
 
         # clock cycles for FFT accelerator
-        if prbs*12 <= 8:
+        if prbs * 12 <= 8:
             fft_acc_cc = 94
-        elif prbs*12 <= 16:
+        elif prbs * 12 <= 16:
             fft_acc_cc = 146
-        elif prbs*12 <= 32:
+        elif prbs * 12 <= 32:
             fft_acc_cc = 242
-        elif prbs*12 <= 64:
+        elif prbs * 12 <= 64:
             fft_acc_cc = 434
-        elif prbs*12 <= 128:
+        elif prbs * 12 <= 128:
             fft_acc_cc = 834
-        elif prbs*12 <= 256:
+        elif prbs * 12 <= 256:
             fft_acc_cc = 1682
-        elif prbs*12 <= 512:
+        elif prbs * 12 <= 512:
             fft_acc_cc = 3490
-        elif prbs*12 <= 1024:
+        elif prbs * 12 <= 1024:
             fft_acc_cc = 7346
-        elif prbs*12 <= 2048:
+        elif prbs * 12 <= 2048:
             fft_acc_cc = 15554
 
         # the following frequency settings were also used in the real odroid
