@@ -17,17 +17,11 @@ def fivegsim_stats_parser(dir):
 def fiveg_missrate_parser(dir):
     results = {}
     try:
-        with open(os.path.join(dir, "missrate.txt"), "r") as f:
-            results["total_apps"] = int(
-                f.readline().replace("Total applications: ", "")
-            )
-            results["apps_rejected"] = int(
-                f.readline().replace("Total rejected: ", "")
-            )
-            results["missed_deadlines"] = int(
-                f.readline().replace("Missed deadline: ", "")
-            )
-        return results, list(results.keys())
+        with open(os.path.join(dir, "missrate.csv"), "r") as f:
+            reader = csv.reader(f, delimiter=",")
+            headers = next(reader)
+            results = dict(zip(headers, next(reader)))
+        return results, headers
     except FileNotFoundError:
         return {}, []
 
