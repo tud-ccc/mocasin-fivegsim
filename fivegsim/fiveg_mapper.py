@@ -3,13 +3,16 @@
 #
 # Authors: Robert Khasanov
 from collections import Counter
-from copy import copy
 import logging
 
 import hydra
 
 from mocasin.common.mapping import Mapping, ProcessMappingInfo
-from mocasin.mapper.partial import ComPartialMapper
+from mocasin.mapper.partial import (
+    ComPartialMapper,
+    ComFullMapper,
+    ProcPartialMapper,
+)
 from mocasin.mapper.random import RandomPartialMapper
 from mocasin.mapper.utils import SimulationManager
 
@@ -36,18 +39,35 @@ class FiveGParetoFrontCache:
         """Get the internal graph invariant based on its properies."""
         return f"fiveg_prbs{graph.prbs}_mod{graph.mod}_lay{graph.layers}"
 
-    # FIXME: remove the trace
     def get_pareto_front(self, graph, trace):
         """Get Pareto-Front for a given graph and trace."""
         invariant = self._get_graph_invariant(graph)
         if invariant in self._cache:
-            pareto_front = []
-            for mapping in self._cache[invariant]:
-                new_mapping = copy(mapping)
-                new_mapping.graph = graph
-                pareto_front.append(new_mapping)
-            return pareto_front
-        # TODO: Change to FiveGMapper
+            pareto_front = self._to_mappings(graph, self._cache[invariant])
+        else:
+            pareto_front = self._generate_pareto_front(graph, trace)
+            self._cache[invariant] = self._to_lists(pareto_front)
+        return pareto_front
+
+    def _to_lists(self, pareto_mappings):
+        res = []
+        for mapping in pareto_mappings:
+            res.append((mapping.to_list(), mapping.metadata))
+        return res
+
+    def _to_mappings(self, graph, pareto_lists):
+        com_mapper = ComFullMapper(graph, self.platform)
+        mapper = ProcPartialMapper(graph, self.platform, com_mapper)
+        res = []
+        for mapping_list, metadata in pareto_lists:
+            mapping = mapper.generate_mapping(mapping_list)
+            mapping.metadata.exec_time = metadata.exec_time
+            mapping.metadata.energy = metadata.energy
+            res.append(mapping)
+        return res
+
+    # FIXME: remove the trace
+    def _generate_pareto_front(self, graph, trace):
         rep = hydra.utils.instantiate(
             self.cfg["representation"], graph, self.platform
         )
@@ -72,7 +92,6 @@ class FiveGParetoFrontCache:
                 + self.pareto_time_offset
             )
 
-        self._cache[invariant] = pareto_front
         return pareto_front
 
 
@@ -110,8 +129,11 @@ class FiveGMapper:
     def _remap_accelerators(
         self, mapping_dict, accelerators, phase, acc_kernels, processor_time
     ):
-        """Remap fft nodes to accelarators, until the accelerator time reaches
-        the processor time.
+        """Remap fft nodes to accelerators.
+
+        Remapping is done iteratively, the algorithm takes the generic core with
+        the longest execution time and remaps it to the accelerator with the
+        least execution time.
         """
         num_instances = self.graph.structure[phase]["num_instances"]
         subkernels = self.graph.structure[phase]["subkernels"]
@@ -153,7 +175,6 @@ class FiveGMapper:
                 subkernel_time[pe] = pe.ticks(acc_cycles[pe.type])
 
             while True:
-                longest = max(processor_time.values())
                 filtered_processors = [
                     pe for pe in regular_processors if subkernel_instances[pe]
                 ]
@@ -163,7 +184,8 @@ class FiveGMapper:
                 acc_min = min(accelerators, key=processor_time.get)
                 assert pe_max in regular_processors
 
-                # check that after miggration accelerator time will not exceed the processor time
+                # check that after miggration accelerator time will not exceed
+                # the processor time
                 moved_processor_time = processor_time.copy()
                 moved_processor_time[pe_max] -= subkernel_time[pe_max]
                 moved_processor_time[acc_min] += subkernel_time[acc_min]
