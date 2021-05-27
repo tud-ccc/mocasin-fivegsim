@@ -94,7 +94,7 @@ class PhybenchLoadBalancer:
 
     def start_applications(self, graphs, traces):
         # clean up running applications first
-        for name, app in self._running_applications.items():
+        for name, app in list(self._running_applications.items()):
             if app.is_finished():
                 self._running_applications.pop(name)
 
