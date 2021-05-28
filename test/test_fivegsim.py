@@ -26,7 +26,7 @@ def test_fivegsim(tmpdir):
             found_lines |= 0x1
         if line.startswith("Missed deadline: "):
             missed = line[17:]
-            assert missed == "5"
+            assert missed == "4"
             found_lines |= 0x2
         if line.startswith("Total simulated time: "):
             time = line[22:]
