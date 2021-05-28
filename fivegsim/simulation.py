@@ -195,7 +195,7 @@ class FiveGSimulation(BaseSimulation):
         # start load balancer runtime if needed
         runtime = None
         if self.cfg["load_balancer"]:
-            runtime = PhybenchLoadBalancer(self.system, self.cfg)
+            runtime = PhybenchLoadBalancer(self.system, self.cfg, self.stats)
             finished = self.env.process(runtime.run())
             self.app_finished = [finished]
             # make sure the startup of the runtime is processed completely
