@@ -194,7 +194,9 @@ class FiveGSimulation(BaseSimulation):
             self.app_finished.append(finished)
 
     def _process_5g_subframes(self):
-        """Iterate over all subframes found in the 5g trace and simulate their
+        """Process 5g subframes.
+
+        Iterate over all subframes found in the 5g trace and simulate their
         processing.
         """
         sf_count = 0
