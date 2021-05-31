@@ -230,12 +230,13 @@ class PhybenchLoadBalancer:
 
                 # and update its primitives
                 # FIXME: should not access private member directly
-                for channel in process._channels.values():
+                for channel_ref in process._channels.values():
+                    channel = channel_ref()
                     # the algorithm only works for channels with a single sink
                     assert len(channel._sinks) == 1
 
-                    src_process = channel._src
-                    sink_process = channel._sinks[0]
+                    src_process = channel._src()
+                    sink_process = channel._sinks[0]()
 
                     src_processor = app._process_mappings[src_process]
                     sink_processor = app._process_mappings[sink_process]
