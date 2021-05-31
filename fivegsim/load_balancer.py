@@ -15,6 +15,7 @@ from mocasin.simulate.adapter import SimulateLoggerAdapter
 from mocasin.simulate.manager import RuntimeManager
 
 from fivegsim.simulation import FiveGRuntimeDataflowApplication
+
 log = logging.getLogger(__name__)
 
 
