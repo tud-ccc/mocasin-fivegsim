@@ -84,4 +84,4 @@ class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
         if self.stats_entry:
             self.stats_entry.start_time = start
             self.stats_entry.end_time = end
-            self.stats_entry.deadline_miss = miss
+            self.stats_entry.missed_deadline = miss
