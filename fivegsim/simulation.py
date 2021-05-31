@@ -16,16 +16,15 @@ from mocasin.common.trace import (
     SegmentType,
 )
 from mocasin.simulate import BaseSimulation, SimulationResult
+from mocasin.simulate import scheduler
 
 from fivegsim.trace_file_manager import TraceFileManager
 from fivegsim.proc_tgff_reader import get_task_time
 from fivegsim.fiveg_graph import FivegGraph
 from fivegsim.fiveg_trace import FivegTrace
 from fivegsim.fiveg_app import FiveGRuntimeDataflowApplication
-from fivegsim.statistics import SimulationStatistics
 from fivegsim.load_balancer import PhybenchLoadBalancer
-
-from mocasin.simulate import scheduler
+from fivegsim.statistics import FiveGManagerStatistics
 
 sys.setrecursionlimit(10000)
 
@@ -80,7 +79,7 @@ class FiveGSimulation(BaseSimulation):
         self.app_finished = []
 
         # initialize simulation statistics
-        self.stats = SimulationStatistics()
+        self.stats = FiveGManagerStatistics()
 
     @staticmethod
     def from_hydra(cfg, **kwargs):
@@ -174,7 +173,7 @@ class FiveGSimulation(BaseSimulation):
             graph = mapping.graph
             # create a statistics entry for the application
             deadline = self.env.now + graph.timeout
-            stats_entry = self.stats.create_entry(
+            stats_entry = self.stats.new_application(
                 graph, arrival=self.env.now, deadline=deadline
             )
             # instantiate the application
@@ -250,11 +249,11 @@ class FiveGSimulation(BaseSimulation):
         # wait until all applications finished
         yield self.env.all_of(self.app_finished)
 
-        print(f"Total applications: {self.stats.length()}")
+        print(f"Total applications: {self.stats.total_applications()}")
         print(f"Total rejected: {self.stats.total_rejected()}")
         print(f"Missed deadline: {self.stats.total_missed()}")
         missrate_stats = {}
-        missrate_stats["Total_apps"] = str(self.stats.length())
+        missrate_stats["Total_apps"] = str(self.stats.total_applications())
         missrate_stats["Total_rejected"] = str(self.stats.total_rejected())
         missrate_stats["missed_deadline"] = str(self.stats.total_missed())
         self.to_file(missrate_stats)
@@ -286,7 +285,7 @@ class FiveGSimulation(BaseSimulation):
             self.result.static_energy = static_energy
             self.result.dynamic_energy = dynamic_energy
 
-        self.stats.dump(self.cfg["stats"])
+        self.stats.dump_applications(self.cfg["stats"])
 
     def to_file(self, missrate_stats):
         with open("missrate.csv", "x") as file:
