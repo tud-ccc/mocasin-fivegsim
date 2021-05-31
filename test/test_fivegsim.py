@@ -35,6 +35,7 @@ def test_fivegsim(tmpdir):
 
     assert found_lines == 0x7
 
+
 def test_fivegsim_with_load_balancer(tmpdir):
     trace_file = os.path.join(os.path.dirname(__file__), "test_trace.txt")
 
