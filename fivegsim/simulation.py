@@ -266,14 +266,20 @@ class FiveGSimulation(BaseSimulation):
         # wait until all applications finished
         yield self.env.all_of(self.app_finished)
 
-        print(f"Total applications: {self.stats.total_applications()}")
-        print(f"Total rejected: {self.stats.total_rejected()}")
-        print(f"Missed deadline: {self.stats.total_missed()}")
-        missrate_stats = {}
-        missrate_stats["Total_apps"] = str(self.stats.total_applications())
-        missrate_stats["Total_rejected"] = str(self.stats.total_rejected())
-        missrate_stats["missed_deadline"] = str(self.stats.total_missed())
-        self.to_file(missrate_stats)
+        stats = self.stats
+        print(f"Total applications: {stats.total_applications()}")
+        print(f"Total rejected: {stats.total_rejected()}")
+        print(f"Missed deadline: {stats.total_missed()}")
+        print(f"Total runtime manager activations: {stats.total_activations()}")
+        print(f"Total scheduling time: {stats.total_scheduling_time():.9f} s")
+        print(
+            "        --- per activation: {:.6f} ms".format(
+                stats.average_scheduling_time() * 1000
+            )
+        )
+        stats.dump_activations(self.cfg["stats_activations"])
+        stats.dump_applications(self.cfg["stats_applications"])
+        self.to_file(stats)
 
     def _run(self):
         """Run the simulation.
@@ -302,14 +308,21 @@ class FiveGSimulation(BaseSimulation):
             self.result.static_energy = static_energy
             self.result.dynamic_energy = dynamic_energy
 
-        self.stats.dump_applications(self.cfg["stats"])
-
-    def to_file(self, missrate_stats):
+    def to_file(self, stats):
+        stats_dict = {}
+        stats_dict["Total_apps"] = str(stats.total_applications())
+        stats_dict["Total_rejected"] = str(stats.total_rejected())
+        stats_dict["Missed_deadline"] = str(stats.total_missed())
+        stats_dict["Total_activations"] = str(stats.total_activations())
+        stats_dict["Total_scheduling_time"] = str(stats.total_scheduling_time())
+        stats_dict["Average_scheduling_time"] = str(
+            stats.average_scheduling_time()
+        )
         with open("missrate.csv", "x") as file:
             writer = csv.writer(
                 file,
                 delimiter=",",
                 lineterminator="\n",
             )
-            writer.writerow(missrate_stats.keys())
-            writer.writerow(missrate_stats.values())
+            writer.writerow(stats_dict.keys())
+            writer.writerow(stats_dict.values())

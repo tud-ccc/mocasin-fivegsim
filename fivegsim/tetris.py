@@ -11,38 +11,8 @@ from mocasin.simulate.tetris import RuntimeTetrisManager
 class FiveGRuntimeTetrisManager(RuntimeTetrisManager):
     def __init__(self, resource_manager, system, cfg, stats=None):
         """Tetris Manager for FiveG applications."""
-        super().__init__(resource_manager, system)
+        super().__init__(resource_manager, system, stats)
         self.pareto_cache = FiveGParetoFrontCache(self.system.platform, cfg)
-        self.stats = stats
-
-    def _update_statistics(self):
-        """Update statistics structure.
-
-        Update the expected end time of the applications. The method should be
-        called after new schedule is generated.
-        """
-        if not self.stats:
-            return
-        schedule = self.resource_manager.schedule
-        # Update accepted tasks
-        if schedule:
-            for request, segments in schedule.per_requests().items():
-                assert segments[-1].finished
-                expected_end_time = segments[-1].end_time
-                entry = self.stats.find(request.app)
-                assert entry
-                # Put the stats entry to runtime application
-                # TODO: This is an ad-hoc, need to rethink the design
-                if entry.accepted is None:
-                    runtime_app = self._runtime_applications[request]
-                    assert runtime_app.is_new()
-                    runtime_app.stats_entry = entry
-                entry.accepted = True
-                entry.expected_end_time = expected_end_time * 1000000000.0
-        # mark all other stats as rejected
-        for entry in self.stats.entries():
-            if entry.accepted is None:
-                entry.accepted = False
 
     def start_applications(self, graphs, traces):
         """Start new applications."""
@@ -55,26 +25,16 @@ class FiveGRuntimeTetrisManager(RuntimeTetrisManager):
             timeouts.append(graph.timeout / 1000000000.0)
         super().start_applications(graphs, traces, pareto_fronts, timeouts)
 
-    def _generate_schedule(self):
-        # initialize statistics
-        if self.stats:
-            for graph, _, _, _ in self._new_applications:
-                deadline = self.env.now + graph.timeout
-                self.stats.create_entry(
-                    graph, arrival=self.env.now, deadline=deadline
-                )
-        # Call the base method
-        super()._generate_schedule()
-        # update the statistics
-        self._update_statistics()
-
     def _create_runtime_application(self, request, trace):
         graph = request.app
         deadline = request.deadline * 1000000000.0
-        return FiveGRuntimeDataflowApplication(
+        stats_entry = self.statistics.find_application(graph.name)
+        app = FiveGRuntimeDataflowApplication(
             name=graph.name,
             graph=graph,
             app_trace=trace,
             system=self.system,
             deadline=deadline,
+            stats_entry=stats_entry,
         )
+        return app
