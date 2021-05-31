@@ -14,8 +14,6 @@ from mocasin.common.mapping import (
 from mocasin.simulate.adapter import SimulateLoggerAdapter
 
 from fivegsim.simulation import FiveGRuntimeDataflowApplication
-from fivegsim.statistics import SimulationStatistics
-
 log = logging.getLogger(__name__)
 
 
@@ -52,7 +50,6 @@ class PhybenchLoadBalancer:
             scheduler.idle.callbacks.append(self._scheduler_idle_callback)
 
         # initialize simulation statistics
-        self.stats = SimulationStatistics()
         self.stats = stats
 
     def run(self):
@@ -82,7 +79,6 @@ class PhybenchLoadBalancer:
         yield self.env.all_of(self._finished_events)
 
         self._log.info("Shutting down")
-        self.stats.dump(self.cfg["stats"])
 
     def shutdown(self):
         """Terminate the runtime.
@@ -108,7 +104,7 @@ class PhybenchLoadBalancer:
         for graph, trace in zip(graphs, traces):
             # create a statistics entry for the application
             deadline = self.env.now + graph.timeout
-            stats_entry = self.stats.create_entry(
+            stats_entry = self.stats.new_application(
                 graph, arrival=self.env.now, deadline=deadline
             )
             processor = next(self._processor_iterator)
