@@ -34,3 +34,31 @@ def test_fivegsim(tmpdir):
             found_lines |= 0x4
 
     assert found_lines == 0x7
+
+def test_fivegsim_with_load_balancer(tmpdir):
+    trace_file = os.path.join(os.path.dirname(__file__), "test_trace.txt")
+
+    res = subprocess.run(
+        ["fivegsim", f"trace_file={trace_file}", "load_balancer=true"],
+        cwd=tmpdir,
+        check=True,
+        stdout=subprocess.PIPE,
+    )
+
+    found_lines = 0x0
+    stdout = res.stdout.decode()
+    for line in stdout.split("\n"):
+        if line.startswith("Total applications: "):
+            total = line[20:]
+            assert total == "18"
+            found_lines |= 0x1
+        if line.startswith("Missed deadline: "):
+            missed = line[17:]
+            assert missed == "2"
+            found_lines |= 0x2
+        if line.startswith("Total simulated time: "):
+            time = line[22:]
+            assert time == "31.0 ms"
+            found_lines |= 0x4
+
+    assert found_lines == 0x7

@@ -71,6 +71,26 @@ class FivegTrace(DataflowTrace):
             None,
         ]
 
+        # clock cycles for FFT accelerator
+        if prbs * 12 <= 8:
+            fft_acc_cc = 94
+        elif prbs * 12 <= 16:
+            fft_acc_cc = 146
+        elif prbs * 12 <= 32:
+            fft_acc_cc = 242
+        elif prbs * 12 <= 64:
+            fft_acc_cc = 434
+        elif prbs * 12 <= 128:
+            fft_acc_cc = 834
+        elif prbs * 12 <= 256:
+            fft_acc_cc = 1682
+        elif prbs * 12 <= 512:
+            fft_acc_cc = 3490
+        elif prbs * 12 <= 1024:
+            fft_acc_cc = 7346
+        elif prbs * 12 <= 2048:
+            fft_acc_cc = 15554
+
         # the following frequency settings were also used in the real odroid
         # platform to measure task execution time
         # here frequencies are hard-coded since a single platform can have
@@ -84,7 +104,13 @@ class FivegTrace(DataflowTrace):
         pcs = []
         for k in range(len(offset)):
             if offset[k] is None:
-                pcs.append({"ARM_CORTEX_A7": 0, "ARM_CORTEX_A15": 0})
+                pcs.append(
+                    {
+                        "ARM_CORTEX_A7": 0,
+                        "ARM_CORTEX_A15": 0,
+                        "acc_fft,ifftm,iffta": 0,
+                    }
+                )
             else:
                 pcs.append(
                     {
@@ -92,6 +118,12 @@ class FivegTrace(DataflowTrace):
                         * freq["ARM_CORTEX_A7"],
                         "ARM_CORTEX_A15": proc_time[1][offset[k]]
                         * freq["ARM_CORTEX_A15"],
+                        # FIXME: the accelerators cycle count is the A15 cycle
+                        # count scaled down by factor 200. This is completely
+                        # made up.
+                        # Note that this scales down the cycle count for all
+                        # kernels. However, we will only really use the fft ones
+                        "acc_fft,ifftm,iffta": fft_acc_cc,
                     }
                 )
 
