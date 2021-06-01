@@ -17,3 +17,7 @@ simtrace:
 
 stats: "stats.csv"
 load_balancer: False
+
+pareto_metadata_simulate: False
+pareto_time_scale: 1.0
+pareto_time_offset: 0
