@@ -108,3 +108,6 @@ class OdroidWithAccelerators(Platform):
                 # adjustment
                 # accelerators use 50 cycles for task switching
                 scheduler.policy.scheduling_cycles = 50
+
+        # Set peripheral static power of the platform.
+         designer.setPeripheralStaticPower(peripheral_static_power)
