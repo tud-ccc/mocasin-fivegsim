@@ -45,9 +45,6 @@ class PhybenchLoadBalancer(RuntimeManager):
         for scheduler in self._schedulers:
             scheduler.idle.callbacks.append(self._scheduler_idle_callback)
 
-        # initialize simulation statistics
-        self.stats = stats
-
     @property
     def name(self):
         """The runtime manager name."""
@@ -91,7 +88,7 @@ class PhybenchLoadBalancer(RuntimeManager):
         for graph, trace in zip(graphs, traces):
             # create a statistics entry for the application
             deadline = self.env.now + graph.timeout
-            stats_entry = self.stats.new_application(
+            stats_entry = self.statistics.new_application(
                 graph, arrival=self.env.now, deadline=deadline
             )
             # FIXME: There should be a way to set this when creating the entry
