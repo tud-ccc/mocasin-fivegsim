@@ -40,7 +40,12 @@ def test_fivegsim_with_load_balancer(tmpdir):
     trace_file = os.path.join(os.path.dirname(__file__), "test_trace.txt")
 
     res = subprocess.run(
-        ["fivegsim", f"trace_file={trace_file}", "load_balancer=true", "platform=odroid_acc"],
+        [
+            "fivegsim",
+            f"trace_file={trace_file}",
+            "load_balancer=true",
+            "platform=odroid_acc",
+        ],
         cwd=tmpdir,
         check=True,
         stdout=subprocess.PIPE,
