@@ -20,6 +20,7 @@ class OdroidWithAccelerators(Platform):
         num_little=4,
         num_acc=2,
         name="odroid_acc",
+        peripheral_static_power=0.7633,
         **kwargs,
     ):
 
