@@ -20,12 +20,14 @@ class OdroidWithAccelerators(Platform):
         processor_mf_acc,
         processor_wind_acc,
         processor_ant_acc,
+        processor_comb_acc,
         num_big=4,
         num_little=4,
         num_fft_acc=2,
         num_mf_acc=2,
         num_wind_acc=2,
         num_ant_acc=2,
+        num_comb_acc=2,
         name="odroid_acc",
         peripheral_static_power=0.7633,
         **kwargs,
@@ -44,6 +46,8 @@ class OdroidWithAccelerators(Platform):
             processor_wind_acc = instantiate(processor_wind_acc)
         if not isinstance(processor_ant_acc, Processor):
             processor_ant_acc = instantiate(processor_ant_acc)
+        if not isinstance(processor_comb_acc, Processor):
+            processor_comb_acc = instantiate(processor_comb_acc)
         super().__init__(name, kwargs.get("symmetries_json", None))
 
         designer = PlatformDesigner(self)
@@ -108,6 +112,9 @@ class OdroidWithAccelerators(Platform):
         designer.addPeClusterForProcessor(
             "cluster_ant_acc", processor_ant_acc, num_ant_acc
         )
+        designer.addPeClusterForProcessor(
+            "cluster_comb_acc", processor_comb_acc, num_comb_acc
+        )
 
         # RAM connecting all clusters
         # RAM latency is L2 latency plus 120 cycles
@@ -120,6 +127,7 @@ class OdroidWithAccelerators(Platform):
                 "cluster_mf_acc",
                 "cluster_wind_acc",
                 "cluster_ant_acc",
+                "cluster_comb_acc",
             ],
             readLatency=142,
             writeLatency=142,
