@@ -17,6 +17,7 @@ simtrace:
 
 load_balancer: False
 tetris_runtime: False
+tetris_iterative: False
 stats_applications: "stats.csv"
 stats_activations: "stats_manager.csv"
 

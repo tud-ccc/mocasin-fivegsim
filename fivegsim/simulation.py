@@ -217,7 +217,11 @@ class FiveGSimulation(BaseSimulation):
             scheduler = hydra.utils.instantiate(
                 self.cfg["resource_manager"], self.platform
             )
-            resource_manager = ResourceManager(self.platform, scheduler)
+            resource_manager = ResourceManager(
+                self.platform,
+                scheduler,
+                schedule_iteratively=self.cfg["tetris_iterative"],
+            )
             runtime = FiveGRuntimeTetrisManager(
                 resource_manager, self.system, self.cfg, self.stats
             )
