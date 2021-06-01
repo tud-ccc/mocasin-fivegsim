@@ -110,4 +110,4 @@ class OdroidWithAccelerators(Platform):
                 scheduler.policy.scheduling_cycles = 50
 
         # Set peripheral static power of the platform.
-         designer.setPeripheralStaticPower(peripheral_static_power)
+        designer.setPeripheralStaticPower(peripheral_static_power)
