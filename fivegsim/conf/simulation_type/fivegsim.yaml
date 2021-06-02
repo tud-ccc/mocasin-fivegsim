@@ -15,8 +15,10 @@ simtrace:
     granularity: 100000000  # every 100us
     time_frame: 10000000000  # consider the load of the last 10ms
 
-stats: "stats.csv"
 load_balancer: False
+tetris_runtime: False
+stats_applications: "stats.csv"
+stats_activations: "stats_manager.csv"
 
 pareto_metadata_simulate: False
 pareto_time_scale: 1.0

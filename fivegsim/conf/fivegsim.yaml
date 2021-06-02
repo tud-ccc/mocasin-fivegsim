@@ -5,4 +5,5 @@ defaults:
   - platform: maps_exynos
   - mapper: static_cfs
   - representation: SimpleVector
+  - resource_manager: medf
   - simulation_type: fivegsim

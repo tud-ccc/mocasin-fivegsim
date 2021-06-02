@@ -5,9 +5,10 @@
 
 import copy
 import logging
-import hydra
 import sys
 import csv
+
+import hydra
 
 from mocasin.common.graph import DataflowGraph
 from mocasin.common.mapping import Mapping
@@ -15,6 +16,7 @@ from mocasin.common.trace import (
     DataflowTrace,
     SegmentType,
 )
+from mocasin.tetris.manager import ResourceManager
 from mocasin.simulate import BaseSimulation, SimulationResult
 from mocasin.simulate import scheduler
 
@@ -25,6 +27,7 @@ from fivegsim.fiveg_trace import FivegTrace
 from fivegsim.fiveg_app import FiveGRuntimeDataflowApplication
 from fivegsim.load_balancer import PhybenchLoadBalancer
 from fivegsim.statistics import FiveGManagerStatistics
+from fivegsim.tetris import FiveGRuntimeTetrisManager
 
 sys.setrecursionlimit(10000)
 
@@ -191,19 +194,35 @@ class FiveGSimulation(BaseSimulation):
             self.app_finished.append(finished)
 
     def _process_5g_subframes(self):
-        """Iterate over all subframes found in the 5g trace and simulate their
+        """Process 5g subframes.
+
+        Iterate over all subframes found in the 5g trace and simulate their
         processing.
         """
         sf_count = 0
 
-        # start load balancer runtime if needed
         runtime = None
+        assert not (self.cfg["load_balancer"] and self.cfg["tetris_runtime"])
+
+        # start load balancer runtime if needed
         if self.cfg["load_balancer"]:
             runtime = PhybenchLoadBalancer(self.system, self.cfg, self.stats)
             finished = self.env.process(runtime.run())
             self.app_finished = [finished]
             # make sure the startup of the runtime is processed completely
             yield self.env.timeout(0)
+
+        # start tetris runtime if needed
+        if self.cfg["tetris_runtime"]:
+            scheduler = hydra.utils.instantiate(
+                self.cfg["resource_manager"], self.platform
+            )
+            resource_manager = ResourceManager(self.platform, scheduler)
+            runtime = FiveGRuntimeTetrisManager(
+                resource_manager, self.system, self.cfg, self.stats
+            )
+            finished = self.env.process(runtime.run())
+            self.app_finished = [finished]
 
         # while end of file not reached:
         while self.TFM.TF_EOF is not True:
@@ -240,7 +259,7 @@ class FiveGSimulation(BaseSimulation):
             # wait for 1 ms
             yield self.env.timeout(1000000000)
 
-        # if we use the load balancer runtime, we let it know that applications
+        # if we use the runtime manager, we let it know that applications
         # for all subframes where started and it can shutdown as soon as all
         # the applications finish
         if runtime:
@@ -249,14 +268,20 @@ class FiveGSimulation(BaseSimulation):
         # wait until all applications finished
         yield self.env.all_of(self.app_finished)
 
-        print(f"Total applications: {self.stats.total_applications()}")
-        print(f"Total rejected: {self.stats.total_rejected()}")
-        print(f"Missed deadline: {self.stats.total_missed()}")
-        missrate_stats = {}
-        missrate_stats["Total_apps"] = str(self.stats.total_applications())
-        missrate_stats["Total_rejected"] = str(self.stats.total_rejected())
-        missrate_stats["missed_deadline"] = str(self.stats.total_missed())
-        self.to_file(missrate_stats)
+        stats = self.stats
+        print(f"Total applications: {stats.total_applications()}")
+        print(f"Total rejected: {stats.total_rejected()}")
+        print(f"Missed deadline: {stats.total_missed()}")
+        print(f"Total runtime manager activations: {stats.total_activations()}")
+        print(f"Total scheduling time: {stats.total_scheduling_time():.9f} s")
+        print(
+            "        --- per activation: {:.6f} ms".format(
+                stats.average_scheduling_time() * 1000
+            )
+        )
+        stats.dump_activations(self.cfg["stats_activations"])
+        stats.dump_applications(self.cfg["stats_applications"])
+        self.to_file(stats)
 
     def _run(self):
         """Run the simulation.
@@ -285,14 +310,21 @@ class FiveGSimulation(BaseSimulation):
             self.result.static_energy = static_energy
             self.result.dynamic_energy = dynamic_energy
 
-        self.stats.dump_applications(self.cfg["stats"])
-
-    def to_file(self, missrate_stats):
+    def to_file(self, stats):
+        stats_dict = {}
+        stats_dict["Total_apps"] = str(stats.total_applications())
+        stats_dict["Total_rejected"] = str(stats.total_rejected())
+        stats_dict["Missed_deadline"] = str(stats.total_missed())
+        stats_dict["Total_activations"] = str(stats.total_activations())
+        stats_dict["Total_scheduling_time"] = str(stats.total_scheduling_time())
+        stats_dict["Average_scheduling_time"] = str(
+            stats.average_scheduling_time()
+        )
         with open("missrate.csv", "x") as file:
             writer = csv.writer(
                 file,
                 delimiter=",",
                 lineterminator="\n",
             )
-            writer.writerow(missrate_stats.keys())
-            writer.writerow(missrate_stats.values())
+            writer.writerow(stats_dict.keys())
+            writer.writerow(stats_dict.values())
