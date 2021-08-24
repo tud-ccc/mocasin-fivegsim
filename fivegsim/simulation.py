@@ -65,7 +65,7 @@ class MergedFivegTrace(DataflowTrace):
 
 
 class FiveGSimulation(BaseSimulation):
-    """Simulate the processing of 5G data"""
+    """Simulate the processing of 5G data."""
 
     def __init__(self, platform, cfg, trace_file, task_file, **kwargs):
         super().__init__(platform)

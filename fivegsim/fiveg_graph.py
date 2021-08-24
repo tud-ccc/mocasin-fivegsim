@@ -10,7 +10,7 @@ from mocasin.common.graph import DataflowGraph, DataflowProcess, DataflowChannel
 
 
 class FivegGraph(DataflowGraph):
-    """The Dataflow graph of a 5G application
+    """The Dataflow graph of a 5G application.
 
     The 5G application has the following type of tasks:
     micf, combwc, antcomb, demap.
@@ -30,7 +30,7 @@ class FivegGraph(DataflowGraph):
         ant = Phybench.num_antenna
         sc = Phybench.SC
         data_size = 4  # bytes
-        nmbSc = prbs * sc
+        num_sc = prbs * sc
 
         if mod == 0:
             mod = 1
@@ -42,6 +42,8 @@ class FivegGraph(DataflowGraph):
             mod = 12
         elif mod == 4:
             mod = 16
+        else:
+            raise RuntimeError(f"Unknown modulation scheme ({mod})")
 
         num_phase1 = Phybench.get_num_micf(lay)
         num_phase2 = Phybench.get_num_combwc()
@@ -82,8 +84,8 @@ class FivegGraph(DataflowGraph):
 
         # connections: origin, destination, token size
         kernel_connections = [
-            ["input", "phase1", data_size * nmbSc],
-            ["input", "phase3", data_size * nmbSc * ant],
+            ["input", "phase1", data_size * num_sc],
+            ["input", "phase3", data_size * num_sc * ant],
             ["phase1", "phase2", data_size * prbs],
             ["phase2", "phase3", data_size * prbs * ant],
             ["phase3", "phase4", (data_size * prbs) / 2],
@@ -92,9 +94,9 @@ class FivegGraph(DataflowGraph):
 
         # connections: phase, origin, destination, token size
         subkernel_connections = [
-            ["phase1", "mf", "ifftm", data_size * nmbSc],
-            ["phase1", "ifftm", "wind", data_size * nmbSc],
-            ["phase1", "wind", "fft", data_size * nmbSc],
+            ["phase1", "mf", "ifftm", data_size * num_sc],
+            ["phase1", "ifftm", "wind", data_size * num_sc],
+            ["phase1", "wind", "fft", data_size * num_sc],
             ["phase3", "ant", "iffta", data_size * prbs],
         ]
 
@@ -141,6 +143,7 @@ class FivegGraph(DataflowGraph):
 
     @property
     def timeout(self):
+        """Return timeout of the application (in ps)."""
         if self.criticality == 0:
             timeout = 2500000000
         elif self.criticality == 1:

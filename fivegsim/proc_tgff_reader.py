@@ -5,9 +5,7 @@
 
 
 def get_task_time(tgff_name):
-    """Read task execution time information on TGFF format
-    and return a list of task times
-    """
+    """Read task execution time from TGFF and return a list of task times."""
     proc_file = open(tgff_name, "r")
     lines = proc_file.readlines()
     lines = [x for x in lines if x.find("#") == -1]

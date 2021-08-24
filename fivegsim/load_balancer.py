@@ -11,7 +11,6 @@ from mocasin.common.mapping import (
     ChannelMappingInfo,
     ProcessMappingInfo,
 )
-from mocasin.simulate.adapter import SimulateLoggerAdapter
 from mocasin.simulate.manager import RuntimeManager
 
 from fivegsim.simulation import FiveGRuntimeDataflowApplication
@@ -52,7 +51,6 @@ class PhybenchLoadBalancer(RuntimeManager):
 
     def run(self):
         """A simpy process modelling the actual runtime."""
-
         self._log.info("Starting up")
 
         while True:

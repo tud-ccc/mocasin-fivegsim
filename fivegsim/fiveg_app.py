@@ -41,7 +41,7 @@ class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
         self.stats_entry = stats_entry
 
     def run(self, mapping):
-        """Start execution of this application
+        """Start execution of this application.
 
         Yields:
             ~simpy.events.Event: an event that is triggered when the
