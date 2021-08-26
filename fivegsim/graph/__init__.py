@@ -5,8 +5,9 @@
 
 from collections import OrderedDict
 
-from fivegsim.phybench import Phybench
 from mocasin.common.graph import DataflowGraph, DataflowProcess, DataflowChannel
+
+from fivegsim.graph.phybench import Phybench
 
 
 class FivegGraph(DataflowGraph):

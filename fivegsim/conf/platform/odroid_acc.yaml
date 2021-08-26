@@ -1,5 +1,5 @@
 # @package _group_
-_target_: fivegsim.odroid_acc.OdroidWithAccelerators
+_target_: fivegsim.platforms.odroid_acc.OdroidWithAccelerators
 # Once hydra 1.1 rolls out with recursive instantiation,
 # we should replace this and recursively instantiate
 # the processors. See:

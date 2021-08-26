@@ -3,9 +3,9 @@
 #
 # Authors: Julian Robledo, Christian Menard
 
-from fivegsim.fiveg_graph import FivegGraph
-
 from mocasin.simulate.application import RuntimeDataflowApplication
+
+from fivegsim.graph import FivegGraph
 
 
 class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):

@@ -3,7 +3,7 @@ trace_file: "${fivegsim_path:files/slicedtrace30BS.txt}"
 task_file: "${fivegsim_path:files/lte_processors.tgff}"
 
 simulation_type:
-  _target_: fivegsim.simulation.FiveGSimulation.from_hydra
+  _target_: fivegsim.simulate.FiveGSimulation.from_hydra
   trace_file: ${trace_file}
   task_file: ${task_file}
 

@@ -1,2 +1,2 @@
 # @package _group_
-_target_: fivegsim.stats_parser.initialize_stats_parser
+_target_: fivegsim.utils.stats_parser.initialize_stats_parser

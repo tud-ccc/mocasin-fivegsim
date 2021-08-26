@@ -7,7 +7,7 @@ phybench:
   task_file: "${fivegsim_path:files/lte_processors.tgff}"
 
 graph:
-  _target_: fivegsim.simulation.FivegGraph.from_hydra
+  _target_: fivegsim.graph.FivegGraph.from_hydra
   id: 0
   prbs: ${phybench.prbs}
   layers: ${phybench.layers}

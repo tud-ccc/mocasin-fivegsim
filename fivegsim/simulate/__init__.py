@@ -16,18 +16,18 @@ from mocasin.common.trace import (
     DataflowTrace,
     SegmentType,
 )
-from mocasin.tetris.manager import ResourceManager
 from mocasin.simulate import BaseSimulation, SimulationResult
 from mocasin.simulate import scheduler
+from mocasin.tetris.manager import ResourceManager
 
-from fivegsim.trace_file_manager import TraceFileManager
-from fivegsim.proc_tgff_reader import get_task_time
-from fivegsim.fiveg_graph import FivegGraph
-from fivegsim.fiveg_trace import FivegTrace
-from fivegsim.fiveg_app import FiveGRuntimeDataflowApplication
-from fivegsim.load_balancer import PhybenchLoadBalancer
-from fivegsim.statistics import FiveGManagerStatistics
-from fivegsim.tetris import FiveGRuntimeTetrisManager
+from fivegsim.graph import FivegGraph
+from fivegsim.simulate.application import FiveGRuntimeDataflowApplication
+from fivegsim.simulate.load_balancer import PhybenchLoadBalancer
+from fivegsim.simulate.statistics import FiveGManagerStatistics
+from fivegsim.simulate.tetris import FiveGRuntimeTetrisManager
+from fivegsim.trace import FivegTrace
+from fivegsim.util.proc_tgff_reader import get_task_time
+from fivegsim.util.trace_file_manager import TraceFileManager
 
 sys.setrecursionlimit(10000)
 

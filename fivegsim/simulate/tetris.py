@@ -3,9 +3,10 @@
 #
 # Authors: Robert Khasanov, Christian Menard
 
-from fivegsim.fiveg_mapper import FiveGParetoFrontCache
-from fivegsim.simulation import FiveGRuntimeDataflowApplication
 from mocasin.simulate.tetris import RuntimeTetrisManager
+
+from fivegsim.mapper.pareto import FiveGParetoFrontCache
+from fivegsim.simulate import FiveGRuntimeDataflowApplication
 
 
 class FiveGRuntimeTetrisManager(RuntimeTetrisManager):

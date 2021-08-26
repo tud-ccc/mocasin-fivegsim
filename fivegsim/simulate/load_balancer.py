@@ -13,7 +13,7 @@ from mocasin.common.mapping import (
 )
 from mocasin.simulate.manager import RuntimeManager
 
-from fivegsim.simulation import FiveGRuntimeDataflowApplication
+from fivegsim.simulate import FiveGRuntimeDataflowApplication
 
 log = logging.getLogger(__name__)
 

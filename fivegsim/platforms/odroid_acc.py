@@ -5,9 +5,10 @@
 
 import copy
 
+from hydra.utils import instantiate
+
 from mocasin.common.platform import Platform, Processor
 from mocasin.platforms.platformDesigner import PlatformDesigner
-from hydra.utils import instantiate
 
 
 class OdroidWithAccelerators(Platform):

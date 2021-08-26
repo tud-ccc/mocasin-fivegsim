@@ -12,8 +12,8 @@ from mocasin.common.trace import (
     WriteTokenSegment,
 )
 
-from fivegsim.phybench import Phybench
-from fivegsim.proc_tgff_reader import get_task_time
+from fivegsim.graph.phybench import Phybench
+from fivegsim.util.proc_tgff_reader import get_task_time
 
 
 class FivegTrace(DataflowTrace):
