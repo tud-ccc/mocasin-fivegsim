@@ -28,10 +28,8 @@ mirror-ci-branch:
   script:
     # Clone mocasin from branch $MOCASIN_BRANCH or master if the branch does not exist
     - git clone -b $MOCASIN_BRANCH https://gitlab-ci-token:${CI_JOB_TOKEN}@cc.inf.tu-dresden.de/gitlab/mocasin/mocasin /tmp/mocasin || git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@cc.inf.tu-dresden.de/gitlab/mocasin/mocasin /tmp/mocasin
-    # Clone mocasin-maps-examples
-    - git clone -b $MOCASIN_BRANCH https://gitlab-ci-token:${CI_JOB_TOKEN}@cc.inf.tu-dresden.de/gitlab/mocasin/mocasin-maps-examples /tmp/mocasin-maps-examples || git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@cc.inf.tu-dresden.de/gitlab/mocasin/mocasin-maps-examples /tmp/mocasin-maps-examples
     # build the wheels
-    - pip wheel -w wheels /tmp/mocasin /tmp/mocasin-maps-examples .
+    - pip wheel -w wheels /tmp/mocasin .
   artifacts:
     paths:
       - wheels
@@ -83,7 +81,7 @@ build-python3.6:
 
 .test:
   script:
-    - pip install fivegsim mocasin-maps-examples --no-index --find-links=./wheels
+    - pip install fivegsim --no-index --find-links=./wheels
     - python setup.py test
 
 test-python3.9:
