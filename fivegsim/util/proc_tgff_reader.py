@@ -1,4 +1,4 @@
-# Copyright (C) 2019 TU Dresden
+# Copyright (C) 2020 TU Dresden
 # All Rights Reserved
 #
 # Authors: Julian Robledo

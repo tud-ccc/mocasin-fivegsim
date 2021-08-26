@@ -2,6 +2,7 @@
 # All Rights Reserved
 #
 # Authors: Julian Robledo
+
 import sys
 import random
 import numpy as np
