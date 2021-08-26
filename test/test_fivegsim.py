@@ -11,7 +11,13 @@ def test_fivegsim(tmpdir):
     trace_file = os.path.join(os.path.dirname(__file__), "test_trace.txt")
 
     res = subprocess.run(
-        ["fivegsim", f"trace_file={trace_file}"],
+        [
+            "fivegsim",
+            f"trace_file={trace_file}",
+            "platform=odroid",
+            "platform.processor_0.type=ARM_CORTEX_A7",
+            "platform.processor_1.type=ARM_CORTEX_A15",
+        ],
         cwd=tmpdir,
         check=True,
         stdout=subprocess.PIPE,
@@ -26,7 +32,7 @@ def test_fivegsim(tmpdir):
             found_lines |= 0x1
         if line.startswith("Missed deadline: "):
             missed = line[17:]
-            assert missed == "4"
+            assert missed == "2"
             found_lines |= 0x2
         if line.startswith("Total simulated time: "):
             time = line[22:]

@@ -16,7 +16,9 @@ def test_generate_mapping(tmpdir):
             "mapper=random",
             "graph=phybench",
             "trace=phybench",
-            "platform=maps_exynos",
+            "platform=odroid",
+            "platform.processor_0.type=ARM_CORTEX_A7",
+            "platform.processor_1.type=ARM_CORTEX_A15",
             f"outdir={tmpdir}",
         ],
         cwd=tmpdir,
@@ -29,9 +31,9 @@ def test_generate_mapping(tmpdir):
 @pytest.mark.parametrize(
     "prbs,layers,mod,expected",
     [
-        (4, 4, 1, "0.514811688 ms"),
-        (10, 10, 2, "1.593689511 ms"),
-        (32, 16, 4, "6.451352689 ms"),
+        (4, 4, 1, "0.367857126 ms"),
+        (10, 10, 2, "1.2292573 ms"),
+        (32, 16, 4, "5.789847294 ms"),
     ],
 )
 def test_simulate(tmpdir, prbs, layers, mod, expected):
@@ -39,7 +41,9 @@ def test_simulate(tmpdir, prbs, layers, mod, expected):
         [
             "mocasin",
             "simulate",
-            "platform=maps_exynos",
+            "platform=odroid",
+            "platform.processor_0.type=ARM_CORTEX_A7",
+            "platform.processor_1.type=ARM_CORTEX_A15",
             "graph=phybench",
             "trace=phybench",
             "mapper=static_cfs",

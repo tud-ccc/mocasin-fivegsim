@@ -15,12 +15,11 @@ setup(
     + find_namespace_packages(include=["hydra_plugins.*"]),
     install_requires=[
         "mocasin",
-        "mocasin-maps-examples",
         "hydra-core<1.1.0",
         "numpy",
     ],
     setup_requires=["pytest-runner"],
-    tests_require=["pytest", "mocasin-maps-examples"],
+    tests_require=["pytest"],
     entry_points={
         "console_scripts": [
             "fivegsim=fivegsim.__main__:main",
