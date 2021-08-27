@@ -179,6 +179,9 @@ class FiveGSimulation(BaseSimulation):
             stats_entry = self.stats.new_application(
                 graph, arrival=self.env.now, deadline=deadline
             )
+            # FIXME: There should be a way to set this when creating the entry
+            # (or make true the default value)
+            stats_entry.accepted = True
             # instantiate the application
             app = FiveGRuntimeDataflowApplication(
                 name=graph.name,
