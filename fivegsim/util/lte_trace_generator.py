@@ -1,25 +1,28 @@
 # Copyright (C) 2020 TU Dresden
 # All Rights Reserved
 #
-# Authors: Julian Robledo
+# Authors: Julian Robledo, Robert Khasanov
 
-import sys
-import random
 import numpy as np
+import random
+import sys
 
 
-def main(sub=600, median_prbs=10, max_ue=3):
+def main(sub=600, median_prbs=10, max_ue=3, period=1):
     """Random LTE traces generator.
 
     This function generates an output file containing a set of LTE subframes.
-    The file follows the following pattern: 1 subframe containing a random
-    number of UE with random modulation scheme, criticality and number of prbs,
-    followed by two empty subframes (zero UE).
+    The file follows the following pattern: each subframe contains a random
+    number of UE with random modulation scheme, criticality and number of prbs.
+    Subframes are generated once per period, in between they filled with empty
+    subframes. Note that the generated subframe could contain a zero number of
+    UEs.
 
     sub: total number of subframes to generate, counting also empty subframes.
     median_prbs: median of the non-uniform random distribution to calculate
     number of prbs, should be <= 100.
-    max_ue: # max number of UE per subframe, the min is set to 1.
+    max_ue: max number of UE per subframe, the min is set to 1.
+    period: a period of generated subframes, default is 1.
     """
     file_path = "."
     file_name = "lte_traces"
@@ -27,9 +30,9 @@ def main(sub=600, median_prbs=10, max_ue=3):
 
     with open(f"{file_path}/{file_name}.txt", "w") as tf_file:
         for s in range(sub):
-            if s % 3 == 0:
-                n = random.randint(1, max_ue)
-                tf_file.write(str(n) + "\n")
+            if s % period == 0:
+                n = random.randint(0, max_ue)
+                tf_file.write(f"{n}\n")
 
                 for ue in range(n):
                     while True:
@@ -50,4 +53,5 @@ def main(sub=600, median_prbs=10, max_ue=3):
 
 
 if __name__ == "__main__":
-    main(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
+    iargs = tuple(int(x) for x in sys.argv[1:])
+    main(*iargs)
