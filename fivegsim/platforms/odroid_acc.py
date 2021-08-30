@@ -1,5 +1,5 @@
 # Copyright (C) 2020 TU Dresden
-# All rights reserved.
+# Licensed under the ISC license (see LICENSE.txt)
 #
 # Authors: Felix Teweleit, Andres Goens, Christian Menard
 

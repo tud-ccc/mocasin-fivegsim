@@ -1,7 +1,7 @@
 # Copyright (C) 2021 TU Dresden
-# All Rights Reserved
+# Licensed under the ISC license (see LICENSE.txt)
 #
-# Authors: Christian Menard
+# Authors: Robert Khasanov, Christian Menard
 
 from pathlib import Path
 import pytest

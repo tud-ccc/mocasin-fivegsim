@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # Copyright (C) 2021 TU Dresden
-# All rights reserved
+# Licensed under the ISC license (see LICENSE.txt)
 #
 # Authors: Christian Menard
 
