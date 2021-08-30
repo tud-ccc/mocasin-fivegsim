@@ -128,6 +128,8 @@ class FivegTrace(DataflowTrace):
                 )
 
         # kernels
+        #
+        # disable auto-formatting:
         # fmt: off
         self.processes = {
             "input": self.KernelTrace(
@@ -191,6 +193,7 @@ class FivegTrace(DataflowTrace):
                 1, pcs[9],
             ),
         }
+        # enabling autoformatting back
         # fmt: on
 
     def get_trace(self, process):
