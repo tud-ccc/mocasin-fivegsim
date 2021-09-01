@@ -1,9 +1,9 @@
 # @package _global_
 defaults:
   - common
-  - hydra/job_logging: mocasin
   - platform: odroid
   - mapper: static_cfs
   - representation: SimpleVector
   - resource_manager: medf
   - simulation_type: fivegsim
+  - override hydra/job_logging: mocasin

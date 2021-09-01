@@ -1,4 +1,3 @@
-# @package _group_
 _target_: fivegsim.trace.FivegTrace.from_hydra
 prbs: ${phybench.prbs}
 layers: ${phybench.layers}

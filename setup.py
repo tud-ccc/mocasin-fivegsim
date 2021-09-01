@@ -16,7 +16,7 @@ setup(
     + find_namespace_packages(include=["hydra_plugins.*"]),
     install_requires=[
         "mocasin",
-        "hydra-core<1.1.0",
+        "hydra-core",
         "numpy",
     ],
     setup_requires=["pytest-runner"],

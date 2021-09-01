@@ -14,7 +14,7 @@ class FiveGSimSearchPathPlugin(SearchPathPlugin):
     def __init__(self):
         # register a custom resolver to resolve paths to files located within
         # the fivegsim package
-        OmegaConf.register_resolver(
+        OmegaConf.register_new_resolver(
             "fivegsim_path",
             lambda path="": os.path.join(
                 os.path.dirname(fivegsim.__file__), path
