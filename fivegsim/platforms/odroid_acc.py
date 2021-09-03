@@ -1,13 +1,14 @@
 # Copyright (C) 2020 TU Dresden
-# All rights reserved.
+# Licensed under the ISC license (see LICENSE.txt)
 #
 # Authors: Felix Teweleit, Andres Goens, Christian Menard
 
 import copy
 
+from hydra.utils import instantiate
+
 from mocasin.common.platform import Platform, Processor
 from mocasin.platforms.platformDesigner import PlatformDesigner
-from hydra.utils import instantiate
 
 
 class OdroidWithAccelerators(Platform):

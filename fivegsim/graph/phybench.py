@@ -1,11 +1,12 @@
 # Copyright (C) 2020 TU Dresden
-# All Rights Reserved
+# Licensed under the ISC license (see LICENSE.txt)
 #
 # Authors: Julian Robledo
 
 
 class Phybench(object):
-    """
+    """Phybench application structure.
+
     - micf   : #Layers * #Antenna (#Antenna is base station parameter, so it
                would be independent of UE workload)
     - combwc : #SC (This may independent of UEs, but actor execution time is
@@ -23,24 +24,32 @@ class Phybench(object):
 
     @staticmethod
     def get_num_micf(layers):
-        """Calculate number of parallel kernels in phase micf (Matched filter +
-        IFFT + Windowing + FFT)"""
+        """Get number of parallel kernels in phase micf.
+
+        Subkernels: Matched filter + IFFT + Windowing + FFT.
+        """
         return layers * Phybench.num_antenna
 
     @staticmethod
     def get_num_combwc():
-        """Get number of parallel kernels in phase conbwc (Combiner
-        weights)"""
+        """Get number of parallel kernels in phase conbwc.
+
+        Subkernels: Combiner weights.
+        """
         return Phybench.SC
 
     @staticmethod
     def get_num_antcomb(layers):
-        """Calculate number of parallel kernels in phase antcomb (Antenna
-        Combinning + IFFT)"""
+        """Get number of parallel kernels in phase antcomb.
+
+        Subkernels: Antenna Combinning + IFFT.
+        """
         return layers * Phybench.num_symb
 
     @staticmethod
     def get_num_demap():
-        """Calculate number of parallel kernels in phase demap (Deinterleaver +
-        Soft symbol Demap)"""
+        """Get number of parallel kernels in phase demap.
+
+        Subkernels: Deinterleaver + Soft symbol Demap.
+        """
         return Phybench.SC * Phybench.num_slots

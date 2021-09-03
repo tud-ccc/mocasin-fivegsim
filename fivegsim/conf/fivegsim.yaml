@@ -2,7 +2,7 @@
 defaults:
   - common
   - hydra/job_logging: mocasin
-  - platform: maps_exynos
+  - platform: odroid
   - mapper: static_cfs
   - representation: SimpleVector
   - resource_manager: medf

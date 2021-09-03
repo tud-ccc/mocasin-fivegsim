@@ -1,11 +1,11 @@
 # Copyright (C) 2020 TU Dresden
-# All Rights Reserved
+# Licensed under the ISC license (see LICENSE.txt)
 #
 # Authors: Julian Robledo, Christian Menard
 
-from fivegsim.fiveg_graph import FivegGraph
-
 from mocasin.simulate.application import RuntimeDataflowApplication
+
+from fivegsim.graph import FivegGraph
 
 
 class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
@@ -41,7 +41,7 @@ class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
         self.stats_entry = stats_entry
 
     def run(self, mapping):
-        """Start execution of this application
+        """Start execution of this application.
 
         Yields:
             ~simpy.events.Event: an event that is triggered when the

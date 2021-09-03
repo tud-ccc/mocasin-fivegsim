@@ -1,5 +1,5 @@
 # Copyright (C) 2021 TU Dresden
-# All Rights Reserved
+# Licensed under the ISC license (see LICENSE.txt)
 #
 # Authors: Julian Robledo, Christian Menard
 
@@ -12,14 +12,14 @@ from mocasin.common.trace import (
     WriteTokenSegment,
 )
 
-from fivegsim.phybench import Phybench
-from fivegsim.proc_tgff_reader import get_task_time
+from fivegsim.graph.phybench import Phybench
+from fivegsim.util.proc_tgff_reader import get_task_time
 
 
 class FivegTrace(DataflowTrace):
-    """Generates traces for the 5G application"""
+    """Generates traces for the 5G application."""
 
-    class kernelTrace:
+    class KernelTrace:
         """Represents a single LTE trace."""
 
         def __init__(
@@ -128,128 +128,73 @@ class FivegTrace(DataflowTrace):
                 )
 
         # kernels
+        #
+        # disable auto-formatting:
+        # fmt: off
         self.processes = {
-            "input": self.kernelTrace(
-                "input",
-                2,
-                [],
-                [None],
-                [False],
-                ["mf", "ant"],
-                [1, 1],
-                [True, True],
-                1,
-                pcs[0],
+            "input": self.KernelTrace(
+                "input", 2,
+                [], [None], [False],
+                ["mf", "ant"], [1, 1], [True, True],
+                1, pcs[0],
             ),
-            "mf": self.kernelTrace(
-                "mf",
-                2,
-                ["input"],
-                [1],
-                [True],
-                ["ifftm"],
-                [1],
-                [False],
-                num_ph1,
-                pcs[1],
+            "mf": self.KernelTrace(
+                "mf", 2,
+                ["input"], [1], [True],
+                ["ifftm"], [1], [False],
+                num_ph1, pcs[1],
             ),
-            "ifftm": self.kernelTrace(
-                "ifftm",
-                2,
-                ["mf"],
-                [1],
-                [False],
-                ["wind"],
-                [1],
-                [False],
-                num_ph1,
-                pcs[2],
+            "ifftm": self.KernelTrace(
+                "ifftm", 2,
+                ["mf"], [1], [False],
+                ["wind"], [1], [False],
+                num_ph1, pcs[2],
             ),
-            "wind": self.kernelTrace(
-                "wind",
-                2,
-                ["ifftm"],
-                [1],
-                [False],
-                ["fft"],
-                [1],
-                [False],
-                num_ph1,
-                pcs[3],
+            "wind": self.KernelTrace(
+                "wind", 2,
+                ["ifftm"], [1], [False],
+                ["fft"], [1], [False],
+                num_ph1, pcs[3],
             ),
-            "fft": self.kernelTrace(
-                "fft",
-                2,
-                ["wind"],
-                [1],
-                [False],
-                ["comb"],
-                [1],
-                [True],
-                num_ph1,
-                pcs[4],
+            "fft": self.KernelTrace(
+                "fft", 2,
+                ["wind"], [1], [False],
+                ["comb"], [1], [True],
+                num_ph1, pcs[4],
             ),
-            "comb": self.kernelTrace(
-                "comb",
-                2,
-                ["fft"],
-                [1],
-                [True],
-                ["ant"],
-                [1],
-                [True],
-                num_ph2,
-                pcs[5],
+            "comb": self.KernelTrace(
+                "comb", 2,
+                ["fft"], [1], [True],
+                ["ant"], [1], [True],
+                num_ph2, pcs[5],
             ),
-            "ant": self.kernelTrace(
-                "ant",
-                2,
-                ["input", "comb"],
-                [1, 1],
-                [True, True],
-                ["iffta"],
-                [1],
-                [False],
-                num_ph3,
-                pcs[6],
+            "ant": self.KernelTrace(
+                "ant", 2,
+                ["input", "comb"], [1, 1], [True, True],
+                ["iffta"], [1], [False],
+                num_ph3, pcs[6],
             ),
-            "iffta": self.kernelTrace(
-                "iffta",
-                2,
-                ["ant"],
-                [1],
-                [False],
-                ["demap"],
-                [1],
-                [True],
-                num_ph3,
-                pcs[7],
+            "iffta": self.KernelTrace(
+                "iffta", 2,
+                ["ant"], [1], [False],
+                ["demap"], [1], [True],
+                num_ph3, pcs[7],
             ),
-            "demap": self.kernelTrace(
-                "demap",
-                1,
-                ["iffta"],
-                [2],
-                [True],
-                ["output"],
-                [1],
-                [True],
-                num_ph4,
-                pcs[8],
+            "demap": self.KernelTrace(
+                "demap", 1,
+                ["iffta"], [2], [True],
+                ["output"], [1], [True],
+                num_ph4, pcs[8],
             ),
-            "output": self.kernelTrace(
-                "output",
-                1,
-                ["demap"],
-                [1],
-                [True],
-                [],
-                [None],
-                [False],
-                1,
-                pcs[9],
+            "output": self.KernelTrace(
+                "output", 1,
+                ["demap"], [1], [True],
+                [], [None], [False],
+                1, pcs[9],
             ),
         }
+        # enabling autoformatting back
+        # fmt: on
 
     def get_trace(self, process):
         kern = next(

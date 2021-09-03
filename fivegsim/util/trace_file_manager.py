@@ -1,11 +1,13 @@
 # Copyright (C) 2020 TU Dresden
-# All Rights Reserved
+# Licensed under the ISC license (see LICENSE.txt)
 #
 # Authors: Julian Robledo
 
 
 class TraceFileManager:
-    """Allows navigation along a LTE trace file with the following format:
+    """Trace file manager.
+
+    Allows navigation along a LTE trace file with the following format:
     <number of UE>
     [<base station ID> <CRNTI> <number of PRBs> <number of layers> <modulation scheme> <UE Criticality Type> <is New>]
     [<base station ID> <CRNTI> <number of PRBs> <number of layers> <modulation scheme> <UE Criticality Type> <is New>]
@@ -65,8 +67,10 @@ class TraceFileManager:
             self.id = sid
 
     def get_all_subframes(self):
-        """Reads the whole file and returns a list of Subframe objects
-        containing all LTE subframes contained in file
+        """Get all subframes.
+
+        Reads the whole file and returns a list of Subframe objects containing
+        all LTE subframes contained in file.
         """
         subframe_list = list()
         while True:
@@ -79,7 +83,11 @@ class TraceFileManager:
         return subframe_list
 
     def get_next_subframe(self):
-        """search for next subframe into the file and returns Subframe object with the whole subframe"""
+        """Get next subframe.
+
+        Search for next subframe into the file and returns Subframe object with
+        the whole subframe.
+        """
         subframe = self.Subframe()
         TF_current_trace = 0
 
@@ -121,16 +129,8 @@ class TraceFileManager:
                 # find LTE trace
                 if len(line) == 7:
                     TF_current_trace += 1
-                    line = [int(i) for i in line]  # cast string to int
-                    ntrace = self.Trace(
-                        line[0],
-                        line[1],
-                        line[2],
-                        line[3],
-                        line[4],
-                        line[5],
-                        line[6],
-                    )
+                    iline = tuple(int(i) for i in line)  # cast string to int
+                    ntrace = self.Trace(*iline)
                     # Add trace to subframe
                     subframe.add_trace(ntrace)
                 # empty line

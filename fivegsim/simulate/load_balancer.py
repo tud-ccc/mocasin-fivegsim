@@ -1,5 +1,5 @@
 # Copyright (C) 2021 TU Dresden
-# All Rights Reserved
+# Licensed under the ISC license (see LICENSE.txt)
 #
 # Authors: Robert Khasanov, Christian Menard
 
@@ -11,10 +11,9 @@ from mocasin.common.mapping import (
     ChannelMappingInfo,
     ProcessMappingInfo,
 )
-from mocasin.simulate.adapter import SimulateLoggerAdapter
 from mocasin.simulate.manager import RuntimeManager
 
-from fivegsim.simulation import FiveGRuntimeDataflowApplication
+from fivegsim.simulate import FiveGRuntimeDataflowApplication
 
 log = logging.getLogger(__name__)
 
@@ -52,7 +51,6 @@ class PhybenchLoadBalancer(RuntimeManager):
 
     def run(self):
         """A simpy process modelling the actual runtime."""
-
         self._log.info("Starting up")
 
         while True:

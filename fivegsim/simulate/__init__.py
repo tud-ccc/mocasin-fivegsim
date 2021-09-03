@@ -1,5 +1,5 @@
 # Copyright (C) 2020 TU Dresden
-# All Rights Reserved
+# Licensed under the ISC license (see LICENSE.txt)
 #
 # Authors: Julian Robledo, Christian Menard
 
@@ -16,18 +16,18 @@ from mocasin.common.trace import (
     DataflowTrace,
     SegmentType,
 )
-from mocasin.tetris.manager import ResourceManager
 from mocasin.simulate import BaseSimulation, SimulationResult
 from mocasin.simulate import scheduler
+from mocasin.tetris.manager import ResourceManager
 
-from fivegsim.trace_file_manager import TraceFileManager
-from fivegsim.proc_tgff_reader import get_task_time
-from fivegsim.fiveg_graph import FivegGraph
-from fivegsim.fiveg_trace import FivegTrace
-from fivegsim.fiveg_app import FiveGRuntimeDataflowApplication
-from fivegsim.load_balancer import PhybenchLoadBalancer
-from fivegsim.statistics import FiveGManagerStatistics
-from fivegsim.tetris import FiveGRuntimeTetrisManager
+from fivegsim.graph import FivegGraph
+from fivegsim.simulate.application import FiveGRuntimeDataflowApplication
+from fivegsim.simulate.load_balancer import PhybenchLoadBalancer
+from fivegsim.simulate.statistics import FiveGManagerStatistics
+from fivegsim.simulate.tetris import FiveGRuntimeTetrisManager
+from fivegsim.trace import FivegTrace
+from fivegsim.util.proc_tgff_reader import get_task_time
+from fivegsim.util.trace_file_manager import TraceFileManager
 
 sys.setrecursionlimit(10000)
 
@@ -65,7 +65,7 @@ class MergedFivegTrace(DataflowTrace):
 
 
 class FiveGSimulation(BaseSimulation):
-    """Simulate the processing of 5G data"""
+    """Simulate the processing of 5G data."""
 
     def __init__(self, platform, cfg, trace_file, task_file, **kwargs):
         super().__init__(platform)
@@ -179,6 +179,9 @@ class FiveGSimulation(BaseSimulation):
             stats_entry = self.stats.new_application(
                 graph, arrival=self.env.now, deadline=deadline
             )
+            # FIXME: There should be a way to set this when creating the entry
+            # (or make true the default value)
+            stats_entry.accepted = True
             # instantiate the application
             app = FiveGRuntimeDataflowApplication(
                 name=graph.name,
