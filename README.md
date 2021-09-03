@@ -23,11 +23,7 @@ mocasin simulate simulation_type=fivegsim mapper=static_cfs platform=odroid
 Currently, `fivegsim` only works in conjunction with two platforms: `odroid`
 and `odroid_acc`. In principle, other platforms can be supported, but this
 requires generating additional traces for the core types of those other
-platforms. Note that for the `odroid` platform we have to specify the processor
-types.
-```
-fivegsim platform=odroid platform.processor_0.type=ARM_CORTEX_A7 platform.processor_1.type=ARM_CORTEX_A15
-```
+platforms.
 
 To specify the input trace, use the `trace_file` config key.
 ```

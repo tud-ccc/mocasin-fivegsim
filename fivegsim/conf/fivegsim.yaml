@@ -7,3 +7,12 @@ defaults:
   - resource_manager: medf
   - simulation_type: fivegsim
   - override hydra/job_logging: mocasin
+  - _self_
+
+# Set odroid's processor types (see issue mocasin#92)
+platform:
+  processor_0:
+    type: ARM_CORTEX_A7
+  processor_1:
+    type: ARM_CORTEX_A15
+

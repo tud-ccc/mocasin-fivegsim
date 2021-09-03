@@ -28,9 +28,6 @@ def test_fivegsim(
     trace_file = Path(__file__).parent.resolve().joinpath(trace)
 
     cmd = ["fivegsim", f"trace_file={trace_file}", f"platform={platform}"]
-    if platform == "odroid":
-        cmd.append("platform.processor_0.type=ARM_CORTEX_A7")
-        cmd.append("platform.processor_1.type=ARM_CORTEX_A15")
     if runtime == "load_balancer":
         cmd.append("load_balancer=true")
     elif runtime == "tetris":
