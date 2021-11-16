@@ -3,6 +3,7 @@
 phybench:
   prbs: 4
   layers: 4
+  antennas: 4
   modulation_scheme: 1
   task_file: "${fivegsim_path:files/proc_file.csv}"
 
@@ -11,4 +12,5 @@ graph:
   id: 0
   prbs: ${phybench.prbs}
   layers: ${phybench.layers}
+  antennas: ${phybench.antennas}
   modulation_scheme: ${phybench.modulation_scheme}

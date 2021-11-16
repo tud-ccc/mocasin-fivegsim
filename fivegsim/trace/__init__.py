@@ -46,10 +46,10 @@ class FivegTrace(DataflowTrace):
             self.n_instances = n_instances
             self.processor_cycles = processor_cycles
 
-    def __init__(self, ntrace, proc_time):
+    def __init__(self, ntrace, proc_time, antennas):
 
         # Number of tasks of each type
-        num_ph1 = Phybench.get_num_micf(ntrace.layers)
+        num_ph1 = Phybench.get_num_micf(ntrace.layers, antennas)
         num_ph2 = Phybench.get_num_combwc()
         num_ph3 = Phybench.get_num_antcomb(ntrace.layers)
         num_ph4 = Phybench.get_num_demap()
@@ -263,7 +263,7 @@ class FivegTrace(DataflowTrace):
                     )
 
     @staticmethod
-    def from_hydra(task_file, prbs, modulation_scheme, layers, **kwargs):
+    def from_hydra(task_file, prbs, modulation_scheme, layers, antennas, **kwargs):
         # a little hacky, but it does the trick to instantiate the graph
         # directly from hydra.
         class Object(object):
@@ -275,4 +275,5 @@ class FivegTrace(DataflowTrace):
         ntrace.layers = layers
 
         proc_time = get_task_time(hydra.utils.to_absolute_path(task_file))
-        return FivegTrace(ntrace, proc_time)
+
+        return FivegTrace(ntrace, proc_time, antennas)
