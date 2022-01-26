@@ -4,6 +4,7 @@
 # Authors: Christian Menard
 
 from setuptools import setup, find_namespace_packages, find_packages
+import sys
 
 project_name = "fivegsim"
 version = "0.1.0"
@@ -19,7 +20,7 @@ setup(
         "numpy",
     ],
     setup_requires=["pytest-runner"],
-    tests_require=["pytest"],
+    tests_require=["pytest<7.0" if sys.version_info < (3, 7) else "pytest"],
     entry_points={
         "console_scripts": [
             "fivegsim=fivegsim.__main__:main",
