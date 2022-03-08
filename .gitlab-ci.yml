@@ -26,6 +26,9 @@ mirror-ci-branch:
 
 .build:
   script:
+    # install dependencies for builing mpsym and qdldl from source
+    - apt-get update
+    - apt-get install -y build-essential cmake libboost-dev libboost-graph-dev lua5.3 liblua5.3-dev luarocks
     # Clone mocasin from branch $MOCASIN_BRANCH or master if the branch does not exist
     - git clone -b $MOCASIN_BRANCH https://gitlab-ci-token:${CI_JOB_TOKEN}@cc.inf.tu-dresden.de/gitlab/mocasin/mocasin /tmp/mocasin || git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@cc.inf.tu-dresden.de/gitlab/mocasin/mocasin /tmp/mocasin
     # build the wheels
