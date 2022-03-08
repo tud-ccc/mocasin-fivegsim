@@ -79,6 +79,9 @@ build-python3.6:
 
 .test:
   script:
+    # install runtime dependencies for mpsym
+    - apt-get update
+    - apt-get install -y lua5.3 liblua5.3 luarocks
     # retrieve pynauty from upstream job
     - 'curl --location --output pynauty.zip --header "PRIVATE-TOKEN: ${CI_ACCESS_TOKEN}" "https://cc.inf.tu-dresden.de/gitlab/api/v4/projects/26/jobs/artifacts/master/download?job=$PYNAUTY_JOB"' 
     - file pynauty.zip
@@ -87,6 +90,7 @@ build-python3.6:
     - pip install mocasin*.whl
     - pip install fivegsim*.whl
     - if [ "${CI_PIPELINE_SOURCE}" == "pipeline" ]; then git checkout origin/$MOCASIN_BRANCH || true; fi
+    # run tests
     - python setup.py test
 
 .test:
