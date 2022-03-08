@@ -39,6 +39,13 @@ mirror-ci-branch:
     paths:
       - .cache/pip
 
+build-python3.10:
+  extends: .build
+  stage: build
+  image: python:3.10
+  tags:
+    - python3.10
+
 build-python3.9:
   extends: .build
   stage: build
@@ -84,6 +91,15 @@ build-python3.6:
     - pip install fivegsim --no-index --find-links=./wheels
     - python setup.py test
 
+test-python3.10:
+  extends: .test
+  stage: test
+  image: python:3.10
+  tags:
+    - python3.10
+  needs:
+    - build-python3.10
+
 test-python3.9:
   extends: .test
   stage: test
@@ -122,9 +138,9 @@ test-python3.6:
 
 check-formatting:
   stage: test
-  image: python:3.8
+  image: python:3.9
   tags:
-    - python3.8
+    - python3.9
   needs: []
   script:
     - pip install black
