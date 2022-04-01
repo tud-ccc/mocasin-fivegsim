@@ -48,7 +48,7 @@ class FiveGParetoFrontCache:
         return res
 
     def _to_mappings(self, graph, pareto_lists):
-        com_mapper = ComFullMapper(graph, self.platform)
+        com_mapper = ComFullMapper(self.platform)
         mapper = ProcPartialMapper(graph, self.platform, com_mapper)
         res = []
         for mapping_list, metadata in pareto_lists:
@@ -63,10 +63,10 @@ class FiveGParetoFrontCache:
         rep = hydra.utils.instantiate(
             self.cfg["representation"], graph, self.platform
         )
-        mapper = hydra.utils.instantiate(
-            self.cfg["mapper"], graph, self.platform, trace, rep
+        mapper = hydra.utils.instantiate(self.cfg["mapper"], self.platform)
+        pareto_front = mapper.generate_pareto_front(
+            graph, trace=trace, representation=rep
         )
-        pareto_front = mapper.generate_pareto_front()
 
         # estimate time and energy by simulation
         if self.pareto_metadata_simulate:

@@ -7,6 +7,7 @@ from collections import Counter
 import logging
 
 from mocasin.common.mapping import Mapping, ProcessMappingInfo
+from mocasin.mapper import BaseMapper
 from mocasin.mapper.partial import ComPartialMapper
 from mocasin.mapper.random import RandomPartialMapper
 
@@ -14,7 +15,7 @@ from mocasin.mapper.random import RandomPartialMapper
 log = logging.getLogger(__name__)
 
 
-class FiveGMapper:
+class FiveGMapper(BaseMapper):
     """FiveG-specific mapper.
 
     This mapper is a load balancing mapper which takes into account
@@ -28,15 +29,10 @@ class FiveGMapper:
     in balanced fashion.
     """
 
-    def __init__(self, graph, platform, trace, representation):
-        self.platform = platform
-        self.full_mapper = True  # flag indicating the mapper type
-        self.graph = graph
-        self.trace = trace
-        self.randMapGen = RandomPartialMapper(self.graph, self.platform)
-        self.comMapGen = ComPartialMapper(
-            self.graph, self.platform, self.randMapGen
-        )
+    def __init__(self, platform):
+        super().__init__(platform, True)
+        self.randMapGen = RandomPartialMapper(self.platform)
+        self.comMapGen = ComPartialMapper(self.platform, self.randMapGen)
 
     def _map_to_core(self, mapping, process, core):
         scheduler = list(self.platform.schedulers())[0]
@@ -46,7 +42,14 @@ class FiveGMapper:
         mapping.add_process_info(process, info)
 
     def _remap_accelerators(
-        self, mapping_dict, accelerators, phase, acc_kernels, processor_time
+        self,
+        graph,
+        trace,
+        mapping_dict,
+        accelerators,
+        phase,
+        acc_kernels,
+        processor_time,
     ):
         """Remap fft nodes to accelerators.
 
@@ -54,8 +57,8 @@ class FiveGMapper:
         the longest execution time and remaps it to the accelerator with the
         least execution time.
         """
-        num_instances = self.graph.structure[phase]["num_instances"]
-        subkernels = self.graph.structure[phase]["subkernels"]
+        num_instances = graph.structure[phase]["num_instances"]
+        subkernels = graph.structure[phase]["subkernels"]
         regular_processors = list(processor_time.keys())
 
         # Before fft there might be some other processes, during this time
@@ -65,7 +68,7 @@ class FiveGMapper:
             if subkernel in acc_kernels:
                 break
             acc_cycles = Counter(
-                self.trace.accumulate_processor_cycles(f"{subkernel}0")
+                trace.accumulate_processor_cycles(f"{subkernel}0")
             )
             offset += min(
                 [pe.ticks(acc_cycles[pe.type]) for pe in regular_processors]
@@ -78,14 +81,14 @@ class FiveGMapper:
             if subkernel not in acc_kernels:
                 continue
             acc_cycles = Counter(
-                self.trace.accumulate_processor_cycles(f"{subkernel}0")
+                trace.accumulate_processor_cycles(f"{subkernel}0")
             )
             # pe -> num_instances
             subkernel_instances = {
                 pe: [] for pe in regular_processors + accelerators
             }
             for i in range(num_instances):
-                process = self.graph.find_process(f"{subkernel}{i}")
+                process = graph.find_process(f"{subkernel}{i}")
                 pe = mapping_dict[process]
                 subkernel_instances[pe].append(process)
             # pe -> time of subkernel
@@ -122,7 +125,7 @@ class FiveGMapper:
 
         return processor_time
 
-    def _map_phase(self, mapping_dict, phase, processors):
+    def _map_phase(self, graph, trace, mapping_dict, phase, processors):
         """Map processes in the specific phase.
 
         Args:
@@ -133,8 +136,8 @@ class FiveGMapper:
         Returns: a tuple (execution time, dynamic energy) of the phase
         """
         log.debug(f"Mapping phase: {phase}")
-        num_instances = self.graph.structure[phase]["num_instances"]
-        subkernels = self.graph.structure[phase]["subkernels"]
+        num_instances = graph.structure[phase]["num_instances"]
+        subkernels = graph.structure[phase]["subkernels"]
 
         # filter regular processors
         regular_processors = [
@@ -147,7 +150,7 @@ class FiveGMapper:
         acc_cycles = Counter()
         for kernel in subkernels:
             acc_cycles += Counter(
-                self.trace.accumulate_processor_cycles(f"{kernel}0")
+                trace.accumulate_processor_cycles(f"{kernel}0")
             )
         phase_processor_cycles = Counter()
         for pe in regular_processors:
@@ -185,7 +188,7 @@ class FiveGMapper:
         for pe, count in processor_instances.items():
             for _ in range(count):
                 for subkernel in subkernels:
-                    process = self.graph.find_process(f"{subkernel}{i}")
+                    process = graph.find_process(f"{subkernel}{i}")
                     mapping_dict[process] = pe
                 i += 1
 
@@ -198,6 +201,8 @@ class FiveGMapper:
             acc_kernels = accelerators[0].type[4:].split(",")
             if any(subkernel in acc_kernels for subkernel in subkernels):
                 processor_time = self._remap_accelerators(
+                    graph,
+                    trace,
                     mapping_dict,
                     accelerators,
                     phase,
@@ -213,18 +218,29 @@ class FiveGMapper:
 
         return exec_time, dynamic_energy
 
-    def generate_mapping(self, restricted=None):
+    def generate_mapping(
+        self,
+        graph,
+        trace=None,
+        representation=None,
+        processors=None,
+        partial_mapping=None,
+    ):
         """Generate the mapping for the graph.
 
-        The mappings are mapped on all cores, except specified in `restricted`.
+        Args:
+        :param graph: a dataflow graph
+        :type graph: DataflowGraph
+        :param trace: a trace generator
+        :type trace: TraceGenerator
+        :param representation: a mapping representation object
+        :type representation: MappingRepresentation
+        :param processors: list of processors to map to.
+        :type processors: a list[Processor]
+        :param partial_mapping: a partial mapping to complete
+        :type partial_mapping: Mapping
+
         """
-        if not restricted:
-            restricted = []
-
-        processors = [
-            pe for pe in self.platform.processors() if pe.name not in restricted
-        ]
-
         regular_processors = [
             pe for pe in processors if not pe.type.startswith("acc_")
         ]
@@ -238,41 +254,23 @@ class FiveGMapper:
         mapping_dict = {}
 
         # map applications phase by phase
-        for phase in self.graph.structure:
-            phase_results = self._map_phase(mapping_dict, phase, processors)
+        for phase in graph.structure:
+            phase_results = self._map_phase(
+                graph, trace, mapping_dict, phase, processors
+            )
             exec_time += phase_results[0]
             dynamic_energy += phase_results[1]
 
-        mapping = Mapping(self.graph, self.platform)
+        mapping = Mapping(graph, self.platform)
         for process, pe in mapping_dict.items():
             self._map_to_core(mapping, process, pe)
-        mapping = self.comMapGen.generate_mapping(mapping)
+        mapping = self.comMapGen.generate_mapping(
+            graph,
+            trace=trace,
+            representation=representation,
+            partial_mapping=mapping,
+        )
 
         mapping.metadata.exec_time = exec_time / 1000000000.0
         mapping.metadata.energy = dynamic_energy / 1000000000.0
         return mapping
-
-    def generate_pareto_front(self):
-        """Generate Pareto-Front."""
-        pareto = []
-        restricted = [[]]
-        cores = {}
-        all_cores = list(self.platform.processors())
-        for core_type, _ in self.platform.get_processor_types().items():
-            cores[core_type] = [
-                core.name for core in all_cores if core.type == core_type
-            ]
-        for core_type in self.platform.get_processor_types():
-            new_res = []
-            for r in restricted:
-                for i in range(len(cores[core_type])):
-                    new_res.append(r + cores[core_type][: i + 1])
-            restricted = restricted + new_res
-        restricted = restricted[:-1]
-        log.debug(f"Length of restricted = {len(restricted)}")
-        log.debug(f"{restricted}")
-        for res in restricted:
-            mapping = self.generate_mapping(restricted=res)
-            if mapping:
-                pareto.append(mapping)
-        return pareto
