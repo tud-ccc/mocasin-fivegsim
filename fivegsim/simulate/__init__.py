@@ -4,9 +4,9 @@
 # Authors: Julian Robledo, Christian Menard
 
 import copy
+import csv
 import logging
 import sys
-import csv
 
 import hydra
 
@@ -143,13 +143,11 @@ class FiveGSimulation(BaseSimulation):
         rep = hydra.utils.instantiate(
             self.cfg["representation"], sf_graph, self.platform
         )
-        mapper = hydra.utils.instantiate(
-            self.cfg["mapper"], sf_graph, self.platform, sf_trace, rep
-        )
+        mapper = hydra.utils.instantiate(self.cfg["mapper"], self.platform)
         # create a mapping for the entire subframe
-        sf_mapping = (
-            mapper.generate_mapping()
-        )  # TODO: collect and add load here
+        sf_mapping = mapper.generate_mapping(
+            sf_graph, trace=sf_trace, representation=rep
+        )
         log.info("mapping generation done")
 
         # Split the mapping up again. We merged all graphs and traces
