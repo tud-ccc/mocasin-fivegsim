@@ -3,27 +3,87 @@
 #
 # Authors: Julian Robledo
 
+from scipy import stats
+from collections import OrderedDict
+import csv
 
 def get_task_time(tgff_name):
     """Read task execution time from TGFF and return a list of task times."""
-    proc_file = open(tgff_name, "r")
-    lines = proc_file.readlines()
-    lines = [x for x in lines if x.find("#") == -1]
-    lines = [x.strip() for x in lines]
-    lines = [x.split() for x in lines]
-    lines = [x for x in lines if x != []]
+    proc_latencies = {}
+    with open(tgff_name) as csvfile:
+        reader = csv.reader(csvfile)
+        next(reader) # headers
+        reader = list(reader)
+        for row in reader:
+            if row[1] not in proc_latencies:
+                proc_latencies[row[1]] = {}
+            if row[0] not in proc_latencies[row[1]]:
+                proc_latencies[row[1]][row[0]] = {}
+            if row[4] != 'NA':
+                if int(row[4]) not in proc_latencies[row[1]][row[0]]:
+                    proc_latencies[row[1]][row[0]][int(row[4])] = {}
+                proc_latencies[row[1]][row[0]][int(row[4])][int(row[2])] = float(row[3])
+            else:
+                proc_latencies[row[1]][row[0]][int(row[2])] = float(row[3])
 
-    proc_list = list()
-    task_list = {}
+    return proc_latencies
 
-    while len(lines) > 0:
-        line = lines.pop(0)
-        if len(line) == 7:
-            task_list[int(line[0])] = float(line[3])
-        elif line[0].find("}") != -1:
-            proc_list.append(task_list)
-        elif line[0].find("@PROC") != -1:
-            task_list = {}
 
-    proc_file.close()
-    return proc_list
+# split kernel latencies, create a sublist for every kernel
+#kernel_latencies = list()
+#for p in range(0, len(all_kernels), 100):
+#    kernel_latencies.append(all_kernels[p:p+100])
+
+# calculate linear regression for every kernel
+#proc_fn = {0:OrderedDict(), 1:OrderedDict()}
+#prbs = list(range(1, 101))
+
+# processor 0
+#for l, k in zip(kernel_latencies[:10], kernel_names):
+#    proc_fn[0][k] = stats.linregress(prbs, l)
+
+# processor 1
+#for l, k in zip(kernel_latencies[10:], kernel_names):
+#    proc_fn[1][k] = stats.linregress(prbs, l)
+
+# fft kernels cannot be modeled as a linear regression
+#proc_fn[0]["fft"] = [
+#    [16, kernel_latencies[1][0]],
+#    [32, kernel_latencies[1][1]],
+#    [64, kernel_latencies[1][2]],
+#    [128, kernel_latencies[1][5]],
+#    [256, kernel_latencies[1][10]],
+#    [512, kernel_latencies[1][21]],
+#    [1024, kernel_latencies[1][50]],
+#    [2048, kernel_latencies[1][85]],
+#]
+#proc_fn[1]["fft"] = [
+#    [16, kernel_latencies[11][0]],
+#    [32, kernel_latencies[11][1]],
+#    [64, kernel_latencies[11][2]],
+#    [128, kernel_latencies[11][5]],
+#    [256, kernel_latencies[11][10]],
+#    [512, kernel_latencies[11][21]],
+#    [1024, kernel_latencies[11][50]],
+#    [2048, kernel_latencies[11][85]],
+#]
+
+
+#import matplotlib.pyplot as plt
+#def myfunc(prbs, slope, intercept):
+#    return slope * prbs + intercept
+
+#def pp(mymodel, n):
+#    plt.scatter(prbs, n)
+#    plt.plot(prbs, mymodel, color='red')
+#    plt.show()
+
+#proc = proc_fn[1]["fft"]
+#lat = kernel_latencies[11]
+#mymodel = list()
+
+#for i in prbs:
+#    mymodel.append(myfunc(i, proc.slope, proc.intercept))
+#pp(mymodel, lat)
+
+# prbs2 = [1, 2, 3, 6, 11, 22, 51, 86]

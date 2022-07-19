@@ -57,39 +57,12 @@ class FivegTrace(DataflowTrace):
         prbs = ntrace.PRBs
         mod = ntrace.modulation_scheme
 
-        # offsets on tgff file
-        offset = [
-            None,
-            prbs - 1,
-            prbs + 100 - 1,
-            prbs + 200 - 1,
-            prbs + 100 - 1,
-            prbs + 300 - 1,
-            prbs + 400 - 1,
-            prbs + 100 - 1,
-            prbs + (500 + 100 * mod) - 1,
-            None,
-        ]
-
         # clock cycles for FFT accelerator
-        if prbs * 12 <= 8:
-            fft_acc_cc = 94
-        elif prbs * 12 <= 16:
-            fft_acc_cc = 146
-        elif prbs * 12 <= 32:
-            fft_acc_cc = 242
-        elif prbs * 12 <= 64:
-            fft_acc_cc = 434
-        elif prbs * 12 <= 128:
-            fft_acc_cc = 834
-        elif prbs * 12 <= 256:
-            fft_acc_cc = 1682
-        elif prbs * 12 <= 512:
-            fft_acc_cc = 3490
-        elif prbs * 12 <= 1024:
-            fft_acc_cc = 7346
-        elif prbs * 12 <= 2048:
-            fft_acc_cc = 15554
+        fft_levels = [8,16,32,64,128,256,512,1024,2048]
+        fft_latencies = [94,146,242,434,834,1682,3490,7346,15554]
+        for l in range(len(fft_levels)):
+            if prbs*12 <= fft_levels[l]:
+                fft_acc_cc = fft_latencies[l]
 
         # the following frequency settings were also used in the real odroid
         # platform to measure task execution time
@@ -100,32 +73,52 @@ class FivegTrace(DataflowTrace):
             "ARM_CORTEX_A15": 1800000000,
         }
 
+        kernel_names = [
+            "input",
+            "mf",
+            "fft",
+            "wind",
+            "comb",
+            "ant",
+            "demap_psk",
+            "demap_qpsk",
+            "demap_16qam",
+            "demap_64qam",
+            "demap_256qam",
+            "output",
+        ]
         # calculate clock cycles for each task type
-        pcs = []
-        for k in range(len(offset)):
-            if offset[k] is None:
-                pcs.append(
-                    {
-                        "ARM_CORTEX_A7": 0,
-                        "ARM_CORTEX_A15": 0,
-                        "acc_fft,ifftm,iffta": 0,
-                    }
-                )
-            else:
-                pcs.append(
-                    {
-                        "ARM_CORTEX_A7": proc_time[0][offset[k]]
-                        * freq["ARM_CORTEX_A7"],
-                        "ARM_CORTEX_A15": proc_time[1][offset[k]]
-                        * freq["ARM_CORTEX_A15"],
-                        # FIXME: the accelerators cycle count is the A15 cycle
-                        # count scaled down by factor 200. This is completely
-                        # made up.
-                        # Note that this scales down the cycle count for all
-                        # kernels. However, we will only really use the fft ones
-                        "acc_fft,ifftm,iffta": fft_acc_cc,
-                    }
-                )
+        armA7 = "ARM_CORTEX_A7"
+        armA15 = "ARM_CORTEX_A15"
+        pcs_input ={
+            "ARM_CORTEX_A7": 0,
+            "ARM_CORTEX_A15": 0,
+        }
+        pcs_mf = {
+            armA7: proc_time[armA7]["mf"][prbs] * freq[armA7],
+            armA15: proc_time[armA15]["mf"][prbs] * freq[armA15],
+        }
+        pcs_fft = {
+            armA7: proc_time[armA7]["fft"][prbs] * freq[armA7],
+            armA15: proc_time[armA15]["fft"][prbs] * freq[armA15],
+            "acc_fft,ifftm,iffta": fft_acc_cc,
+        }
+        pcs_wind = {
+            armA7: proc_time[armA7]["wind"][prbs] * freq[armA7],
+            armA15: proc_time[armA15]["wind"][prbs] * freq[armA15],
+        }
+        pcs_comb = {
+            armA7: proc_time[armA7]["comb"][prbs] * freq[armA7],
+            armA15: proc_time[armA15]["comb"][prbs] * freq[armA15],
+        }
+        pcs_ant = {
+            armA7: proc_time[armA7]["ant"][prbs] * freq[armA7],
+            armA15: proc_time[armA15]["ant"][prbs] * freq[armA15],
+        }
+        pcs_demap = {
+            armA7: proc_time[armA7]["demap"][mod][prbs] * freq[armA7],
+            armA15: proc_time[armA15]["demap"][mod][prbs] * freq[armA15],
+        }
 
         # kernels
         #
@@ -136,61 +129,61 @@ class FivegTrace(DataflowTrace):
                 "input", 2,
                 [], [None], [False],
                 ["mf", "ant"], [1, 1], [True, True],
-                1, pcs[0],
+                1, pcs_input,
             ),
             "mf": self.KernelTrace(
                 "mf", 2,
                 ["input"], [1], [True],
                 ["ifftm"], [1], [False],
-                num_ph1, pcs[1],
+                num_ph1, pcs_mf,
             ),
             "ifftm": self.KernelTrace(
                 "ifftm", 2,
                 ["mf"], [1], [False],
                 ["wind"], [1], [False],
-                num_ph1, pcs[2],
+                num_ph1, pcs_fft,
             ),
             "wind": self.KernelTrace(
                 "wind", 2,
                 ["ifftm"], [1], [False],
                 ["fft"], [1], [False],
-                num_ph1, pcs[3],
+                num_ph1, pcs_wind,
             ),
             "fft": self.KernelTrace(
                 "fft", 2,
                 ["wind"], [1], [False],
                 ["comb"], [1], [True],
-                num_ph1, pcs[4],
+                num_ph1, pcs_fft,
             ),
             "comb": self.KernelTrace(
                 "comb", 2,
                 ["fft"], [1], [True],
                 ["ant"], [1], [True],
-                num_ph2, pcs[5],
+                num_ph2, pcs_comb,
             ),
             "ant": self.KernelTrace(
                 "ant", 2,
                 ["input", "comb"], [1, 1], [True, True],
                 ["iffta"], [1], [False],
-                num_ph3, pcs[6],
+                num_ph3, pcs_ant,
             ),
             "iffta": self.KernelTrace(
                 "iffta", 2,
                 ["ant"], [1], [False],
                 ["demap"], [1], [True],
-                num_ph3, pcs[7],
+                num_ph3, pcs_fft,
             ),
             "demap": self.KernelTrace(
                 "demap", 1,
                 ["iffta"], [2], [True],
                 ["output"], [1], [True],
-                num_ph4, pcs[8],
+                num_ph4, pcs_demap,
             ),
             "output": self.KernelTrace(
                 "output", 1,
                 ["demap"], [1], [True],
                 [], [None], [False],
-                1, pcs[9],
+                1, pcs_input,
             ),
         }
         # enabling autoformatting back
@@ -264,5 +257,6 @@ class FivegTrace(DataflowTrace):
         ntrace.layers = layers
 
         proc_time = get_task_time(hydra.utils.to_absolute_path(task_file))
-
+        #proc_time = get_task_time(hydra.utils.to_absolute_path(task_file2))
+        print(task_file)
         return FivegTrace(ntrace, proc_time)

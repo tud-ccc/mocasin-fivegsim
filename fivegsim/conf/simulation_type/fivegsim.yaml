@@ -1,6 +1,6 @@
 # @package _global_
 trace_file: ???
-task_file: "${fivegsim_path:files/lte_processors.tgff}"
+task_file: "${fivegsim_path:files/proc_file.csv}"
 
 simulation_type:
   _target_: fivegsim.simulate.FiveGSimulation.from_hydra

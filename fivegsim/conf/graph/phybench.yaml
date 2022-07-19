@@ -4,7 +4,7 @@ phybench:
   prbs: 4
   layers: 4
   modulation_scheme: 1
-  task_file: "${fivegsim_path:files/lte_processors.tgff}"
+  task_file: "${fivegsim_path:files/proc_file.csv}"
 
 graph:
   _target_: fivegsim.graph.FivegGraph.from_hydra
