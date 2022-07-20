@@ -71,53 +71,60 @@ class FivegTrace(DataflowTrace):
         freq = {
             "ARM_CORTEX_A7": 1500000000,
             "ARM_CORTEX_A15": 1800000000,
+            "acc": 250000000,
         }
 
-        kernel_names = [
-            "input",
-            "mf",
-            "fft",
-            "wind",
-            "comb",
-            "ant",
-            "demap_psk",
-            "demap_qpsk",
-            "demap_16qam",
-            "demap_64qam",
-            "demap_256qam",
-            "output",
-        ]
         # calculate clock cycles for each task type
         armA7 = "ARM_CORTEX_A7"
         armA15 = "ARM_CORTEX_A15"
+        fft_acc = "acc_fft,ifftm,iffta"
+
         pcs_input ={
             "ARM_CORTEX_A7": 0,
             "ARM_CORTEX_A15": 0,
         }
         pcs_mf = {
-            armA7: proc_time[armA7]["mf"][prbs] * freq[armA7],
-            armA15: proc_time[armA15]["mf"][prbs] * freq[armA15],
+            armA7: proc_time["mf"][armA7][prbs] * freq[armA7],
+            armA15: proc_time["mf"][armA15][prbs] * freq[armA15],
+            "acc_mf": proc_time["mf"]["acc_mf"][prbs] * freq["acc"],
         }
         pcs_fft = {
-            armA7: proc_time[armA7]["fft"][prbs] * freq[armA7],
-            armA15: proc_time[armA15]["fft"][prbs] * freq[armA15],
+            armA7: proc_time["fft"][armA7][prbs] * freq[armA7],
+            armA15: proc_time["fft"][armA15][prbs] * freq[armA15],
             "acc_fft,ifftm,iffta": fft_acc_cc,
+            #"acc_fft": proc_time["fft"]["acc_fft"][prbs] * freq["acc"],
+        }
+        pcs_ifftm = {
+            armA7: proc_time["fft"][armA7][prbs] * freq[armA7],
+            armA15: proc_time["fft"][armA15][prbs] * freq[armA15],
+            "acc_fft,ifftm,iffta": fft_acc_cc,
+            #"acc_ifftm": proc_time["fft"]["acc_fft"][prbs] * freq["acc"],
+        }
+        pcs_iffta = {
+            armA7: proc_time["fft"][armA7][prbs] * freq[armA7],
+            armA15: proc_time["fft"][armA15][prbs] * freq[armA15],
+            "acc_fft,ifftm,iffta": fft_acc_cc,
+            #"acc_iffta": proc_time["fft"]["acc_fft"][prbs] * freq["acc"],
         }
         pcs_wind = {
-            armA7: proc_time[armA7]["wind"][prbs] * freq[armA7],
-            armA15: proc_time[armA15]["wind"][prbs] * freq[armA15],
+            armA7: proc_time["wind"][armA7][prbs] * freq[armA7],
+            armA15: proc_time["wind"][armA15][prbs] * freq[armA15],
+            "acc_wind": proc_time["wind"]["acc_wind"][prbs] * freq["acc"],
         }
         pcs_comb = {
-            armA7: proc_time[armA7]["comb"][prbs] * freq[armA7],
-            armA15: proc_time[armA15]["comb"][prbs] * freq[armA15],
+            armA7: proc_time["comb"][armA7][prbs] * freq[armA7],
+            armA15: proc_time["comb"][armA15][prbs] * freq[armA15],
+            "acc_wind": proc_time["wind"]["acc_wind"][prbs] * freq["acc"],
         }
         pcs_ant = {
-            armA7: proc_time[armA7]["ant"][prbs] * freq[armA7],
-            armA15: proc_time[armA15]["ant"][prbs] * freq[armA15],
+            armA7: proc_time["ant"][armA7][prbs] * freq[armA7],
+            armA15: proc_time["ant"][armA15][prbs] * freq[armA15],
+            "acc_ant": proc_time["ant"]["acc_ant"][prbs] * freq["acc"],
         }
         pcs_demap = {
-            armA7: proc_time[armA7]["demap"][mod][prbs] * freq[armA7],
-            armA15: proc_time[armA15]["demap"][mod][prbs] * freq[armA15],
+            armA7: proc_time["demap"][armA7][mod][prbs] * freq[armA7],
+            armA15: proc_time["demap"][armA15][mod][prbs] * freq[armA15],
+            f"acc_demap{mod}": proc_time["demap"]["acc_demap"][mod][prbs] * freq["acc"],
         }
 
         # kernels
@@ -141,7 +148,7 @@ class FivegTrace(DataflowTrace):
                 "ifftm", 2,
                 ["mf"], [1], [False],
                 ["wind"], [1], [False],
-                num_ph1, pcs_fft,
+                num_ph1, pcs_ifftm,
             ),
             "wind": self.KernelTrace(
                 "wind", 2,
@@ -171,7 +178,7 @@ class FivegTrace(DataflowTrace):
                 "iffta", 2,
                 ["ant"], [1], [False],
                 ["demap"], [1], [True],
-                num_ph3, pcs_fft,
+                num_ph3, pcs_iffta,
             ),
             "demap": self.KernelTrace(
                 "demap", 1,
