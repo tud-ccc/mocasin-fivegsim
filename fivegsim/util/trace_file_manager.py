@@ -8,21 +8,17 @@ class TraceFileManager:
     """Trace file manager.
 
     Allows navigation along a LTE trace file with the following format:
-    <number of UE>
-    [<base station ID> <CRNTI> <number of PRBs> <number of layers> <modulation scheme> <UE Criticality Type> <is New>]
-    [<base station ID> <CRNTI> <number of PRBs> <number of layers> <modulation scheme> <UE Criticality Type> <is New>]
-    [<base station ID> <CRNTI> <number of PRBs> <number of layers> <modulation scheme> <UE Criticality Type> <is New>]
-    ---------- <Subframe Number>
+    subframe, base station ID, CRNTI, number of PRBs, number of layers, modulation scheme, UE Criticality Type, is New
     """
 
     def __init__(self, TF_name):
         self.TF_name = TF_name
         self.TF_file = open(self.TF_name, "r")
 
-        self.TF_current_subframe = 0  # Current subframe Id
-        self.TF_current_subf_size = 0  # Size of current subframe
+        self.TF_current_line = self.TF_file.readline() # pop headers line
+        self.TF_current_line = self.TF_file.readline() # get first line
 
-        self.TF_error = False  # Error
+        self.TF_current_subframe = 1
         self.TF_EOF = False  # End of File
 
     class Trace:
@@ -75,9 +71,8 @@ class TraceFileManager:
         subframe_list = list()
         while True:
             subframe = self.get_next_subframe()
-            if not self.TF_EOF and not self.TF_error:
-                subframe_list.append(subframe)
-            else:
+            subframe_list.append(subframe)
+            if self.TF_EOF:
                 break
 
         return subframe_list
@@ -89,84 +84,31 @@ class TraceFileManager:
         the whole subframe.
         """
         subframe = self.Subframe()
-        TF_current_trace = 0
 
-        # Find new frame
+        # Find new subframe
         while True:
-            line = self.TF_file.readline()
+            line = self.TF_current_line
             if line == "":
                 self.TF_EOF = True
-                break
-            line = line.strip()
-            line = line.split()
-
-            # new frame recognized
-            if len(line) == 1:
-                self.TF_current_subf_size = int(line[0])
-                break
-            # empty line
-            elif len(line) == 0:
-                pass
-            # error
+                line = [self.TF_current_subframe]
             else:
-                # Expected new frame
-                self.TF_error = True
-                break
-
-        if self.TF_current_subf_size != 0:
-            # Read all traces in subframe
-            while True:
-                line = self.TF_file.readline()
-
-                # End of file
-                if line == "":
-                    self.TF_EOF = True
-                    break
-
                 line = line.strip()
-                line = line.split()
+                line = line.split(",")
 
-                # find LTE trace
-                if len(line) == 7:
-                    TF_current_trace += 1
-                    iline = tuple(int(i) for i in line)  # cast string to int
-                    ntrace = self.Trace(*iline)
-                    # Add trace to subframe
-                    subframe.add_trace(ntrace)
-                # empty line
-                elif len(line) == 0:
-                    pass
-                # error
-                else:
-                    # Expected LTE trace
-                    self.TF_error = True
-                    break
-
-                if TF_current_trace == self.TF_current_subf_size:
-                    break
-
-        # find end of subframe
-        while True:
-            line = self.TF_file.readline()
-            if line == "":
-                self.TF_EOF = True
+            # new subframe recognized
+            if int(line[0]) != self.TF_current_subframe or self.TF_EOF:
+                subframe.set_id(int(line[0]) - 1)
+                self.TF_current_subframe = int(line[0])
                 break
-            line = line.strip()
-            line = line.split()
 
-            # end of subframe
-            if len(line) == 2:
-                if line[0].find("-") != -1:
-                    line = line.pop(1)
-                    subframe.set_id(int(line))
-                    break
-            # empty line
-            elif len(line) == 0:
+            # Read all traces in subframe
+            if line[1] == "-": # empty subframe
                 pass
-            # error
-            else:
-                # Expected end of frame
-                self.TF_error = True
-                break
+            else: # Add trace to subframe
+                iline = tuple(int(i) for i in line[1:])  # cast string to int
+                ntrace = self.Trace(*iline)
+                subframe.add_trace(ntrace)
+
+            self.TF_current_line = self.TF_file.readline()
 
         return subframe
