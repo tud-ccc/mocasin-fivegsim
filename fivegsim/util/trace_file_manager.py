@@ -17,8 +17,9 @@ class TraceFileManager:
 
         self.TF_current_line = self.TF_file.readline() # pop headers line
         self.TF_current_line = self.TF_file.readline() # get first line
-
         self.TF_current_subframe = 1
+
+        self.TF_last_subframe = False
         self.TF_EOF = False  # End of File
 
     class Trace:
@@ -88,21 +89,24 @@ class TraceFileManager:
         # Find new subframe
         while True:
             line = self.TF_current_line
-            if line == "":
-                self.TF_EOF = True
-                line = [self.TF_current_subframe]
-            else:
-                line = line.strip()
-                line = line.split(",")
+            line = line.strip()
+            line = line.split(",")
 
+            # End of file
+            if line[0] == "":
+                if self.TF_last_subframe: # work around to add 1ms at the end of the simulation
+                    self.TF_EOF = True
+                else:
+                    subframe.set_id(self.TF_current_subframe)
+                    self.TF_last_subframe = True
+                break
             # new subframe recognized
-            if int(line[0]) != self.TF_current_subframe or self.TF_EOF:
-                subframe.set_id(int(line[0]) - 1)
+            elif int(line[0]) != self.TF_current_subframe:
+                subframe.set_id(self.TF_current_subframe)
                 self.TF_current_subframe = int(line[0])
                 break
-
             # Read all traces in subframe
-            if line[1] == "-": # empty subframe
+            elif line[1] == "-": # empty trace
                 pass
             else: # Add trace to subframe
                 iline = tuple(int(i) for i in line[1:])  # cast string to int
