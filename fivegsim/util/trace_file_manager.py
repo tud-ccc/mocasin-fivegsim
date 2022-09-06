@@ -3,6 +3,8 @@
 #
 # Authors: Julian Robledo
 
+import numpy as np
+import pandas as pd
 
 class TraceFileManager:
     """Trace file manager.
@@ -13,13 +15,8 @@ class TraceFileManager:
 
     def __init__(self, TF_name):
         self.TF_name = TF_name
-        self.TF_file = open(self.TF_name, "r")
-
-        self.TF_current_line = self.TF_file.readline() # pop headers line
-        self.TF_current_line = self.TF_file.readline() # get first line
-        self.TF_current_subframe = 1
-
-        self.TF_last_subframe = False
+        self.TF_subframes = self.get_all_subframes()
+        self.TF_next_subframe = 0
         self.TF_EOF = False  # End of File
 
     class Trace:
@@ -33,7 +30,6 @@ class TraceFileManager:
             layers=None,
             modulation_scheme=None,
             UE_criticality=None,
-            is_CRNTI_new=None,
         ):
             # Base Station Identifier which serves the UE
             self.base_station_id = base_station_id
@@ -47,8 +43,6 @@ class TraceFileManager:
             self.modulation_scheme = modulation_scheme
             # UE Traffic type
             self.UE_criticality = UE_criticality
-            # Is CRNTI seen before for [No/Yes] ?
-            self.is_CRNTI_new = is_CRNTI_new
 
     class Subframe:
         """Represents a LTE subframe containing a collection of LTE traces."""
@@ -69,50 +63,40 @@ class TraceFileManager:
         Reads the whole file and returns a list of Subframe objects containing
         all LTE subframes contained in file.
         """
-        subframe_list = list()
-        while True:
-            subframe = self.get_next_subframe()
-            subframe_list.append(subframe)
-            if self.TF_EOF:
-                break
 
-        return subframe_list
+        all_subframes = pd.read_csv(self.TF_name)
+        num_subframes = all_subframes["subframe"].max()
+
+        # separated lists for every subframe
+        subframes = list()
+        for s in range(1, num_subframes + 1):
+            subframe = self.Subframe()
+            subframe.set_id(s)
+            subf = all_subframes.query("subframe == @s")
+
+            for index, row in subf.iterrows():
+                if row.isnull().values.any():
+                    break
+                else:
+                    iline = tuple(int(i) for i in row[1:])
+                    ntrace = self.Trace(*iline)
+                    subframe.add_trace(ntrace)
+            subframes.append(subframe)
+
+        return subframes
+
 
     def get_next_subframe(self):
         """Get next subframe.
 
-        Search for next subframe into the file and returns Subframe object with
+        Search for next subframe in list of subframes returns Subframe object with
         the whole subframe.
         """
-        subframe = self.Subframe()
-
-        # Find new subframe
-        while True:
-            line = self.TF_current_line
-            line = line.strip()
-            line = line.split(",")
-
-            # End of file
-            if line[0] == "":
-                if self.TF_last_subframe: # work around to add 1ms at the end of the simulation
-                    self.TF_EOF = True
-                else:
-                    subframe.set_id(self.TF_current_subframe)
-                    self.TF_last_subframe = True
-                break
-            # new subframe recognized
-            elif int(line[0]) != self.TF_current_subframe:
-                subframe.set_id(self.TF_current_subframe)
-                self.TF_current_subframe = int(line[0])
-                break
-            # Read all traces in subframe
-            elif line[1] == "-": # empty trace
-                pass
-            else: # Add trace to subframe
-                iline = tuple(int(i) for i in line[1:])  # cast string to int
-                ntrace = self.Trace(*iline)
-                subframe.add_trace(ntrace)
-
-            self.TF_current_line = self.TF_file.readline()
+        if len(self.TF_subframes) > self.TF_next_subframe:
+            subframe = self.TF_subframes[self.TF_next_subframe]
+            self.TF_next_subframe += 1
+        else:
+            subframe = self.Subframe()
+            self.TF_EOF = True
 
         return subframe
