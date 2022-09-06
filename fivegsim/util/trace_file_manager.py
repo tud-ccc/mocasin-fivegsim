@@ -6,6 +6,7 @@
 import numpy as np
 import pandas as pd
 
+
 class TraceFileManager:
     """Trace file manager.
 
@@ -84,7 +85,6 @@ class TraceFileManager:
             subframes.append(subframe)
 
         return subframes
-
 
     def get_next_subframe(self):
         """Get next subframe.
