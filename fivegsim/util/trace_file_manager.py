@@ -11,7 +11,7 @@ class TraceFileManager:
     """Trace file manager.
 
     Allows navigation along a LTE trace file with the following format:
-    subframe, base station ID, CRNTI, number of PRBs, number of layers, modulation scheme, UE Criticality Type, is New
+    subframe, base station ID, CRNTI, number of PRBs, number of layers, modulation scheme, UE Criticality Type
     """
 
     def __init__(self, TF_name):
