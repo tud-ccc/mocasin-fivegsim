@@ -170,7 +170,7 @@ class PhybenchLoadBalancer(RuntimeManager):
         if len(busy_schedulers) == 0:
             return
 
-        is_acc = scheduler._processor.type.startswith("acc_")
+        is_acc = scheduler._processor.type.startswith("acc:")
         if is_acc:
             processor_type = scheduler._processor.type
             acc_tasks = processor_type[4:].split(",")

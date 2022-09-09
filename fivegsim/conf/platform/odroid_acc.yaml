@@ -17,37 +17,37 @@ processor_1:
   dynamic_power: 1.3196
 processor_fft_acc:
   _target_: mocasin.platforms.platformDesigner.genericProcessor
-  type : 'acc_fft,ifftm,iffta'
+  type : 'acc:fft,ifftm,iffta'
   frequency : 300000000
   static_power: 0.3125
   dynamic_power: 0.0625
 processor_mf_acc:
   _target_: mocasin.platforms.platformDesigner.genericProcessor
-  type : 'acc_mf,mf'
+  type : 'acc:mf'
   frequency : 250000000
   static_power: 0.15625
   dynamic_power: 0.0625
 processor_wind_acc:
   _target_: mocasin.platforms.platformDesigner.genericProcessor
-  type : 'acc_wind,wind'
+  type : 'acc:wind'
   frequency : 250000000
   static_power: 0.15625
   dynamic_power: 0.0625
 processor_ant_acc:
   _target_: mocasin.platforms.platformDesigner.genericProcessor
-  type : 'acc_ant,ant'
+  type : 'acc:ant'
   frequency : 250000000
   static_power: 0.21875
   dynamic_power: 0.0625
 processor_comb_acc:
   _target_: mocasin.platforms.platformDesigner.genericProcessor
-  type : 'acc_comb,comb'
+  type : 'acc:comb'
   frequency : 250000000
   static_power: 0.21875
   dynamic_power: 0.0625
 processor_demap_acc:
   _target_: mocasin.platforms.platformDesigner.genericProcessor
-  type : 'acc_demap,demap'
+  type : 'acc:demap'
   frequency : 250000000
   static_power: 0.1875
   dynamic_power: 0.0625

@@ -141,7 +141,7 @@ class FiveGMapper(BaseMapper):
 
         # filter regular processors
         regular_processors = [
-            pe for pe in processors if not pe.type.startswith("acc_")
+            pe for pe in processors if not pe.type.startswith("acc:")
         ]
         # execution time of already mapped processes
         processor_time = Counter(dict.fromkeys(regular_processors, 0))
@@ -195,7 +195,7 @@ class FiveGMapper(BaseMapper):
         assert i == num_instances
 
         # remap to accelerators
-        accelerators = [pe for pe in processors if pe.type.startswith("acc_")]
+        accelerators = [pe for pe in processors if pe.type.startswith("acc:")]
         if accelerators:
             assert len(set(pe.type for pe in accelerators)) == 1
             acc_kernels = accelerators[0].type[4:].split(",")
@@ -242,7 +242,7 @@ class FiveGMapper(BaseMapper):
 
         """
         regular_processors = [
-            pe for pe in processors if not pe.type.startswith("acc_")
+            pe for pe in processors if not pe.type.startswith("acc:")
         ]
 
         if not regular_processors:

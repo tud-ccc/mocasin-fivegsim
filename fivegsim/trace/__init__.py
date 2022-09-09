@@ -67,14 +67,6 @@ class FivegTrace(DataflowTrace):
         elif mod == 8:
             mod = 4
 
-        # clock cycles for FFT accelerator
-        fft_levels = [8,16,32,64,128,256,512,1024,2048]
-        fft_latencies = [94,146,242,434,834,1682,3490,7346,15554]
-        for l in range(len(fft_levels)):
-            if prbs*12 <= fft_levels[l]:
-                fft_acc_cc = fft_latencies[l]
-                break
-
         # the following frequency settings were also used in the real odroid
         # platform to measure task execution time
         # here frequencies are hard-coded since a single platform can have
@@ -97,45 +89,43 @@ class FivegTrace(DataflowTrace):
         pcs_mf = {
             armA7: proc_time["mf"][armA7][prbs] * freq[armA7],
             armA15: proc_time["mf"][armA15][prbs] * freq[armA15],
-            "acc_mf": proc_time["mf"]["acc_mf"][prbs] * freq["acc"],
+            "acc:mf": proc_time["mf"]["acc_mf"][prbs] * freq["acc"],
         }
         pcs_fft = {
             armA7: proc_time["fft"][armA7][prbs] * freq[armA7],
             armA15: proc_time["fft"][armA15][prbs] * freq[armA15],
-            "acc_fft,ifftm,iffta": fft_acc_cc,
-            #"acc_fft": proc_time["fft"]["acc_fft"][prbs] * freq["acc"],
+            fft_acc: proc_time["fft"]["acc_fft"][prbs] * freq["acc"],
         }
         pcs_ifftm = {
             armA7: proc_time["fft"][armA7][prbs] * freq[armA7],
             armA15: proc_time["fft"][armA15][prbs] * freq[armA15],
-            "acc_fft,ifftm,iffta": fft_acc_cc,
-            #"acc_ifftm": proc_time["fft"]["acc_fft"][prbs] * freq["acc"],
+            fft_acc: proc_time["fft"]["acc_fft"][prbs] * freq["acc"],
         }
         pcs_iffta = {
             armA7: proc_time["fft"][armA7][prbs] * freq[armA7],
             armA15: proc_time["fft"][armA15][prbs] * freq[armA15],
-            "acc_fft,ifftm,iffta": fft_acc_cc,
-            #"acc_iffta": proc_time["fft"]["acc_fft"][prbs] * freq["acc"],
+            fft_acc: proc_time["fft"]["acc_fft"][prbs] * freq["acc"],
         }
         pcs_wind = {
             armA7: proc_time["wind"][armA7][prbs] * freq[armA7],
             armA15: proc_time["wind"][armA15][prbs] * freq[armA15],
-            "acc_wind": proc_time["wind"]["acc_wind"][prbs] * freq["acc"],
+            "acc:wind": proc_time["wind"]["acc_wind"][prbs] * freq["acc"],
         }
         pcs_comb = {
             armA7: proc_time["comb"][armA7][prbs] * freq[armA7],
             armA15: proc_time["comb"][armA15][prbs] * freq[armA15],
-            "acc_wind": proc_time["wind"]["acc_wind"][prbs] * freq["acc"],
+            "acc:comb": proc_time["comb"]["acc_comb"][prbs] * freq["acc"],
         }
         pcs_ant = {
             armA7: proc_time["ant"][armA7][prbs] * freq[armA7],
             armA15: proc_time["ant"][armA15][prbs] * freq[armA15],
-            "acc_ant": proc_time["ant"]["acc_ant"][prbs] * freq["acc"],
+            "acc:ant": proc_time["ant"]["acc_ant"][prbs] * freq["acc"],
         }
         pcs_demap = {
             armA7: proc_time["demap"][armA7][mod][prbs] * freq[armA7],
             armA15: proc_time["demap"][armA15][mod][prbs] * freq[armA15],
-            f"acc_demap{mod}": proc_time["demap"]["acc_demap"][mod][prbs] * freq["acc"],
+            "acc:demap": proc_time["demap"]["acc_demap"][mod][prbs] * freq["acc"],
+            #f"acc_demap{mod}": proc_time["demap"]["acc_demap"][mod][prbs] * freq["acc"],
         }
 
         # kernels
