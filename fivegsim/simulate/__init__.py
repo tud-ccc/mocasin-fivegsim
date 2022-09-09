@@ -70,6 +70,7 @@ class FiveGSimulation(BaseSimulation):
     def __init__(self, platform, cfg, trace_file, task_file, **kwargs):
         super().__init__(platform)
         self.cfg = cfg
+        self.num_antennas = self.cfg["antennas"]
 
         # Get lte traces
         self.TFM = TraceFileManager(hydra.utils.to_absolute_path(trace_file))
@@ -94,7 +95,7 @@ class FiveGSimulation(BaseSimulation):
         i = 0
         for ntrace in nsubframe.trace:
             # create a new graph
-            graphs.append(FivegGraph(f"fiveg_sf{sf_id}_{i}", ntrace))
+            graphs.append(FivegGraph(f"fiveg_sf{sf_id}_{i}", ntrace, self.num_antennas))
             i += 1
         return graphs
 
@@ -102,7 +103,7 @@ class FiveGSimulation(BaseSimulation):
         traces = []
         for ntrace in nsubframe.trace:
             # create a new graph
-            traces.append(FivegTrace(ntrace, self.proc_time))
+            traces.append(FivegTrace(ntrace, self.proc_time, self.num_antennas))
         return traces
 
     def _merge_graphs_and_traces(self, app_name, graphs, traces):
