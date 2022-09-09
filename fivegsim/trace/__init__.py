@@ -63,6 +63,7 @@ class FivegTrace(DataflowTrace):
         for l in range(len(fft_levels)):
             if prbs*12 <= fft_levels[l]:
                 fft_acc_cc = fft_latencies[l]
+                break
 
         # the following frequency settings were also used in the real odroid
         # platform to measure task execution time
@@ -264,6 +265,4 @@ class FivegTrace(DataflowTrace):
         ntrace.layers = layers
 
         proc_time = get_task_time(hydra.utils.to_absolute_path(task_file))
-        #proc_time = get_task_time(hydra.utils.to_absolute_path(task_file2))
-        print(task_file)
         return FivegTrace(ntrace, proc_time)
