@@ -80,7 +80,7 @@ class FivegTrace(DataflowTrace):
         # calculate clock cycles for each task type
         armA7 = "ARM_CORTEX_A7"
         armA15 = "ARM_CORTEX_A15"
-        fft_acc = "acc_fft,ifftm,iffta"
+        fft_acc = "acc:fft,ifftm,iffta"
 
         pcs_input ={
             "ARM_CORTEX_A7": 0,
@@ -178,18 +178,18 @@ class FivegTrace(DataflowTrace):
             "iffta": self.KernelTrace(
                 "iffta", 2,
                 ["ant"], [1], [False],
-                ["demap"], [1], [True],
+                [f"demap{mod}"], [1], [True],
                 num_ph3, pcs_iffta,
             ),
-            "demap": self.KernelTrace(
-                "demap", 1,
+            f"demap{mod}": self.KernelTrace(
+                f"demap{mod}", 1,
                 ["iffta"], [2], [True],
                 ["output"], [1], [True],
                 num_ph4, pcs_demap,
             ),
             "output": self.KernelTrace(
                 "output", 1,
-                ["demap"], [1], [True],
+                [f"demap{mod}"], [1], [True],
                 [], [None], [False],
                 1, pcs_input,
             ),

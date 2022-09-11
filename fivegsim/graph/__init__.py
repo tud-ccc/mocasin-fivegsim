@@ -33,6 +33,7 @@ class FivegGraph(DataflowGraph):
         data_size = 4  # bytes
         num_sc = prbs * sc
 
+        # TODO: modify this when merging trace generator
         if mod == 0:
             mod = 1
         elif mod == 1:
@@ -75,7 +76,7 @@ class FivegGraph(DataflowGraph):
                 ),
                 (
                     "phase4",
-                    {"num_instances": num_phase4, "subkernels": ["demap"]},
+                    {"num_instances": num_phase4, "subkernels": [f"demap{ntrace.modulation_scheme}"]},
                 ),
                 ("output", {"num_instances": 1, "subkernels": ["output"]}),
             ]

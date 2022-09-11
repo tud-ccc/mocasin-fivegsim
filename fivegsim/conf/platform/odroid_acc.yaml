@@ -18,7 +18,7 @@ processor_1:
 processor_fft_acc:
   _target_: mocasin.platforms.platformDesigner.genericProcessor
   type : 'acc:fft,ifftm,iffta'
-  frequency : 300000000
+  frequency : 250000000
   static_power: 0.3125
   dynamic_power: 0.0625
 processor_mf_acc:
