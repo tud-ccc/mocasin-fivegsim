@@ -124,8 +124,7 @@ class FivegTrace(DataflowTrace):
         pcs_demap = {
             armA7: proc_time["demap"][armA7][mod][prbs] * freq[armA7],
             armA15: proc_time["demap"][armA15][mod][prbs] * freq[armA15],
-            "acc:demap": proc_time["demap"]["acc_demap"][mod][prbs] * freq["acc"],
-            #f"acc_demap{mod}": proc_time["demap"]["acc_demap"][mod][prbs] * freq["acc"],
+            f"acc:demap{mod}": proc_time["demap"]["acc_demap"][mod][prbs] * freq["acc"],
         }
 
         # kernels

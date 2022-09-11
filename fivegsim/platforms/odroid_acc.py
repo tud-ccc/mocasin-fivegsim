@@ -21,7 +21,11 @@ class OdroidWithAccelerators(Platform):
         processor_wind_acc,
         processor_ant_acc,
         processor_comb_acc,
-        processor_demap_acc,
+        processor_demap0_acc,
+        processor_demap1_acc,
+        processor_demap2_acc,
+        processor_demap3_acc,
+        processor_demap4_acc,
         num_big=4,
         num_little=4,
         num_fft_acc=2,
@@ -29,7 +33,11 @@ class OdroidWithAccelerators(Platform):
         num_wind_acc=2,
         num_ant_acc=2,
         num_comb_acc=2,
-        num_demap_acc=2,
+        num_demap0_acc=2,
+        num_demap1_acc=2,
+        num_demap2_acc=2,
+        num_demap3_acc=2,
+        num_demap4_acc=2,
         name="odroid_acc",
         peripheral_static_power=0.7633,
         **kwargs,
@@ -50,8 +58,16 @@ class OdroidWithAccelerators(Platform):
             processor_ant_acc = instantiate(processor_ant_acc)
         if not isinstance(processor_comb_acc, Processor):
             processor_comb_acc = instantiate(processor_comb_acc)
-        if not isinstance(processor_demap_acc, Processor):
-            processor_demap_acc = instantiate(processor_demap_acc)
+        if not isinstance(processor_demap0_acc, Processor):
+            processor_demap0_acc = instantiate(processor_demap0_acc)
+        if not isinstance(processor_demap1_acc, Processor):
+            processor_demap1_acc = instantiate(processor_demap1_acc)
+        if not isinstance(processor_demap2_acc, Processor):
+            processor_demap2_acc = instantiate(processor_demap2_acc)
+        if not isinstance(processor_demap3_acc, Processor):
+            processor_demap3_acc = instantiate(processor_demap3_acc)
+        if not isinstance(processor_demap4_acc, Processor):
+            processor_demap4_acc = instantiate(processor_demap4_acc)
         super().__init__(name, kwargs.get("symmetries_json", None))
 
         designer = PlatformDesigner(self)
@@ -120,7 +136,19 @@ class OdroidWithAccelerators(Platform):
             "cluster_comb_acc", processor_comb_acc, num_comb_acc
         )
         designer.addPeClusterForProcessor(
-            "cluster_demap_acc", processor_demap_acc, num_demap_acc
+            "cluster_demap0_acc", processor_demap0_acc, num_demap0_acc
+        )
+        designer.addPeClusterForProcessor(
+            "cluster_demap1_acc", processor_demap1_acc, num_demap1_acc
+        )
+        designer.addPeClusterForProcessor(
+            "cluster_demap2_acc", processor_demap2_acc, num_demap2_acc
+        )
+        designer.addPeClusterForProcessor(
+            "cluster_demap3_acc", processor_demap3_acc, num_demap3_acc
+        )
+        designer.addPeClusterForProcessor(
+            "cluster_demap4_acc", processor_demap4_acc, num_demap4_acc
         )
 
         # RAM connecting all clusters
@@ -135,7 +163,11 @@ class OdroidWithAccelerators(Platform):
                 "cluster_wind_acc",
                 "cluster_ant_acc",
                 "cluster_comb_acc",
-                "cluster_demap_acc",
+                "cluster_demap0_acc",
+                "cluster_demap1_acc",
+                "cluster_demap2_acc",
+                "cluster_demap3_acc",
+                "cluster_demap4_acc",
             ],
             readLatency=142,
             writeLatency=142,
@@ -147,7 +179,7 @@ class OdroidWithAccelerators(Platform):
 
         # Reduce the scheduling cycles for the accelerators
         for scheduler in self.schedulers():
-            if scheduler.processors[0].type.startswith("acc_"):
+            if scheduler.processors[0].type.startswith("acc:"):
                 # need to copy the policy first, because the designer assigns
                 # each scheduler the same policy object
                 scheduler.policy = copy.deepcopy(scheduler.policy)
