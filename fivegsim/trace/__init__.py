@@ -112,9 +112,9 @@ class FivegTrace(DataflowTrace):
             "acc:wind": proc_time["wind"]["acc_wind"][prbs] * freq["acc"],
         }
         pcs_comb = {
-            armA7: proc_time["comb"][armA7][prbs] * freq[armA7],
-            armA15: proc_time["comb"][armA15][prbs] * freq[armA15],
-            "acc:comb": proc_time["comb"]["acc_comb"][prbs] * freq["acc"],
+            armA7: proc_time["comb"][armA7][prbs] * freq[armA7] * (ntrace.layers / 4),
+            armA15: proc_time["comb"][armA15][prbs] * freq[armA15] * (ntrace.layers / 4),
+            "acc:comb": proc_time["comb"]["acc_comb"][prbs] * freq["acc"] * (ntrace.layers / 4) / 12,
         }
         pcs_ant = {
             armA7: proc_time["ant"][armA7][prbs] * freq[armA7],
@@ -122,9 +122,9 @@ class FivegTrace(DataflowTrace):
             "acc:ant": proc_time["ant"]["acc_ant"][prbs] * freq["acc"],
         }
         pcs_demap = {
-            armA7: proc_time["demap"][armA7][mod][prbs] * freq[armA7],
-            armA15: proc_time["demap"][armA15][mod][prbs] * freq[armA15],
-            f"acc:demap{mod}": proc_time["demap"]["acc_demap"][mod][prbs] * freq["acc"],
+            armA7: proc_time["demap"][armA7][mod][prbs] * freq[armA7] * (ntrace.layers / 4),
+            armA15: proc_time["demap"][armA15][mod][prbs] * freq[armA15] * (ntrace.layers / 4),
+            f"acc:demap{mod}": proc_time["demap"]["acc_demap"][mod][prbs] * freq["acc"] * (ntrace.layers / 4),
         }
 
         # kernels
