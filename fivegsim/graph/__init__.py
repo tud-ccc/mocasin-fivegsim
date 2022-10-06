@@ -33,19 +33,6 @@ class FivegGraph(DataflowGraph):
         data_size = 4  # bytes
         num_sc = prbs * sc
 
-        if mod == 0:
-            mod = 1
-        elif mod == 1:
-            mod = 2
-        elif mod == 2:
-            mod = 8
-        elif mod == 3:
-            mod = 12
-        elif mod == 4:
-            mod = 16
-        else:
-            raise RuntimeError(f"Unknown modulation scheme ({mod})")
-
         num_phase1 = Phybench.get_num_micf(lay)
         num_phase2 = Phybench.get_num_combwc()
         num_phase3 = Phybench.get_num_antcomb(lay)
