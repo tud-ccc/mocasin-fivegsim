@@ -33,20 +33,6 @@ class FivegGraph(DataflowGraph):
         data_size = 4  # bytes
         num_sc = prbs * sc
 
-        # TODO: modify this when merging trace generator
-        if mod == 0:
-            mod = 1
-        elif mod == 1:
-            mod = 2
-        elif mod == 2:
-            mod = 8
-        elif mod == 3:
-            mod = 12
-        elif mod == 4:
-            mod = 16
-        else:
-            raise RuntimeError(f"Unknown modulation scheme ({mod})")
-
         num_phase1 = Phybench.get_num_micf(lay, ant)
         num_phase2 = Phybench.get_num_combwc()
         num_phase3 = Phybench.get_num_antcomb(lay)
@@ -91,7 +77,7 @@ class FivegGraph(DataflowGraph):
             ["phase1", "phase2", data_size * prbs],
             ["phase2", "phase3", data_size * prbs * ant],
             ["phase3", "phase4", (data_size * prbs) / 2],
-            ["phase4", "output", data_size * prbs * mod],
+            ["phase4", "output", data_size * prbs * ntrace.modulation_scheme],
         ]
 
         # connections: phase, origin, destination, token size

@@ -120,55 +120,63 @@ class OdroidWithAccelerators(Platform):
         )
 
         # cluster 2 (accelerators), no caches
-        designer.addPeClusterForProcessor(
-            "cluster_fft_acc", processor_fft_acc, num_fft_acc
-        )
-        designer.addPeClusterForProcessor(
-            "cluster_mf_acc", processor_mf_acc, num_mf_acc
-        )
-        designer.addPeClusterForProcessor(
-            "cluster_wind_acc", processor_wind_acc, num_wind_acc
-        )
-        designer.addPeClusterForProcessor(
-            "cluster_ant_acc", processor_ant_acc, num_ant_acc
-        )
-        designer.addPeClusterForProcessor(
-            "cluster_comb_acc", processor_comb_acc, num_comb_acc
-        )
-        designer.addPeClusterForProcessor(
-            "cluster_demap0_acc", processor_demap0_acc, num_demap0_acc
-        )
-        designer.addPeClusterForProcessor(
-            "cluster_demap1_acc", processor_demap1_acc, num_demap1_acc
-        )
-        designer.addPeClusterForProcessor(
-            "cluster_demap2_acc", processor_demap2_acc, num_demap2_acc
-        )
-        designer.addPeClusterForProcessor(
-            "cluster_demap3_acc", processor_demap3_acc, num_demap3_acc
-        )
-        designer.addPeClusterForProcessor(
-            "cluster_demap4_acc", processor_demap4_acc, num_demap4_acc
-        )
+        cluster_names = ["cluster_a7", "cluster_a15"]
+        if num_fft_acc > 0:
+            designer.addPeClusterForProcessor(
+                "cluster_fft_acc", processor_fft_acc, num_fft_acc
+            )
+            cluster_names.append("cluster_fft_acc")
+        if num_mf_acc > 0:
+            designer.addPeClusterForProcessor(
+                "cluster_mf_acc", processor_mf_acc, num_mf_acc
+            )
+            cluster_names.append("cluster_mf_acc")
+        if num_wind_acc > 0:
+            designer.addPeClusterForProcessor(
+                "cluster_wind_acc", processor_wind_acc, num_wind_acc
+            )
+            cluster_names.append("cluster_wind_acc")
+        if num_ant_acc > 0:
+            designer.addPeClusterForProcessor(
+                "cluster_ant_acc", processor_ant_acc, num_ant_acc
+            )
+            cluster_names.append("cluster_ant_acc")
+        if num_comb_acc > 0:
+            designer.addPeClusterForProcessor(
+                "cluster_comb_acc", processor_comb_acc, num_comb_acc
+            )
+            cluster_names.append("cluster_comb_acc")
+        if num_demap0_acc > 0:
+            designer.addPeClusterForProcessor(
+                "cluster_demap0_acc", processor_demap0_acc, num_demap0_acc
+            )
+            cluster_names.append("cluster_demap0_acc")
+        if num_demap1_acc > 0:
+            designer.addPeClusterForProcessor(
+                "cluster_demap1_acc", processor_demap1_acc, num_demap1_acc
+            )
+            cluster_names.append("cluster_demap1_acc")
+        if num_demap2_acc > 0:
+            designer.addPeClusterForProcessor(
+                "cluster_demap2_acc", processor_demap2_acc, num_demap2_acc
+            )
+            cluster_names.append("cluster_demap2_acc")
+        if num_demap3_acc > 0:
+            designer.addPeClusterForProcessor(
+                "cluster_demap3_acc", processor_demap3_acc, num_demap3_acc
+            )
+            cluster_names.append("cluster_demap3_acc")
+        if num_demap4_acc > 0:
+            designer.addPeClusterForProcessor(
+                "cluster_demap4_acc", processor_demap4_acc, num_demap4_acc
+            )
+            cluster_names.append("cluster_demap4_acc")
 
         # RAM connecting all clusters
         # RAM latency is L2 latency plus 120 cycles
         designer.addCommunicationResource(
             "DRAM",
-            [
-                "cluster_a7",
-                "cluster_a15",
-                "cluster_fft_acc",
-                "cluster_mf_acc",
-                "cluster_wind_acc",
-                "cluster_ant_acc",
-                "cluster_comb_acc",
-                "cluster_demap0_acc",
-                "cluster_demap1_acc",
-                "cluster_demap2_acc",
-                "cluster_demap3_acc",
-                "cluster_demap4_acc",
-            ],
+            cluster_names,
             readLatency=142,
             writeLatency=142,
             readThroughput=8,
