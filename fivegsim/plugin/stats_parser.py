@@ -35,12 +35,12 @@ def initialize_stats_parser():
     parse_multirun._parsers.update(
         {
             "5g_stats_parser": (
-                "fivegsim.stats_parser",
+                "fivegsim.plugin.stats_parser",
                 "fivegsim_stats_parser",
                 "Parses the statistics file from the 5G application.",
             ),
             "5g_missrate_parser": (
-                "fivegsim.stats_parser",
+                "fivegsim.plugin.stats_parser",
                 "fiveg_missrate_parser",
                 "Parses the number of missed applications from a file",
             ),
