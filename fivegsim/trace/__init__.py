@@ -177,18 +177,18 @@ class FivegTrace(DataflowTrace):
             "iffta": self.KernelTrace(
                 "iffta", 2,
                 ["ant"], [1], [False],
-                [f"demap{mod}"], [1], [True],
+                [f"demap{ntrace.modulation_scheme}"], [1], [True],
                 num_ph3, pcs_iffta,
             ),
-            f"demap{mod}": self.KernelTrace(
-                f"demap{mod}", 1,
+            f"demap{ntrace.modulation_scheme}": self.KernelTrace(
+                f"demap{ntrace.modulation_scheme}", 1,
                 ["iffta"], [2], [True],
                 ["output"], [1], [True],
                 num_ph4, pcs_demap,
             ),
             "output": self.KernelTrace(
                 "output", 1,
-                [f"demap{mod}"], [1], [True],
+                [f"demap{ntrace.modulation_scheme}"], [1], [True],
                 [], [None], [False],
                 1, pcs_input,
             ),
