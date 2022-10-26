@@ -85,6 +85,7 @@ build-python3.6:
     # install fivegsim and dependencies
     - pip install fivegsim --no-index --find-links=./wheels
     # run tests
+    - export HYDRA_FULL_ERROR=1
     - python setup.py test
 
 test-python3.10:
