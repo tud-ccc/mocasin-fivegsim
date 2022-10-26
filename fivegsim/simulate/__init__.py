@@ -95,7 +95,9 @@ class FiveGSimulation(BaseSimulation):
         i = 0
         for ntrace in nsubframe.trace:
             # create a new graph
-            graphs.append(FivegGraph(f"fiveg_sf{sf_id}_{i}", ntrace, self.num_antennas))
+            graphs.append(
+                FivegGraph(f"fiveg_sf{sf_id}_{i}", ntrace, self.num_antennas)
+            )
             i += 1
         return graphs
 

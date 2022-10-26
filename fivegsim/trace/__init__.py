@@ -66,6 +66,8 @@ class FivegTrace(DataflowTrace):
             mod = 3
         elif mod == 8:
             mod = 4
+        else:
+            raise ValueError("Unknown modulation scheme")
 
         # the following frequency settings were also used in the real odroid
         # platform to measure task execution time
@@ -82,7 +84,7 @@ class FivegTrace(DataflowTrace):
         armA15 = "ARM_CORTEX_A15"
         fft_acc = "acc:fft,ifftm,iffta"
 
-        pcs_input ={
+        pcs_input = {
             "ARM_CORTEX_A7": 0,
             "ARM_CORTEX_A15": 0,
         }
@@ -112,9 +114,16 @@ class FivegTrace(DataflowTrace):
             "acc:wind": proc_time["wind"]["acc_wind"][prbs] * freq["acc"],
         }
         pcs_comb = {
-            armA7: proc_time["comb"][armA7][prbs] * freq[armA7] * (ntrace.layers / 4),
-            armA15: proc_time["comb"][armA15][prbs] * freq[armA15] * (ntrace.layers / 4),
-            "acc:comb": proc_time["comb"]["acc_comb"][prbs] * freq["acc"] * (ntrace.layers / 4) / 12,
+            armA7: proc_time["comb"][armA7][prbs]
+            * freq[armA7]
+            * (ntrace.layers / 4),
+            armA15: proc_time["comb"][armA15][prbs]
+            * freq[armA15]
+            * (ntrace.layers / 4),
+            "acc:comb": proc_time["comb"]["acc_comb"][prbs]
+            * freq["acc"]
+            * (ntrace.layers / 4)
+            / 12,
         }
         pcs_ant = {
             armA7: proc_time["ant"][armA7][prbs] * freq[armA7],
@@ -122,9 +131,17 @@ class FivegTrace(DataflowTrace):
             "acc:ant": proc_time["ant"]["acc_ant"][prbs] * freq["acc"],
         }
         pcs_demap = {
-            armA7: proc_time["demap"][armA7][mod][prbs] * freq[armA7] * (ntrace.layers / 4),
-            armA15: proc_time["demap"][armA15][mod][prbs] * freq[armA15] * (ntrace.layers / 4),
-            f"acc:demap{ntrace.modulation_scheme}": proc_time["demap"]["acc_demap"][mod][prbs] * freq["acc"] * (ntrace.layers / 4),
+            armA7: proc_time["demap"][armA7][mod][prbs]
+            * freq[armA7]
+            * (ntrace.layers / 4),
+            armA15: proc_time["demap"][armA15][mod][prbs]
+            * freq[armA15]
+            * (ntrace.layers / 4),
+            f"acc:demap{ntrace.modulation_scheme}": proc_time["demap"][
+                "acc_demap"
+            ][mod][prbs]
+            * freq["acc"]
+            * (ntrace.layers / 4),
         }
 
         # kernels
@@ -252,7 +269,9 @@ class FivegTrace(DataflowTrace):
                     )
 
     @staticmethod
-    def from_hydra(task_file, prbs, modulation_scheme, layers, antennas, **kwargs):
+    def from_hydra(
+        task_file, prbs, modulation_scheme, layers, antennas, **kwargs
+    ):
         # a little hacky, but it does the trick to instantiate the graph
         # directly from hydra.
         class Object(object):
