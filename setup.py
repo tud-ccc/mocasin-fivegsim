@@ -18,6 +18,7 @@ setup(
         "mocasin",
         "hydra-core",
         "numpy",
+        "pandas",
     ],
     setup_requires=["pytest-runner"],
     tests_require=["pytest<7.0" if sys.version_info < (3, 7) else "pytest"],
