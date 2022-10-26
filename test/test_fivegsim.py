@@ -11,15 +11,14 @@ import subprocess
 @pytest.mark.parametrize(
     "trace,platform,runtime,total,rejected,missed,simulated",
     [
-        ("lte_trace_1.txt", "odroid", "None", 18, 0, 2, 31.0),
-        ("lte_trace_2.txt", "odroid", "None", 18, 0, 12, 11.0),
-        ("lte_trace_2.txt", "odroid_acc", "None", 18, 0, 12, 11.0),
-        ("lte_trace_1.txt", "odroid_acc", "load_balancer", 18, 0, 2, 31.0),
-        ("lte_trace_2.txt", "odroid", "load_balancer", 18, 0, 10, 11.0),
-        ("lte_trace_2.txt", "odroid_acc", "load_balancer", 18, 0, 5, 11.0),
-        ("lte_trace_1.txt", "odroid_acc", "tetris", 18, 2, 0, 31.0),
-        ("lte_trace_2.txt", "odroid", "tetris", 18, 7, 0, 11.17),
-        ("lte_trace_2.txt", "odroid_acc", "tetris", 18, 6, 0, 11.40),
+        ("lte_trace_1.csv", "odroid", "None", 18, 0, 2, 31.0),
+        ("lte_trace_2.csv", "odroid", "None", 18, 0, 12, 11.0),
+        ("lte_trace_1.csv", "odroid_acc", "load_balancer", 18, 0, 2, 31.0),
+        ("lte_trace_2.csv", "odroid", "load_balancer", 18, 0, 11, 11.0),
+        ("lte_trace_2.csv", "odroid_acc", "load_balancer", 18, 0, 5, 11.0),
+        ("lte_trace_1.csv", "odroid_acc", "tetris", 18, 2, 0, 31.0),
+        ("lte_trace_2.csv", "odroid", "tetris", 18, 7, 0, 11.17),
+        ("lte_trace_2.csv", "odroid_acc", "tetris", 18, 6, 0, 11.42),
     ],
 )
 def test_fivegsim(
