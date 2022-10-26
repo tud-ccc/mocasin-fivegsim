@@ -62,7 +62,10 @@ class FivegGraph(DataflowGraph):
                 ),
                 (
                     "phase4",
-                    {"num_instances": num_phase4, "subkernels": [f"demap{ntrace.modulation_scheme}"]},
+                    {
+                        "num_instances": num_phase4,
+                        "subkernels": [f"demap{mod}"],
+                    },
                 ),
                 ("output", {"num_instances": 1, "subkernels": ["output"]}),
             ]
@@ -77,7 +80,7 @@ class FivegGraph(DataflowGraph):
             ["phase1", "phase2", data_size * prbs],
             ["phase2", "phase3", data_size * prbs * ant],
             ["phase3", "phase4", (data_size * prbs) / 2],
-            ["phase4", "output", data_size * prbs * ntrace.modulation_scheme],
+            ["phase4", "output", data_size * prbs * mod],
         ]
 
         # connections: phase, origin, destination, token size
