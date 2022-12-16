@@ -1,14 +1,15 @@
 # Copyright (C) 2020 TU Dresden
 # Licensed under the ISC license (see LICENSE.txt)
 #
-# Authors: Felix Teweleit, Andres Goens, Christian Menard
+# Authors: Felix Teweleit, Andres Goens, Christian Menard, Julian Robledo
 
 import copy
 
 from hydra.utils import instantiate
 
 from mocasin.common.platform import Platform, Processor
-from mocasin.platforms.platformDesigner import PlatformDesigner
+from mocasin.platforms.platformDesigner import PlatformDesigner, cluster
+from mocasin.platforms.odroid import makeOdroid, peParams
 
 
 class OdroidWithAccelerators(Platform):
@@ -70,120 +71,46 @@ class OdroidWithAccelerators(Platform):
             processor_demap4_acc = instantiate(processor_demap4_acc)
         super().__init__(name, kwargs.get("symmetries_json", None))
 
+        # Start platform designer
         designer = PlatformDesigner(self)
-        designer.setSchedulingPolicy("FIFO", 1000)
-        designer.newElement("exynos5422")
-
-        # cluster 0 with l2 cache
-        designer.addPeClusterForProcessor("cluster_a7", processor_0, num_little)
-        # Add L1/L2 caches
-        designer.addCacheForPEs(
-            "cluster_a7",
-            readLatency=1,
-            writeLatency=1,
-            readThroughput=8,
-            writeThroughput=8,
-            frequencyDomain=processor_0.frequency_domain.frequency,
-            name="L1_A7",
-        )
-        designer.addCommunicationResource(
-            name="L2_A7",
-            clusterIds=["cluster_a7"],
-            readLatency=21,
-            writeLatency=21,
-            readThroughput=8,
-            writeThroughput=8,
-            frequencyDomain=processor_0.frequency_domain.frequency,
+        exynos_acc = makeOdroid(
+            name,
+            designer,
+            processor_0,
+            processor_1,
+            peripheral_static_power,
+            num_little,
+            num_big,
         )
 
-        # cluster 1, with l2 cache
-        designer.addPeClusterForProcessor("cluster_a15", processor_1, num_big)
-        # Add L1/L2 caches
-        designer.addCacheForPEs(
-            "cluster_a15",
-            readLatency=1,
-            writeLatency=1,
-            readThroughput=8,
-            writeThroughput=8,
-            frequencyDomain=processor_1.frequency_domain.frequency,
-            name="L1_A15",
-        )
-        # L2 latency is L1 latency plus 21 cycles
-        designer.addCommunicationResource(
-            "L2_A15",
-            ["cluster_a15"],
-            readLatency=22,
-            writeLatency=22,
-            readThroughput=8,
-            writeThroughput=8,
-            frequencyDomain=processor_1.frequency_domain.frequency,
-        )
+        # cluster accelerators, no L1 memory
+        cluster_acc = cluster("cluster_acc", designer)
+        exynos_acc.addCluster(cluster_acc)
+        for i in range(num_fft_acc):
+            cluster_acc.addPeToCluster(f"fft_{i:02d}", *(peParams(processor_fft_acc)))
+        for i in range(num_mf_acc):
+            cluster_acc.addPeToCluster(f"mf_{i:02d}", *(peParams(processor_mf_acc)))
+        for i in range(num_wind_acc):
+            cluster_acc.addPeToCluster(f"wind_{i:02d}", *(peParams(processor_wind_acc)))
+        for i in range(num_ant_acc):
+            cluster_acc.addPeToCluster(f"ant_{i:02d}", *(peParams(processor_ant_acc)))
+        for i in range(num_comb_acc):
+            cluster_acc.addPeToCluster(f"comb_{i:02d}", *(peParams(processor_comb_acc)))
+        for i in range(num_demap0_acc):
+            cluster_acc.addPeToCluster(f"demap0_{i:02d}", *(peParams(processor_demap0_acc)))
+        for i in range(num_demap1_acc):
+            cluster_acc.addPeToCluster(f"demap1_{i:02d}", *(peParams(processor_demap1_acc)))
+        for i in range(num_demap2_acc):
+            cluster_acc.addPeToCluster(f"demap2_{i:02d}", *(peParams(processor_demap2_acc)))
+        for i in range(num_demap3_acc):
+            cluster_acc.addPeToCluster(f"demap3_{i:02d}", *(peParams(processor_demap3_acc)))
+        for i in range(num_demap4_acc):
+            cluster_acc.addPeToCluster(f"demap4_{i:02d}", *(peParams(processor_demap4_acc)))
 
-        # cluster 2 (accelerators), no caches
-        cluster_names = ["cluster_a7", "cluster_a15"]
-        if num_fft_acc > 0:
-            designer.addPeClusterForProcessor(
-                "cluster_fft_acc", processor_fft_acc, num_fft_acc
-            )
-            cluster_names.append("cluster_fft_acc")
-        if num_mf_acc > 0:
-            designer.addPeClusterForProcessor(
-                "cluster_mf_acc", processor_mf_acc, num_mf_acc
-            )
-            cluster_names.append("cluster_mf_acc")
-        if num_wind_acc > 0:
-            designer.addPeClusterForProcessor(
-                "cluster_wind_acc", processor_wind_acc, num_wind_acc
-            )
-            cluster_names.append("cluster_wind_acc")
-        if num_ant_acc > 0:
-            designer.addPeClusterForProcessor(
-                "cluster_ant_acc", processor_ant_acc, num_ant_acc
-            )
-            cluster_names.append("cluster_ant_acc")
-        if num_comb_acc > 0:
-            designer.addPeClusterForProcessor(
-                "cluster_comb_acc", processor_comb_acc, num_comb_acc
-            )
-            cluster_names.append("cluster_comb_acc")
-        if num_demap0_acc > 0:
-            designer.addPeClusterForProcessor(
-                "cluster_demap0_acc", processor_demap0_acc, num_demap0_acc
-            )
-            cluster_names.append("cluster_demap0_acc")
-        if num_demap1_acc > 0:
-            designer.addPeClusterForProcessor(
-                "cluster_demap1_acc", processor_demap1_acc, num_demap1_acc
-            )
-            cluster_names.append("cluster_demap1_acc")
-        if num_demap2_acc > 0:
-            designer.addPeClusterForProcessor(
-                "cluster_demap2_acc", processor_demap2_acc, num_demap2_acc
-            )
-            cluster_names.append("cluster_demap2_acc")
-        if num_demap3_acc > 0:
-            designer.addPeClusterForProcessor(
-                "cluster_demap3_acc", processor_demap3_acc, num_demap3_acc
-            )
-            cluster_names.append("cluster_demap3_acc")
-        if num_demap4_acc > 0:
-            designer.addPeClusterForProcessor(
-                "cluster_demap4_acc", processor_demap4_acc, num_demap4_acc
-            )
-            cluster_names.append("cluster_demap4_acc")
-
-        # RAM connecting all clusters
-        # RAM latency is L2 latency plus 120 cycles
-        designer.addCommunicationResource(
-            "DRAM",
-            cluster_names,
-            readLatency=142,
-            writeLatency=142,
-            readThroughput=8,
-            writeThroughput=8,
-            frequencyDomain=933000000.0,
-        )
-        designer.finishElement()
+        pes = cluster_acc.getProcessors()
+        ram = exynos_acc.findComRes("DRAM")
+        for pe in pes:
+            designer.connectComponents(pe, ram)
 
         # Reduce the scheduling cycles for the accelerators
         for scheduler in self.schedulers():
@@ -198,4 +125,6 @@ class OdroidWithAccelerators(Platform):
                 scheduler.policy.scheduling_cycles = 50
 
         # Set peripheral static power of the platform.
-        designer.setPeripheralStaticPower(peripheral_static_power)
+        #designer.setPeripheralStaticPower(peripheral_static_power)
+
+        self.generate_all_primitives()
