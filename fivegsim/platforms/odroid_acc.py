@@ -87,25 +87,45 @@ class OdroidWithAccelerators(Platform):
         cluster_acc = cluster("cluster_acc", designer)
         exynos_acc.addCluster(cluster_acc)
         for i in range(num_fft_acc):
-            cluster_acc.addPeToCluster(f"fft_{i:02d}", *(peParams(processor_fft_acc)))
+            cluster_acc.addPeToCluster(
+                f"fft_{i:02d}", *(peParams(processor_fft_acc))
+            )
         for i in range(num_mf_acc):
-            cluster_acc.addPeToCluster(f"mf_{i:02d}", *(peParams(processor_mf_acc)))
+            cluster_acc.addPeToCluster(
+                f"mf_{i:02d}", *(peParams(processor_mf_acc))
+            )
         for i in range(num_wind_acc):
-            cluster_acc.addPeToCluster(f"wind_{i:02d}", *(peParams(processor_wind_acc)))
+            cluster_acc.addPeToCluster(
+                f"wind_{i:02d}", *(peParams(processor_wind_acc))
+            )
         for i in range(num_ant_acc):
-            cluster_acc.addPeToCluster(f"ant_{i:02d}", *(peParams(processor_ant_acc)))
+            cluster_acc.addPeToCluster(
+                f"ant_{i:02d}", *(peParams(processor_ant_acc))
+            )
         for i in range(num_comb_acc):
-            cluster_acc.addPeToCluster(f"comb_{i:02d}", *(peParams(processor_comb_acc)))
+            cluster_acc.addPeToCluster(
+                f"comb_{i:02d}", *(peParams(processor_comb_acc))
+            )
         for i in range(num_demap0_acc):
-            cluster_acc.addPeToCluster(f"demap0_{i:02d}", *(peParams(processor_demap0_acc)))
+            cluster_acc.addPeToCluster(
+                f"demap0_{i:02d}", *(peParams(processor_demap0_acc))
+            )
         for i in range(num_demap1_acc):
-            cluster_acc.addPeToCluster(f"demap1_{i:02d}", *(peParams(processor_demap1_acc)))
+            cluster_acc.addPeToCluster(
+                f"demap1_{i:02d}", *(peParams(processor_demap1_acc))
+            )
         for i in range(num_demap2_acc):
-            cluster_acc.addPeToCluster(f"demap2_{i:02d}", *(peParams(processor_demap2_acc)))
+            cluster_acc.addPeToCluster(
+                f"demap2_{i:02d}", *(peParams(processor_demap2_acc))
+            )
         for i in range(num_demap3_acc):
-            cluster_acc.addPeToCluster(f"demap3_{i:02d}", *(peParams(processor_demap3_acc)))
+            cluster_acc.addPeToCluster(
+                f"demap3_{i:02d}", *(peParams(processor_demap3_acc))
+            )
         for i in range(num_demap4_acc):
-            cluster_acc.addPeToCluster(f"demap4_{i:02d}", *(peParams(processor_demap4_acc)))
+            cluster_acc.addPeToCluster(
+                f"demap4_{i:02d}", *(peParams(processor_demap4_acc))
+            )
 
         pes = cluster_acc.getProcessors()
         ram = exynos_acc.findComRes("DRAM")
@@ -125,6 +145,6 @@ class OdroidWithAccelerators(Platform):
                 scheduler.policy.scheduling_cycles = 50
 
         # Set peripheral static power of the platform.
-        #designer.setPeripheralStaticPower(peripheral_static_power)
+        # designer.setPeripheralStaticPower(peripheral_static_power)
 
         self.generate_all_primitives()
