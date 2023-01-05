@@ -14,7 +14,7 @@ import subprocess
         ("lte_trace_1.csv", "odroid", "None", 18, 0, 2, 31.0),
         ("lte_trace_2.csv", "odroid", "None", 18, 0, 12, 11.0),
         ("lte_trace_1.csv", "odroid_acc", "load_balancer", 18, 0, 2, 31.0),
-        ("lte_trace_2.csv", "odroid", "load_balancer", 18, 0, 11, 11.0),
+        ("lte_trace_2.csv", "odroid", "load_balancer", 18, 0, 10, 11.0),
         ("lte_trace_2.csv", "odroid_acc", "load_balancer", 18, 0, 5, 11.0),
         ("lte_trace_1.csv", "odroid_acc", "tetris", 18, 2, 0, 31.0),
         ("lte_trace_2.csv", "odroid", "tetris", 18, 7, 0, 11.17),

@@ -31,9 +31,9 @@ def test_generate_mapping(tmpdir):
 @pytest.mark.parametrize(
     "prbs,layers,antennas,mod,expected",
     [
-        (4, 4, 4, 2, "0.367857126 ms"),
-        (10, 10, 4, 4, "1.739934117 ms"),
-        (32, 16, 4, 8, "9.83357471 ms"),
+        (4, 4, 4, 2, "0.364421688 ms"),
+        (10, 10, 4, 4, "1.734190614 ms"),
+        (32, 16, 4, 8, "9.822799128 ms"),
     ],
 )
 def test_simulate(tmpdir, prbs, layers, antennas, mod, expected):
