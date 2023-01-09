@@ -45,31 +45,31 @@ processor_comb_acc:
   frequency : 250000000
   static_power: 0.21875
   dynamic_power: 0.0625
-processor_demap0_acc:
+processor_demap1_acc:
   _target_: mocasin.platforms.platformDesigner.genericProcessor
   type : 'acc:demap1'
   frequency : 250000000
   static_power: 0.1875
   dynamic_power: 0.0625
-processor_demap1_acc:
+processor_demap2_acc:
   _target_: mocasin.platforms.platformDesigner.genericProcessor
   type : 'acc:demap2'
   frequency : 250000000
   static_power: 0.1875
   dynamic_power: 0.0625
-processor_demap2_acc:
+processor_demap4_acc:
   _target_: mocasin.platforms.platformDesigner.genericProcessor
   type : 'acc:demap4'
   frequency : 250000000
   static_power: 0.1875
   dynamic_power: 0.0625
-processor_demap3_acc:
+processor_demap6_acc:
   _target_: mocasin.platforms.platformDesigner.genericProcessor
   type : 'acc:demap6'
   frequency : 250000000
   static_power: 0.1875
   dynamic_power: 0.0625
-processor_demap4_acc:
+processor_demap8_acc:
   _target_: mocasin.platforms.platformDesigner.genericProcessor
   type: 'acc:demap8'
   frequency: 250000000

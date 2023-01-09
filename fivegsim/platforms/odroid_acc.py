@@ -22,11 +22,11 @@ class OdroidWithAccelerators(Platform):
         processor_wind_acc,
         processor_ant_acc,
         processor_comb_acc,
-        processor_demap0_acc,
         processor_demap1_acc,
         processor_demap2_acc,
-        processor_demap3_acc,
         processor_demap4_acc,
+        processor_demap6_acc,
+        processor_demap8_acc,
         num_big=4,
         num_little=4,
         num_fft_acc=2,
@@ -34,11 +34,11 @@ class OdroidWithAccelerators(Platform):
         num_wind_acc=0,
         num_ant_acc=0,
         num_comb_acc=0,
-        num_demap0_acc=0,
         num_demap1_acc=0,
         num_demap2_acc=0,
-        num_demap3_acc=0,
         num_demap4_acc=0,
+        num_demap6_acc=0,
+        num_demap8_acc=0,
         name="odroid_acc",
         peripheral_static_power=0.7633,
         **kwargs,
@@ -59,16 +59,16 @@ class OdroidWithAccelerators(Platform):
             processor_ant_acc = instantiate(processor_ant_acc)
         if not isinstance(processor_comb_acc, Processor):
             processor_comb_acc = instantiate(processor_comb_acc)
-        if not isinstance(processor_demap0_acc, Processor):
-            processor_demap0_acc = instantiate(processor_demap0_acc)
         if not isinstance(processor_demap1_acc, Processor):
             processor_demap1_acc = instantiate(processor_demap1_acc)
         if not isinstance(processor_demap2_acc, Processor):
             processor_demap2_acc = instantiate(processor_demap2_acc)
-        if not isinstance(processor_demap3_acc, Processor):
-            processor_demap3_acc = instantiate(processor_demap3_acc)
         if not isinstance(processor_demap4_acc, Processor):
             processor_demap4_acc = instantiate(processor_demap4_acc)
+        if not isinstance(processor_demap6_acc, Processor):
+            processor_demap6_acc = instantiate(processor_demap6_acc)
+        if not isinstance(processor_demap8_acc, Processor):
+            processor_demap8_acc = instantiate(processor_demap8_acc)
         super().__init__(name, kwargs.get("symmetries_json", None))
 
         # Start platform designer
@@ -106,10 +106,6 @@ class OdroidWithAccelerators(Platform):
             cluster_acc.addPeToCluster(
                 f"comb_{i:02d}", *(peParams(processor_comb_acc))
             )
-        for i in range(num_demap0_acc):
-            cluster_acc.addPeToCluster(
-                f"demap0_{i:02d}", *(peParams(processor_demap0_acc))
-            )
         for i in range(num_demap1_acc):
             cluster_acc.addPeToCluster(
                 f"demap1_{i:02d}", *(peParams(processor_demap1_acc))
@@ -118,13 +114,17 @@ class OdroidWithAccelerators(Platform):
             cluster_acc.addPeToCluster(
                 f"demap2_{i:02d}", *(peParams(processor_demap2_acc))
             )
-        for i in range(num_demap3_acc):
-            cluster_acc.addPeToCluster(
-                f"demap3_{i:02d}", *(peParams(processor_demap3_acc))
-            )
         for i in range(num_demap4_acc):
             cluster_acc.addPeToCluster(
                 f"demap4_{i:02d}", *(peParams(processor_demap4_acc))
+            )
+        for i in range(num_demap6_acc):
+            cluster_acc.addPeToCluster(
+                f"demap6_{i:02d}", *(peParams(processor_demap6_acc))
+            )
+        for i in range(num_demap8_acc):
+            cluster_acc.addPeToCluster(
+                f"demap8_{i:02d}", *(peParams(processor_demap8_acc))
             )
 
         pes = cluster_acc.getProcessors()
