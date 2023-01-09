@@ -56,18 +56,6 @@ class FivegTrace(DataflowTrace):
 
         prbs = ntrace.PRBs
         mod = ntrace.modulation_scheme
-        if mod == 1:
-            mod = 0
-        elif mod == 2:
-            mod = 1
-        elif mod == 4:
-            mod = 2
-        elif mod == 6:
-            mod = 3
-        elif mod == 8:
-            mod = 4
-        else:
-            raise ValueError("Unknown modulation scheme")
 
         # calculate clock cycles for each task type
         armA7 = "ARM_CORTEX_A7"
