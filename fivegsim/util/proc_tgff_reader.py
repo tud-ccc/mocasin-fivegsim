@@ -10,21 +10,20 @@ def get_task_time(tgff_name):
     """Read task execution time from TGFF and return a list of task times."""
     proc_latencies = {}
     with open(tgff_name) as csvfile:
-        reader = csv.reader(csvfile)
-        next(reader)  # headers
-        reader = list(reader)
+        reader = csv.DictReader(csvfile)
+
         for row in reader:
-            if row[0] not in proc_latencies:
-                proc_latencies[row[0]] = {}
-            if row[1] not in proc_latencies[row[0]]:
-                proc_latencies[row[0]][row[1]] = {}
-            if row[4] != "NA":
-                if int(row[4]) not in proc_latencies[row[0]][row[1]]:
-                    proc_latencies[row[0]][row[1]][int(row[4])] = {}
-                proc_latencies[row[0]][row[1]][int(row[4])][
-                    int(row[2])
-                ] = float(row[3])
+            if row["kernel"] not in proc_latencies:
+                proc_latencies[row["kernel"]] = {}
+            if row["proc"] not in proc_latencies[row["kernel"]]:
+                proc_latencies[row["kernel"]][row["proc"]] = {}
+            if row["mod_scheme"] != "NA":
+                if int(row["mod_scheme"]) not in proc_latencies[row["kernel"]][row["proc"]]:
+                    proc_latencies[row["kernel"]][row["proc"]][int(row["mod_scheme"])] = {}
+                proc_latencies[row["kernel"]][row["proc"]][int(row["mod_scheme"])][
+                    int(row["prbs"])
+                ] = float(row["cc"])
             else:
-                proc_latencies[row[0]][row[1]][int(row[2])] = float(row[3])
+                proc_latencies[row["kernel"]][row["proc"]][int(row["prbs"])] = float(row["cc"])
 
     return proc_latencies
