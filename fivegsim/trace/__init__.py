@@ -89,58 +89,52 @@ class FivegTrace(DataflowTrace):
             "ARM_CORTEX_A15": 0,
         }
         pcs_mf = {
-            armA7: proc_time["mf"][armA7][prbs] * freq[armA7],
-            armA15: proc_time["mf"][armA15][prbs] * freq[armA15],
-            "acc:mf": proc_time["mf"]["acc_mf"][prbs] * freq["acc"],
+            armA7: proc_time["mf"][armA7][prbs],
+            armA15: proc_time["mf"][armA15][prbs],
+            "acc:mf": proc_time["mf"]["acc_mf"][prbs],
         }
         pcs_fft = {
-            armA7: proc_time["fft"][armA7][prbs] * freq[armA7],
-            armA15: proc_time["fft"][armA15][prbs] * freq[armA15],
-            fft_acc: proc_time["fft"]["acc_fft"][prbs] * freq["acc"],
+            armA7: proc_time["fft"][armA7][prbs],
+            armA15: proc_time["fft"][armA15][prbs],
+            fft_acc: proc_time["fft"]["acc_fft"][prbs],
         }
         pcs_ifftm = {
-            armA7: proc_time["fft"][armA7][prbs] * freq[armA7],
-            armA15: proc_time["fft"][armA15][prbs] * freq[armA15],
-            fft_acc: proc_time["fft"]["acc_fft"][prbs] * freq["acc"],
+            armA7: proc_time["fft"][armA7][prbs],
+            armA15: proc_time["fft"][armA15][prbs],
+            fft_acc: proc_time["fft"]["acc_fft"][prbs],
         }
         pcs_iffta = {
-            armA7: proc_time["fft"][armA7][prbs] * freq[armA7],
-            armA15: proc_time["fft"][armA15][prbs] * freq[armA15],
-            fft_acc: proc_time["fft"]["acc_fft"][prbs] * freq["acc"],
+            armA7: proc_time["fft"][armA7][prbs],
+            armA15: proc_time["fft"][armA15][prbs],
+            fft_acc: proc_time["fft"]["acc_fft"][prbs],
         }
         pcs_wind = {
-            armA7: proc_time["wind"][armA7][prbs] * freq[armA7],
-            armA15: proc_time["wind"][armA15][prbs] * freq[armA15],
-            "acc:wind": proc_time["wind"]["acc_wind"][prbs] * freq["acc"],
+            armA7: proc_time["wind"][armA7][prbs],
+            armA15: proc_time["wind"][armA15][prbs],
+            "acc:wind": proc_time["wind"]["acc_wind"][prbs],
         }
         pcs_comb = {
             armA7: proc_time["comb"][armA7][prbs]
-            * freq[armA7]
             * (ntrace.layers / 4),
             armA15: proc_time["comb"][armA15][prbs]
-            * freq[armA15]
             * (ntrace.layers / 4),
             "acc:comb": proc_time["comb"]["acc_comb"][prbs]
-            * freq["acc"]
             * (ntrace.layers / 4)
             / 12,
         }
         pcs_ant = {
-            armA7: proc_time["ant"][armA7][prbs] * freq[armA7],
-            armA15: proc_time["ant"][armA15][prbs] * freq[armA15],
-            "acc:ant": proc_time["ant"]["acc_ant"][prbs] * freq["acc"],
+            armA7: proc_time["ant"][armA7][prbs],
+            armA15: proc_time["ant"][armA15][prbs],
+            "acc:ant": proc_time["ant"]["acc_ant"][prbs],
         }
         pcs_demap = {
             armA7: proc_time["demap"][armA7][mod][prbs]
-            * freq[armA7]
             * (ntrace.layers / 4),
             armA15: proc_time["demap"][armA15][mod][prbs]
-            * freq[armA15]
             * (ntrace.layers / 4),
             f"acc:demap{ntrace.modulation_scheme}": proc_time["demap"][
                 "acc_demap"
             ][mod][prbs]
-            * freq["acc"]
             * (ntrace.layers / 4),
         }
 
