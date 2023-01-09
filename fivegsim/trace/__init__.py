@@ -69,16 +69,6 @@ class FivegTrace(DataflowTrace):
         else:
             raise ValueError("Unknown modulation scheme")
 
-        # the following frequency settings were also used in the real odroid
-        # platform to measure task execution time
-        # here frequencies are hard-coded since a single platform can have
-        # multiple frequency domains
-        freq = {
-            "ARM_CORTEX_A7": 1500000000,
-            "ARM_CORTEX_A15": 1800000000,
-            "acc": 250000000,
-        }
-
         # calculate clock cycles for each task type
         armA7 = "ARM_CORTEX_A7"
         armA15 = "ARM_CORTEX_A15"
