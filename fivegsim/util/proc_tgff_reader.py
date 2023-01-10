@@ -18,12 +18,19 @@ def get_task_time(tgff_name):
             if row["proc"] not in proc_latencies[row["kernel"]]:
                 proc_latencies[row["kernel"]][row["proc"]] = {}
             if row["mod_scheme"] != "NA":
-                if int(row["mod_scheme"]) not in proc_latencies[row["kernel"]][row["proc"]]:
-                    proc_latencies[row["kernel"]][row["proc"]][int(row["mod_scheme"])] = {}
-                proc_latencies[row["kernel"]][row["proc"]][int(row["mod_scheme"])][
+                if (
+                    int(row["mod_scheme"])
+                    not in proc_latencies[row["kernel"]][row["proc"]]
+                ):
+                    proc_latencies[row["kernel"]][row["proc"]][
+                        int(row["mod_scheme"])
+                    ] = {}
+                proc_latencies[row["kernel"]][row["proc"]][
+                    int(row["mod_scheme"])
+                ][int(row["prbs"])] = float(row["cc"])
+            else:
+                proc_latencies[row["kernel"]][row["proc"]][
                     int(row["prbs"])
                 ] = float(row["cc"])
-            else:
-                proc_latencies[row["kernel"]][row["proc"]][int(row["prbs"])] = float(row["cc"])
 
     return proc_latencies
