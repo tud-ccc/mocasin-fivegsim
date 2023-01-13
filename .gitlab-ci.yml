@@ -79,7 +79,7 @@ build-python3.7:
     - pip install "fivegsim[dev]" --no-index --find-links=./wheels
     # run tests
     - export HYDRA_FULL_ERROR=1
-    - pytest
+    - python -m pytest
 
 test-python3.10:
   extends: .test
