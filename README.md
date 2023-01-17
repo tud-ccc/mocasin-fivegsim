@@ -8,7 +8,7 @@ Installation
 
 Assuming you have installed mocasin already, simply run `pip install .` in this
 directory to install fivegsim. If you plan on changing the code in this
-repository, you should install in developer mode with `pip install -e .`.
+repository, you should install in developer mode with `pip install -e ."[dev]"`.
 
 Usage
 -----

@@ -32,7 +32,7 @@ mirror-ci-branch:
     # Clone mocasin from branch $MOCASIN_BRANCH or master if the branch does not exist
     - git clone -b $MOCASIN_BRANCH https://gitlab-ci-token:${CI_JOB_TOKEN}@cc.inf.tu-dresden.de/gitlab/mocasin/mocasin /tmp/mocasin || git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@cc.inf.tu-dresden.de/gitlab/mocasin/mocasin /tmp/mocasin
     # build the wheels
-    - pip wheel -w wheels /tmp/mocasin .
+    - pip wheel -w wheels /tmp/mocasin ."[dev]"
   artifacts:
     paths:
       - wheels
@@ -70,23 +70,16 @@ build-python3.7:
   tags:
     - python3.7
 
-build-python3.6:
-  extends: .build
-  stage: build
-  image: python:3.6
-  tags:
-    - python3.6
-
 .test:
   script:
     # install runtime dependencies for mpsym
     - apt-get update
     - apt-get install -y lua5.3 liblua5.3 luarocks
     # install fivegsim and dependencies
-    - pip install fivegsim --no-index --find-links=./wheels
+    - pip install "fivegsim[dev]" --no-index --find-links=./wheels
     # run tests
     - export HYDRA_FULL_ERROR=1
-    - python setup.py test
+    - python -m pytest
 
 test-python3.10:
   extends: .test
@@ -123,15 +116,6 @@ test-python3.7:
     - python3.7
   needs:
     - build-python3.7
-
-test-python3.6:
-  extends: .test
-  stage: test
-  image: python:3.6
-  tags:
-    - python3.6
-  needs:
-    - build-python3.6
 
 check-formatting:
   stage: test
