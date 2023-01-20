@@ -3,27 +3,34 @@
 #
 # Authors: Julian Robledo
 
+import csv
+
 
 def get_task_time(tgff_name):
     """Read task execution time from TGFF and return a list of task times."""
-    proc_file = open(tgff_name, "r")
-    lines = proc_file.readlines()
-    lines = [x for x in lines if x.find("#") == -1]
-    lines = [x.strip() for x in lines]
-    lines = [x.split() for x in lines]
-    lines = [x for x in lines if x != []]
+    proc_latencies = {}
+    with open(tgff_name) as csvfile:
+        reader = csv.DictReader(csvfile)
 
-    proc_list = list()
-    task_list = {}
+        for row in reader:
+            if row["kernel"] not in proc_latencies:
+                proc_latencies[row["kernel"]] = {}
+            if row["proc"] not in proc_latencies[row["kernel"]]:
+                proc_latencies[row["kernel"]][row["proc"]] = {}
+            if row["mod_scheme"] != "NA":
+                if (
+                    int(row["mod_scheme"])
+                    not in proc_latencies[row["kernel"]][row["proc"]]
+                ):
+                    proc_latencies[row["kernel"]][row["proc"]][
+                        int(row["mod_scheme"])
+                    ] = {}
+                proc_latencies[row["kernel"]][row["proc"]][
+                    int(row["mod_scheme"])
+                ][int(row["prbs"])] = float(row["cc"])
+            else:
+                proc_latencies[row["kernel"]][row["proc"]][
+                    int(row["prbs"])
+                ] = float(row["cc"])
 
-    while len(lines) > 0:
-        line = lines.pop(0)
-        if len(line) == 7:
-            task_list[int(line[0])] = float(line[3])
-        elif line[0].find("}") != -1:
-            proc_list.append(task_list)
-        elif line[0].find("@PROC") != -1:
-            task_list = {}
-
-    proc_file.close()
-    return proc_list
+    return proc_latencies

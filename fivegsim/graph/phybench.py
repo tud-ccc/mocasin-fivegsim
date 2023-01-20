@@ -17,18 +17,17 @@ class Phybench(object):
               is linearly related to #PRBs and modulation scheme).
     """
 
-    num_antenna = 4  # number of antennas - fixed to 4 for all base stations
     num_symb = 6  # number of symbols per slot - standard defined
     SC = 12  # Number of subCarriers per symbol - standard defined
     num_slots = 2  # Number of slots per subframe - standard defined
 
     @staticmethod
-    def get_num_micf(layers):
+    def get_num_micf(layers, antennas):
         """Get number of parallel kernels in phase micf.
 
         Subkernels: Matched filter + IFFT + Windowing + FFT.
         """
-        return layers * Phybench.num_antenna
+        return layers * antennas
 
     @staticmethod
     def get_num_combwc():

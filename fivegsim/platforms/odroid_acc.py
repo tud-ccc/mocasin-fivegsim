@@ -1,14 +1,15 @@
 # Copyright (C) 2020 TU Dresden
 # Licensed under the ISC license (see LICENSE.txt)
 #
-# Authors: Felix Teweleit, Andres Goens, Christian Menard
+# Authors: Felix Teweleit, Andres Goens, Christian Menard, Julian Robledo
 
 import copy
 
 from hydra.utils import instantiate
 
 from mocasin.common.platform import Platform, Processor
-from mocasin.platforms.platformDesigner import PlatformDesigner
+from mocasin.platforms.platformDesigner import PlatformDesigner, cluster
+from mocasin.platforms.odroid import makeOdroid, peParams
 
 
 class OdroidWithAccelerators(Platform):
@@ -16,10 +17,28 @@ class OdroidWithAccelerators(Platform):
         self,
         processor_0,
         processor_1,
-        processor_acc,
+        processor_fft_acc,
+        processor_mf_acc,
+        processor_wind_acc,
+        processor_ant_acc,
+        processor_comb_acc,
+        processor_demap1_acc,
+        processor_demap2_acc,
+        processor_demap4_acc,
+        processor_demap6_acc,
+        processor_demap8_acc,
         num_big=4,
         num_little=4,
-        num_acc=2,
+        num_fft_acc=2,
+        num_mf_acc=0,
+        num_wind_acc=0,
+        num_ant_acc=0,
+        num_comb_acc=0,
+        num_demap1_acc=0,
+        num_demap2_acc=0,
+        num_demap4_acc=0,
+        num_demap6_acc=0,
+        num_demap8_acc=0,
         name="odroid_acc",
         peripheral_static_power=0.7633,
         **kwargs,
@@ -30,78 +49,92 @@ class OdroidWithAccelerators(Platform):
             processor_0 = instantiate(processor_0)
         if not isinstance(processor_1, Processor):
             processor_1 = instantiate(processor_1)
-        if not isinstance(processor_acc, Processor):
-            processor_acc = instantiate(processor_acc)
+        if not isinstance(processor_fft_acc, Processor):
+            processor_fft_acc = instantiate(processor_fft_acc)
+        if not isinstance(processor_mf_acc, Processor):
+            processor_mf_acc = instantiate(processor_mf_acc)
+        if not isinstance(processor_wind_acc, Processor):
+            processor_wind_acc = instantiate(processor_wind_acc)
+        if not isinstance(processor_ant_acc, Processor):
+            processor_ant_acc = instantiate(processor_ant_acc)
+        if not isinstance(processor_comb_acc, Processor):
+            processor_comb_acc = instantiate(processor_comb_acc)
+        if not isinstance(processor_demap1_acc, Processor):
+            processor_demap1_acc = instantiate(processor_demap1_acc)
+        if not isinstance(processor_demap2_acc, Processor):
+            processor_demap2_acc = instantiate(processor_demap2_acc)
+        if not isinstance(processor_demap4_acc, Processor):
+            processor_demap4_acc = instantiate(processor_demap4_acc)
+        if not isinstance(processor_demap6_acc, Processor):
+            processor_demap6_acc = instantiate(processor_demap6_acc)
+        if not isinstance(processor_demap8_acc, Processor):
+            processor_demap8_acc = instantiate(processor_demap8_acc)
         super().__init__(name, kwargs.get("symmetries_json", None))
 
+        # Start platform designer
         designer = PlatformDesigner(self)
-        designer.setSchedulingPolicy("FIFO", 1000)
-        designer.newElement("exynos5422")
-
-        # cluster 0 with l2 cache
-        designer.addPeClusterForProcessor("cluster_a7", processor_0, num_little)
-        # Add L1/L2 caches
-        designer.addCacheForPEs(
-            "cluster_a7",
-            readLatency=1,
-            writeLatency=1,
-            readThroughput=8,
-            writeThroughput=8,
-            frequencyDomain=processor_0.frequency_domain.frequency,
-            name="L1_A7",
-        )
-        designer.addCommunicationResource(
-            name="L2_A7",
-            clusterIds=["cluster_a7"],
-            readLatency=21,
-            writeLatency=21,
-            readThroughput=8,
-            writeThroughput=8,
-            frequencyDomain=processor_0.frequency_domain.frequency,
+        exynos_acc = makeOdroid(
+            name,
+            designer,
+            processor_0,
+            processor_1,
+            peripheral_static_power,
+            num_little,
+            num_big,
         )
 
-        # cluster 1, with l2 cache
-        designer.addPeClusterForProcessor("cluster_a15", processor_1, num_big)
-        # Add L1/L2 caches
-        designer.addCacheForPEs(
-            "cluster_a15",
-            readLatency=1,
-            writeLatency=1,
-            readThroughput=8,
-            writeThroughput=8,
-            frequencyDomain=processor_1.frequency_domain.frequency,
-            name="L1_A15",
-        )
-        # L2 latency is L1 latency plus 21 cycles
-        designer.addCommunicationResource(
-            "L2_A15",
-            ["cluster_a15"],
-            readLatency=22,
-            writeLatency=22,
-            readThroughput=8,
-            writeThroughput=8,
-            frequencyDomain=processor_1.frequency_domain.frequency,
-        )
+        # cluster accelerators, no L1 memory
+        cluster_acc = cluster("cluster_acc", designer)
+        exynos_acc.addCluster(cluster_acc)
+        for i in range(num_fft_acc):
+            cluster_acc.addPeToCluster(
+                f"fft_{i:02d}", *(peParams(processor_fft_acc))
+            )
+        for i in range(num_mf_acc):
+            cluster_acc.addPeToCluster(
+                f"mf_{i:02d}", *(peParams(processor_mf_acc))
+            )
+        for i in range(num_wind_acc):
+            cluster_acc.addPeToCluster(
+                f"wind_{i:02d}", *(peParams(processor_wind_acc))
+            )
+        for i in range(num_ant_acc):
+            cluster_acc.addPeToCluster(
+                f"ant_{i:02d}", *(peParams(processor_ant_acc))
+            )
+        for i in range(num_comb_acc):
+            cluster_acc.addPeToCluster(
+                f"comb_{i:02d}", *(peParams(processor_comb_acc))
+            )
+        for i in range(num_demap1_acc):
+            cluster_acc.addPeToCluster(
+                f"demap1_{i:02d}", *(peParams(processor_demap1_acc))
+            )
+        for i in range(num_demap2_acc):
+            cluster_acc.addPeToCluster(
+                f"demap2_{i:02d}", *(peParams(processor_demap2_acc))
+            )
+        for i in range(num_demap4_acc):
+            cluster_acc.addPeToCluster(
+                f"demap4_{i:02d}", *(peParams(processor_demap4_acc))
+            )
+        for i in range(num_demap6_acc):
+            cluster_acc.addPeToCluster(
+                f"demap6_{i:02d}", *(peParams(processor_demap6_acc))
+            )
+        for i in range(num_demap8_acc):
+            cluster_acc.addPeToCluster(
+                f"demap8_{i:02d}", *(peParams(processor_demap8_acc))
+            )
 
-        # cluster 2 (accelerators), no caches
-        designer.addPeClusterForProcessor("cluster_acc", processor_acc, num_acc)
-
-        # RAM connecting all clusters
-        # RAM latency is L2 latency plus 120 cycles
-        designer.addCommunicationResource(
-            "DRAM",
-            ["cluster_a7", "cluster_a15", "cluster_acc"],
-            readLatency=142,
-            writeLatency=142,
-            readThroughput=8,
-            writeThroughput=8,
-            frequencyDomain=933000000.0,
-        )
-        designer.finishElement()
+        pes = cluster_acc.getProcessors()
+        ram = exynos_acc.findComRes("DRAM")
+        for pe in pes:
+            designer.connectComponents(pe, ram)
 
         # Reduce the scheduling cycles for the accelerators
         for scheduler in self.schedulers():
-            if scheduler.processors[0].type.startswith("acc_"):
+            if scheduler.processors[0].type.startswith("acc:"):
                 # need to copy the policy first, because the designer assigns
                 # each scheduler the same policy object
                 scheduler.policy = copy.deepcopy(scheduler.policy)
@@ -112,4 +145,6 @@ class OdroidWithAccelerators(Platform):
                 scheduler.policy.scheduling_cycles = 50
 
         # Set peripheral static power of the platform.
-        designer.setPeripheralStaticPower(peripheral_static_power)
+        # designer.setPeripheralStaticPower(peripheral_static_power)
+
+        self.generate_all_primitives()

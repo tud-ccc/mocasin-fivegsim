@@ -41,7 +41,7 @@ mocasin generate_mapping mapper=random platform=odroid graph=phybench trace=phyb
 
 The precise configuration of phybench can be overwritten as follows
 ```
-mocasin generate_mapping mapper=random platform=odroid graph=phybench trace=phybench phybench.prbs=10 phybench.layers=10 phybench.modulation_scheme=4 platform.processor_0.type=ARM_CORTEX_A7 platform.processor_1.type=ARM_CORTEX_A15
+mocasin generate_mapping mapper=random platform=odroid graph=phybench trace=phybench phybench.prbs=10 phybench.layers=4 phybench.antennas=4 phybench.modulation_scheme=4 platform.processor_0.type=ARM_CORTEX_A7 platform.processor_1.type=ARM_CORTEX_A15
 ```
 
 There is also a possibility to generate a new LTE trace, which could be supplied

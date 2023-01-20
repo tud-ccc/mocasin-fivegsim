@@ -6,6 +6,7 @@
 import numpy as np
 import random
 import sys
+import csv
 
 
 def main(sub=600, median_prbs=10, max_ue=3, period=1):
@@ -28,12 +29,17 @@ def main(sub=600, median_prbs=10, max_ue=3, period=1):
     file_name = "lte_traces"
     cnt = 0
 
-    with open(f"{file_path}/{file_name}.txt", "w") as tf_file:
-        for s in range(sub):
+    with open(f"{file_path}/{file_name}.csv", "w") as tf_file:
+        csv_writer = csv.writer(tf_file)
+        csv_writer.writerow(
+            ["subframe", "bs", "ue", "prbs", "lay", "mod", "cri", "is_new"]
+        )
+
+        for s in range(1, sub + 1):
             if s % period == 0:
                 n = random.randint(0, max_ue)
-                tf_file.write(f"{n}\n")
-
+                if n == 0:
+                    csv_writer.writerow([s, "-", "-", "-", "-", "-", "-", "-"])
                 for ue in range(n):
                     while True:
                         prb = np.random.poisson(median_prbs)
@@ -45,11 +51,12 @@ def main(sub=600, median_prbs=10, max_ue=3, period=1):
                     if cri == 1:
                         cri = random.randint(0, 2)  # reduce probability of 1
                     cnt += 1
-                    tf_file.write(f"{cnt} {cnt} {prb} {lay} {mod} {cri} 1\n")
+                    csv_writer.writerow(
+                        [s, cnt, cnt, prb, lay, mod, cri, int(1)]
+                    )
                 cnt = 0
             else:
-                tf_file.write("0\n")
-            tf_file.write(f"---------- {s+1}\n")
+                csv_writer.writerow([s, "-", "-", "-", "-", "-", "-", "-"])
 
 
 if __name__ == "__main__":

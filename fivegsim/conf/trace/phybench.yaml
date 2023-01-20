@@ -1,5 +1,6 @@
 _target_: fivegsim.trace.FivegTrace.from_hydra
 prbs: ${phybench.prbs}
 layers: ${phybench.layers}
+antennas: ${phybench.antennas}
 modulation_scheme: ${phybench.modulation_scheme}
 task_file: ${phybench.task_file}

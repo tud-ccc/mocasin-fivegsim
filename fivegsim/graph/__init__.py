@@ -17,7 +17,7 @@ class FivegGraph(DataflowGraph):
     micf, combwc, antcomb, demap.
     """
 
-    def __init__(self, name, ntrace):
+    def __init__(self, name, ntrace, antennas):
         super().__init__(name)
 
         self.prbs = ntrace.PRBs
@@ -28,25 +28,12 @@ class FivegGraph(DataflowGraph):
         prbs = ntrace.PRBs
         mod = ntrace.modulation_scheme
         lay = ntrace.layers
-        ant = Phybench.num_antenna
+        ant = antennas
         sc = Phybench.SC
         data_size = 4  # bytes
         num_sc = prbs * sc
 
-        if mod == 0:
-            mod = 1
-        elif mod == 1:
-            mod = 2
-        elif mod == 2:
-            mod = 8
-        elif mod == 3:
-            mod = 12
-        elif mod == 4:
-            mod = 16
-        else:
-            raise RuntimeError(f"Unknown modulation scheme ({mod})")
-
-        num_phase1 = Phybench.get_num_micf(lay)
+        num_phase1 = Phybench.get_num_micf(lay, ant)
         num_phase2 = Phybench.get_num_combwc()
         num_phase3 = Phybench.get_num_antcomb(lay)
         num_phase4 = Phybench.get_num_demap()
@@ -75,7 +62,10 @@ class FivegGraph(DataflowGraph):
                 ),
                 (
                     "phase4",
-                    {"num_instances": num_phase4, "subkernels": ["demap"]},
+                    {
+                        "num_instances": num_phase4,
+                        "subkernels": [f"demap{mod}"],
+                    },
                 ),
                 ("output", {"num_instances": 1, "subkernels": ["output"]}),
             ]
@@ -156,7 +146,7 @@ class FivegGraph(DataflowGraph):
         return timeout
 
     @staticmethod
-    def from_hydra(id, prbs, modulation_scheme, layers, **kwargs):
+    def from_hydra(id, prbs, modulation_scheme, layers, antennas, **kwargs):
         # a little hacky, but it does the trick to instantiate the graph
         # directly from hydra.
         class Object(object):
@@ -167,4 +157,4 @@ class FivegGraph(DataflowGraph):
         ntrace.modulation_scheme = modulation_scheme
         ntrace.layers = layers
         ntrace.UE_criticality = None
-        return FivegGraph(f"fiveg{id}", ntrace)
+        return FivegGraph(f"fiveg{id}", ntrace, antennas)

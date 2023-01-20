@@ -29,14 +29,14 @@ def test_generate_mapping(tmpdir):
 
 
 @pytest.mark.parametrize(
-    "prbs,layers,mod,expected",
+    "prbs,layers,antennas,mod,expected",
     [
-        (4, 4, 1, "0.367857126 ms"),
-        (10, 10, 2, "1.2292573 ms"),
-        (32, 16, 4, "5.789847294 ms"),
+        (4, 4, 4, 2, "0.364421688 ms"),
+        (10, 10, 4, 4, "1.734190614 ms"),
+        (32, 16, 4, 8, "9.822799128 ms"),
     ],
 )
-def test_simulate(tmpdir, prbs, layers, mod, expected):
+def test_simulate(tmpdir, prbs, layers, antennas, mod, expected):
     res = subprocess.run(
         [
             "mocasin",
@@ -49,6 +49,7 @@ def test_simulate(tmpdir, prbs, layers, mod, expected):
             "mapper=static_cfs",
             f"phybench.prbs={prbs}",
             f"phybench.layers={layers}",
+            f"phybench.antennas={antennas}",
             f"phybench.modulation_scheme={mod}",
         ],
         cwd=tmpdir,

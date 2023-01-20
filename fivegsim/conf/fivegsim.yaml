@@ -9,6 +9,8 @@ defaults:
   - override hydra/job_logging: mocasin
   - _self_
 
+antennas: 4
+
 # Set odroid's processor types (see issue mocasin#92)
 platform:
   processor_0:
