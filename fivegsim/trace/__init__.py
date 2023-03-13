@@ -47,7 +47,6 @@ class FivegTrace(DataflowTrace):
             self.processor_cycles = processor_cycles
 
     def __init__(self, ntrace, proc_time, antennas):
-
         # Number of tasks of each type
         num_ph1 = Phybench.get_num_micf(ntrace.layers, antennas)
         num_ph2 = Phybench.get_num_combwc()

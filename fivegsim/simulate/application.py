@@ -28,7 +28,6 @@ class FiveGRuntimeDataflowApplication(RuntimeDataflowApplication):
     def __init__(
         self, name, graph, app_trace, system, deadline=None, stats_entry=None
     ):
-
         super().__init__(
             name, graph, app_trace, system, wait_for_initial_tokens=True
         )
