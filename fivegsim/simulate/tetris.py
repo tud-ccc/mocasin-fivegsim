@@ -29,7 +29,7 @@ class FiveGRuntimeTetrisManager(RuntimeTetrisManager):
     def _create_runtime_application(self, request, trace):
         graph = request.app
         deadline = request.deadline * 1000000000.0
-        stats_entry = self.statistics.find_application(graph.name)
+        stats_entry = self._request_stats[request]
         app = FiveGRuntimeDataflowApplication(
             name=graph.name,
             graph=graph,

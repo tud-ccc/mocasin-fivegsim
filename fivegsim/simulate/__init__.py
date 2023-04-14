@@ -281,11 +281,10 @@ class FiveGSimulation(BaseSimulation):
         print(f"Total rejected: {stats.total_rejected()}")
         print(f"Missed deadline: {stats.total_missed()}")
         print(f"Total runtime manager activations: {stats.total_activations()}")
-        print(f"Total scheduling time: {stats.total_scheduling_time():.9f} s")
+        st_mean, st_std = stats.scheduling_time_stats()
         print(
-            "        --- per activation: {:.6f} ms".format(
-                stats.average_scheduling_time() * 1000
-            )
+            f"Average scheduling time: {st_mean * 1000:.6f} ms "
+            f"(std={st_std * 1000:.6f} ms)"
         )
         stats.dump_activations(self.cfg["stats_activations"])
         stats.dump_applications(self.cfg["stats_applications"])
@@ -325,9 +324,9 @@ class FiveGSimulation(BaseSimulation):
         stats_dict["Missed_deadline"] = str(stats.total_missed())
         stats_dict["Total_activations"] = str(stats.total_activations())
         stats_dict["Total_scheduling_time"] = str(stats.total_scheduling_time())
-        stats_dict["Average_scheduling_time"] = str(
-            stats.average_scheduling_time()
-        )
+        st_mean, st_std = stats.scheduling_time_stats()
+        stats_dict["Average_scheduling_time"] = str(st_mean)
+        stats_dict["Std_scheduling_time"] = str(st_std)
         with open("missrate.csv", "x") as file:
             writer = csv.writer(
                 file,
