@@ -32,6 +32,7 @@ def test_fivegsim(
     elif runtime == "tetris":
         cmd.append("mapper=fiveg")
         cmd.append("tetris_runtime=true")
+        cmd.append("resource_manager.schedule_reuse=true")
         if platform == "odroid":
             cmd.append("pareto_time_scale=1.09")
             cmd.append("pareto_time_offset=0.10")

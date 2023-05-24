@@ -33,5 +33,5 @@ class FiveGManagerStatistics(ManagerStatistics):
             arrival=arrival,
             deadline=deadline,
         )
-        self.applications[entry.name] = entry
+        self.applications.append(entry)
         return entry
