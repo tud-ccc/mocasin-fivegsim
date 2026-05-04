@@ -29,8 +29,8 @@ def get_task_time(tgff_name):
                     int(row["mod_scheme"])
                 ][int(row["prbs"])] = float(row["cc"])
             else:
-                proc_latencies[row["kernel"]][row["proc"]][
-                    int(row["prbs"])
-                ] = float(row["cc"])
+                proc_latencies[row["kernel"]][row["proc"]][int(row["prbs"])] = (
+                    float(row["cc"])
+                )
 
     return proc_latencies
