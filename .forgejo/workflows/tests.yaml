@@ -58,7 +58,7 @@ jobs:
         env:
           MOCASIN_CI_USER: ${{ secrets.MOCASIN_CI_USER }}
           MOCASIN_CI_TOKEN: ${{ secrets.MOCASIN_CI_TOKEN }}
-          MOCASIN_BRANCH: ${{ inputs.mocasin_branch || github.ref_name || 'master' }}
+          MOCASIN_BRANCH: ${{ inputs.mocasin_branch || github.head_ref || github.ref_name || 'master' }}
         run: |
           MOCASIN_URL="https://${MOCASIN_CI_USER}:${MOCASIN_CI_TOKEN}@git.cc.inf.tu-dresden.de/mocasin/mocasin.git"
 
