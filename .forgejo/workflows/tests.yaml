@@ -1,5 +1,7 @@
 name: FiveGSim Examples Plugin CI
 
+enable-email-notifications: true
+
 on:
   push:
   # pull_request:
